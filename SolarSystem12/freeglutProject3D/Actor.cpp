@@ -4,9 +4,9 @@
 #include "Actor.h"
 
 	Actor::Actor(){
-		r = 0.0;
-		g = 0.0;
-		b = 0.0; 
+		r = 0.0;    //red	
+		g = 0.0;    //green
+		b = 0.0;    //blue
 		a = 1.0;
 		x = 0.0;
 		y = 0.0;
