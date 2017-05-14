@@ -4,10 +4,10 @@
  https://github.com/RotaruDan/SolarSystem
 ---------------------------------------------------------------------------
  OpenSource Software Project (https://github.com/okjcd123/OSS12)
- Digital Contents ±èÁØÇõ ¹®ÈñÈ£ ÀÌ»óÇù Á¤ÁöÇı
+ Digital Contents ê¹€ì¤€í˜ ë¬¸í¬í˜¸ ì´ìƒí˜‘ ì •ì§€í˜œ
 
- Date of preparation (ÀÛ¼ºÀÏ):					2017³â 5¿ù 12ÀÏ
- Date of final modification (ÃÖÁ¾ ¼öÁ¤ÀÏ) :		2017³â 5¿ù 14ÀÏ
+ Date of preparation (ì‘ì„±ì¼):			2017ë…„ 5ì›” 12ì¼
+ Date of final modification (ìµœì¢… ìˆ˜ì •ì¼):	      2017ë…„ 5ì›” 14ì¼
 */
 #include <Windows.h>
 #include <gl/GL.h>
@@ -95,11 +95,11 @@ int main(int argc, char* argv[]){
 	// OpenGL basic setting
 	initGL();
 
-	// X Y Z Ãà »ı¼ºÇÏ±â
+	// X Y Z ì¶• ìƒì„±í•˜ê¸°
 	Axis axis;
 	root.addChildren(&axis);
 	
-	//Solar System Group »ı¼º
+	//Solar System Group ìƒì„±
 	Group solarSystem;
 	root.addChildren(&solarSystem);
 	solarSystem.setAngleVector(0, 1, 0);		// Rotating around Y axis
@@ -108,7 +108,7 @@ int main(int argc, char* argv[]){
 	sun.setColor(1.0, 1.0, 0.0, 1.0);
 	solarSystem.addChildren(&sun);
 
-	//Áö±¸ ±Ëµµ »ı¼º
+	//ì§€êµ¬ ê¶¤ë„ ìƒì„±
 	Disk earthOrbit;
 	earthOrbit.setColor(1.0, 1.0, 0.0, 1.0);
 	earthOrbit.setAngle(90);					
@@ -120,7 +120,7 @@ int main(int argc, char* argv[]){
 	earthSystem.setX(130);
 	earthSystem.setAngleVector(0, 1, 0);
 
-	//Áö±¸ »ı¼º
+	//ì§€êµ¬ ìƒì„±
 	Earth earth;
 	earthRef = &earth;
 	earth.setColor(1, 1, 1, 1);
@@ -134,44 +134,44 @@ int main(int argc, char* argv[]){
 	earthContainer.setAngleVector(1, 0, 0);
 	earthSystem.addChildren(&earthContainer);
 
-	//´Ş±Ëµµ »ı¼º
+	//ë‹¬ê¶¤ë„ ìƒì„±
 	Disk moonOrbit(52, 54, 60, 1);
 	moonOrbit.setColor(1, 1, 1, 1);
 	moonOrbit.setAngle(90);					
 	moonOrbit.setAngleVector(1, 0, 0);
 	earthSystem.addChildren(&moonOrbit);
 
-	//´Ş »ı¼º
+	//ë‹¬ ìƒì„±
 	moon.setColor(1, 1, 1, 1);
 	moon.setAngleVector(0, 1, 0);
 	moon.setX(53);
 	earthSystem.addChildren(&moon);
 
-	//ÀÎ°øÀ§¼º ±Ëµµ »ı¼º
+	//ì¸ê³µìœ„ì„± ê¶¤ë„ ìƒì„±
 	Disk sateliteOrbit(52, 54, 60, 1);
 	sateliteOrbit.setColor(0, 1, 0, 1);
 	earthSystem.addChildren(&sateliteOrbit);
 
-	//ÀÎ°øÀ§¼º »ı¼º
+	//ì¸ê³µìœ„ì„± ìƒì„±
 	satelite.setColor(0, 1, 0, 1);
 	satelite.setAngleVector(0, 0, 1);
 	satelite.setY(53);
 	earthSystem.addChildren(&satelite);
 
-	//ºñÇà±â ±Ëµµ »ı¼º
+	//ë¹„í–‰ê¸° ê¶¤ë„ ìƒì„±
 	Disk planeOrbit(52, 54, 60, 1);
 	planeOrbit.setColor(0, 1, 1, 1);
 	planeOrbit.setAngle(90);
 	planeOrbit.setAngleVector(0, 1, 0);
 	earthSystem.addChildren(&planeOrbit);
 
-	//ºñÇà±â »ı¼º
+	//ë¹„í–‰ê¸° ìƒì„±
 	plane.setColor(0, 1, 1, 1);
 	plane.setAngleVector(1, 0, 0);
 	plane.setY(53);
 	earthSystem.addChildren(&plane);
   
-	initScene();				//Ä«¸Ş¶ó ½ÃÁ¡¿¡ °üÇÑ ºÎºĞ ÃÊ±âÈ­
+	initScene();				//ì¹´ë©”ë¼ ì‹œì ì— ê´€í•œ ë¶€ë¶„ ì´ˆê¸°í™”
 	// Classic glut's main loop can be stopped after X-closing the window, using freeglut's setting
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION) ;
 	glutMainLoop();  //while (continue_in_main_loop) glutMainLoopEvent();
