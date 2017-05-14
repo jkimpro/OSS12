@@ -1,10 +1,10 @@
 //---------------------------------------------------------------------------
 // Dan Cristia, Rotaru
 //---------------------------------------------------------------------------
+//OpenSoure Software Digital Contents 김준혁 문희호 이상협 정지혜
 #include <Windows.h>
 #include <gl/GL.h>
 #include <gl/GLU.h>
-
 #include <GL/freeglut.h>
 
 #include <cmath>
@@ -73,7 +73,7 @@ void keySp(int key, int mX, int mY);
 // programa principal
 int main(int argc, char* argv[]){ 
 	// Initialization 
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH); // Doble buffer, rgba y profundidad.
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH); // Double buffer, rgba y profundidad.
 	glutInitWindowSize(Vp.w, Vp.h); 
 	glutInitWindowPosition(100,100);
 	glutInit(&argc,argv);
@@ -88,14 +88,12 @@ int main(int argc, char* argv[]){
 	// OpenGL basic setting
 	initGL();
 
-	// iniciar la escena desde la raiz
-
-	// Axis for debugging
+	// X Y Z 축 생성하기
 	Axis axis;
 	root.addChildren(&axis);
 	
+	//Solar System Group 생성
 	Group solarSystem;
-	// Solar system
 	root.addChildren(&solarSystem);
 	solarSystem.setAngleVector(0, 1, 0);		// Rotating around Y axis
 
@@ -103,6 +101,7 @@ int main(int argc, char* argv[]){
 	sun.setColor(1.0, 1.0, 0.0, 1.0);
 	solarSystem.addChildren(&sun);
 
+	//지구 궤도 생성
 	Disk earthOrbit;
 	earthOrbit.setColor(1.0, 1.0, 0.0, 1.0);
 	earthOrbit.setAngle(90);					
@@ -114,6 +113,7 @@ int main(int argc, char* argv[]){
 	earthSystem.setX(130);
 	earthSystem.setAngleVector(0, 1, 0);
 
+	//지구 생성
 	Earth earth;
 	earthRef = &earth;
 	earth.setColor(1, 1, 1, 1);
@@ -127,38 +127,44 @@ int main(int argc, char* argv[]){
 	earthContainer.setAngleVector(1, 0, 0);
 	earthSystem.addChildren(&earthContainer);
 
+	//달궤도 생성
 	Disk moonOrbit(52, 54, 60, 1);
 	moonOrbit.setColor(1, 1, 1, 1);
 	moonOrbit.setAngle(90);					
 	moonOrbit.setAngleVector(1, 0, 0);
 	earthSystem.addChildren(&moonOrbit);
 
+	//달 생성
 	moon.setColor(1, 1, 1, 1);
 	moon.setAngleVector(0, 1, 0);
 	moon.setX(53);
 	earthSystem.addChildren(&moon);
 
+	//인공위성 궤도 생성
 	Disk sateliteOrbit(52, 54, 60, 1);
 	sateliteOrbit.setColor(0, 1, 0, 1);
 	earthSystem.addChildren(&sateliteOrbit);
 
+	//인공위성 생성
 	satelite.setColor(0, 1, 0, 1);
 	satelite.setAngleVector(0, 0, 1);
 	satelite.setY(53);
 	earthSystem.addChildren(&satelite);
 
+	//비행기 궤도 생성
 	Disk planeOrbit(52, 54, 60, 1);
 	planeOrbit.setColor(0, 1, 1, 1);
 	planeOrbit.setAngle(90);
 	planeOrbit.setAngleVector(0, 1, 0);
 	earthSystem.addChildren(&planeOrbit);
 
+	//비행기 생성
 	plane.setColor(0, 1, 1, 1);
 	plane.setAngleVector(1, 0, 0);
 	plane.setY(53);
 	earthSystem.addChildren(&plane);
   
-	initScene();
+	initScene();				//카메라 시점에 관한 부분 초기화
 	// Classic glut's main loop can be stopped after X-closing the window, using freeglut's setting
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION) ;
 	glutMainLoop();  //while (continue_in_main_loop) glutMainLoopEvent();
@@ -222,6 +228,7 @@ void initGL(){
 }
 
 void initScene(){
+
 	sun.setAngle(0);
 	earthSystem.setAngle(0);
 	satelite.setAngle(0);
