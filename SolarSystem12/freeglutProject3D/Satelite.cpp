@@ -36,11 +36,11 @@
 		glBegin(GL_TRIANGLES); 
 		glNormal3f(1.0, 1.0, 1.0);  // normal xyz
 		glColor3f(1.0, 0.0, 0.0);   // red
-		glVertex3f(0.5, 0.0, 0.0);  // vértice x
+		glVertex3f(0.5, 0.0, 0.0);  // v?tice x
 		glColor3f(0.0, 1.0, 0.0);   // green
-		glVertex3f(0.0, 1.0, 0.0);  // vértice y
+		glVertex3f(0.0, 1.0, 0.0);  // v?tice y
 		glColor3f(0.0, 0.0, 1.0);   // blue
-		glVertex3f(0.0, 0.0, 0.5);  // vértice z
+		glVertex3f(0.0, 0.0, 0.5);  // v?tice z
 		glEnd();
 		GLdouble invScale = 1.0/scale;
 		glScaled(invScale, invScale, invScale);
@@ -57,12 +57,12 @@
 		glBegin(GL_QUADS);  // CUADRADO
 		glNormal3f(0.5, 0.5, 0.5);  // normal xyz
 		glColor3f(1.0, 0.0, 0.0);   // red
-		glVertex3f(1, 1, 0.0);  // vértice x
+		glVertex3f(1, 1, 0.0);  // v?tice x
 		glColor3f(0.0, 1.0, 0.0);   // green
-		glVertex3f(1, -1, 0.0);  // vértice y
+		glVertex3f(1, -1, 0.0);  // v?tice y
 		glColor3f(0.0, 0.0, 1.0);   // blue
-		glVertex3f(-1, -1, 0);  // vértice z
+		glVertex3f(-1, -1, 0);  // v?tice z
 		glColor3f(0.0, 0.0, 0.0);   // black
-		glVertex3f(-1, 1, 0);  // vértice z
+		glVertex3f(-1, 1, 0);  // v?tice z
 		glEnd();
 	}
