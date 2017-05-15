@@ -1,6 +1,6 @@
 /*
 ---------------------------------------------------------------------------
- Copy from Dan Cristia, Rotaru
+ Copied from Dan Cristia, Rotaru
  https://github.com/RotaruDan/SolarSystem
 ---------------------------------------------------------------------------
  OpenSource Software Project (https://github.com/okjcd123/OSS12)
