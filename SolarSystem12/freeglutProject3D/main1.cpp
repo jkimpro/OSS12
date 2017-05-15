@@ -16,7 +16,8 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include <GL/freeglut.h>
-
+#include <time.h>
+#include <stdlib.h>
 #include <cmath>
 #include "Mesh.h"
 #include "Sun.h"
@@ -52,10 +53,33 @@ struct viewVolume{GLdouble xRight, xLeft;
         GLdouble yTop, yBot;
         GLdouble zNear, zFar;} Pj = {350, -350, 350,-350, 1, 1000};
 
+		typedef struct randomStar
+		{
+			float x;
+			float y;
+			float z;
+		}RandomStar;
+
+		RandomStar star[8];
+
+
 GLdouble scale = 1;
 bool tiling, ortho = true;
 viewCamera * currentView = &initial;
 GLfloat light_position1[] = {0, 0, 0, 1.0f};
+
+int random(int n)//맵 범위 좌표를 위한 랜덤함수
+{
+	int num = rand();
+	if (n == 1)
+	{
+		if (num % 2 == 1) //num 숫자가 홀수일경우 -를 붙이고
+			return -rand()%350;
+		else
+			return rand()%350;
+	}
+}
+
 
 // Declared objects to display on screen in structure form.
 Mesh plane("f-16.obj", 20);
@@ -94,6 +118,7 @@ void keySp(int key, int mX, int mY);
 
 // programa principal
 int main(int argc, char* argv[]){ 
+	srand((unsigned)time(NULL));
 	// Initialization 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(Vp.w, Vp.h); 
@@ -195,6 +220,12 @@ int main(int argc, char* argv[]){
 
 void initGL(){
 
+	for (int i = 0; i < 8; i++)			//태양계 장식 임의 좌표 저장
+	{
+		star[i].x = random(1);
+		star[i].y = random(1);
+		star[i].z = random(1);
+	}
 	//glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);		// z buffer enable
 	glEnable(GL_NORMALIZE);
@@ -238,7 +269,8 @@ void initGL(){
 
 	glShadeModel(GL_SMOOTH);
 
-	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+	//glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);			//검은색 배경으로 임시 변경
 
 	// 기본적인 카메라 세팅
 	updateCamera();
@@ -345,6 +377,15 @@ void display(void) {
 	
 	//타일 모양이 아닐경우 일반적인 화면 출력
 	if(!tiling){
+		for(int i =0; i<8; i++)			//임의 장식별 출력
+		{
+			glPushMatrix();
+			glTranslatef(star[i].x, star[i].y, star[i].z);
+			printf("%f %f %f \n", star[i].x, 0.0, star[i].z);
+			glColor3f(0.5, 0.5, 0.5);
+			glutSolidSphere(10.0, 8, 8);
+			glPopMatrix();
+		}
 		glViewport(0,0, Vp.w, Vp.h); 
 		root.render();
 	} else {			//타일 모양 출력을 위해 4개의 행렬을 선언하여 viewport 세팅
