@@ -6,8 +6,8 @@
  OpenSource Software Project (https://github.com/okjcd123/OSS12)
  Digital Contents 김준혁 문희호 이상협 정지혜
 
- Date of preparation (작성일):			2017년 5월 12일
- Date of final modification (최종 수정일):	      2017년 5월 14일
+ Date of preparation (작성일):						2017년 5월 12일
+ Date of final modification (최종 수정일):			2017년 5월 14일
 */
 #include <Windows.h>
 #include <gl/GL.h>
@@ -85,7 +85,7 @@ int main(int argc, char* argv[]){
 	glutInitWindowPosition(100,100);
 	glutInit(&argc,argv);
 	// Window construction
-	int win=glutCreateWindow("Pr?tica 1 - Un sistema planetario");
+	int win=glutCreateWindow("Solar System OSS12");
 	// Callback registration
   
 	glutDisplayFunc(display);
@@ -102,7 +102,7 @@ int main(int argc, char* argv[]){
 	//Solar System Group 생성
 	Group solarSystem;
 	root.addChildren(&solarSystem);
-	solarSystem.setAngleVector(0, 1, 0);		// Rotating around Y axis
+	solarSystem.setAngleVector(0, 1, 0);			//y축을 기준으로 회전
 
 	sun.setAngleVector(0, 1, 0);
 	sun.setColor(1.0, 1.0, 0.0, 1.0);
@@ -126,8 +126,7 @@ int main(int argc, char* argv[]){
 	earth.setColor(1, 1, 1, 1);
 	earth.setAngleVector(0, 0, 1);
 
-	// Used to rotate the earth and also to be able to
-	// control the earth's rotation
+	// 지구 자전을 위한 earthContainer Group 생성
 	Group earthContainer;
 	earthContainer.addChildren(&earth);
 	earthContainer.setAngle(-90);
@@ -172,19 +171,15 @@ int main(int argc, char* argv[]){
 	earthSystem.addChildren(&plane);
   
 	initScene();				//카메라 시점에 관한 부분 초기화
-	// Classic glut's main loop can be stopped after X-closing the window, using freeglut's setting
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION) ;
-	glutMainLoop();  //while (continue_in_main_loop) glutMainLoopEvent();
-	// Window destruction (never reach this point using classic glut)
+	glutMainLoop();  //glutMainLoopEvent(); 내장함수에 따라서 진행
 	glutDestroyWindow(win);
-	// liberar la escena
 	return 0;
 }
 //---------------------------------------------------------------------------
 
 void initGL(){
 
-	// Activar caracter?ticas de OpenGL
 	//glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);		// z buffer enable
 	glEnable(GL_NORMALIZE);
@@ -210,6 +205,8 @@ void initGL(){
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
 
+
+	// 빛 퐁셰이딩 초기화
 	glEnable(GL_LIGHT1);	
 	GLfloat light_specular1[] = {0.4f, 0.4f, 0.4f, 1.0f};
 	GLfloat light_diffuse1[] = {0.4f, 0.4f, 0.4f, 1.0f};
@@ -218,7 +215,7 @@ void initGL(){
 	glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient);
 	
 
-	// set material property
+	// 물질 퐁셰이딩 초기화
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
@@ -228,9 +225,8 @@ void initGL(){
 
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
-	// Camera set up
+	// 기본적인 카메라 세팅
 	updateCamera();
-	// Frustum set up
 	updateProjection();
 }
 
@@ -240,7 +236,7 @@ void initScene(){
 	earthSystem.setAngle(0);
 	satelite.setAngle(0);
 	moon.setAngle(0);
-	tiling = false;
+	tiling = false;				//태양계를 타일 모양으로 여러개 출력하는 변수
 	currentView = &initial;
 
 	initial.eyeX = 350;
@@ -331,10 +327,12 @@ void display(void) {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
 	glMatrixMode(GL_MODELVIEW);
+	
+	//타일 모양이 아닐경우 일반적인 화면 출력
 	if(!tiling){
 		glViewport(0,0, Vp.w, Vp.h); 
 		root.render();
-	} else {
+	} else {			//타일 모양 출력을 위해 4개의 행렬을 선언하여 viewport 세팅
 		int columns = 4;
 		int rows = 4;
 		GLsizei vpW = Vp.w / columns;
