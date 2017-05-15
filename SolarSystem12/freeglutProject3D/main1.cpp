@@ -7,7 +7,7 @@
  Digital Contents 김준혁 문희호 이상협 정지혜
 
  Date of preparation (작성일):						2017년 5월 12일
- Date of final modification (최종 수정일):			2017년 5월 15일
+ Date of final modification (최종 수정일):			2017년 5월 16일
 */
 //-------------------------------------------------------------------------------------------
 // Headers
@@ -219,7 +219,6 @@ int main(int argc, char* argv[]){
 //---------------------------------------------------------------------------
 
 void initGL(){
-
 	for (int i = 0; i < 8; i++)			//태양계 장식 임의 좌표 저장
 	{
 		star[i].x = random(1);
