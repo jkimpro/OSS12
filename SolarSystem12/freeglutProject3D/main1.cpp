@@ -24,7 +24,6 @@
 #include "Satelite.h" 
 #include "Group.h"
 #include <stdio.h>
-//---------------------------------------------------------------------------
 
 // Viewport
 struct viewPort{GLsizei w; GLsizei h;} Vp = {700, 700};
@@ -80,14 +79,14 @@ void keySp(int key, int mX, int mY);
 // programa principal
 int main(int argc, char* argv[]){ 
 	// Initialization 
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH); // Double buffer, rgba y profundidad.
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(Vp.w, Vp.h); 
 	glutInitWindowPosition(100,100);
 	glutInit(&argc,argv);
 	// Window construction
 	int win=glutCreateWindow("Solar System OSS12");
-	// Callback registration
-  
+
+	//창에 관련된 함수  
 	glutDisplayFunc(display);
 	glutReshapeFunc(resize);
 	glutKeyboardFunc(keyPres);
