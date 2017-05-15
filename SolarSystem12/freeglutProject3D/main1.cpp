@@ -7,8 +7,11 @@
  Digital Contents 김준혁 문희호 이상협 정지혜
 
  Date of preparation (작성일):						2017년 5월 12일
- Date of final modification (최종 수정일):			2017년 5월 14일
+ Date of final modification (최종 수정일):			2017년 5월 15일
 */
+//-------------------------------------------------------------------------------------------
+// Headers
+//-------------------------------------------------------------------------------------------
 #include <Windows.h>
 #include <gl/GL.h>
 #include <gl/GLU.h>
@@ -25,10 +28,14 @@
 #include "Group.h"
 #include <stdio.h>
 
-// Viewport
+//-------------------------------------------------------------------------------------------
+// Structures and global variables
+//-------------------------------------------------------------------------------------------
+// Viewport, Represents the size of the rectangle that displays the screen.
 struct viewPort{GLsizei w; GLsizei h;} Vp = {700, 700};
 
-// Camera parameters, those values are overriden on initScene() method.
+// Camera parameters, decide the camera position, view direction and camera angle.
+// upX, upY, upZ is up vector, determines which direction is "up".
 struct viewCamera{GLdouble eyeX, eyeY, eyeZ;
         GLdouble lookX, lookY, lookZ;
         GLdouble upX, upY, upZ;} 
@@ -37,7 +44,10 @@ struct viewCamera{GLdouble eyeX, eyeY, eyeZ;
 			topView = {0, 450, 0, 0,0,0, 1,0,1}, 
 			lateral = {550, 0, 0, 0,0,0, 0,1,0};
 
-// Viewing frustum parameters
+// Viewing frustum parameters, used for projection.
+// zNear - minimum distance to draw.
+// zFar  - maximum distance to draw.
+// others- decide screen size.
 struct viewVolume{GLdouble xRight, xLeft;
         GLdouble yTop, yBot;
         GLdouble zNear, zFar;} Pj = {350, -350, 350,-350, 1, 1000};
@@ -47,7 +57,7 @@ bool tiling, ortho = true;
 viewCamera * currentView = &initial;
 GLfloat light_position1[] = {0, 0, 0, 1.0f};
 
-// Scene
+// Declared objects to display on screen in structure form.
 Mesh plane("f-16.obj", 20);
 Group root;
 Sun sun;
@@ -56,7 +66,9 @@ Earth* earthRef;
 Satelite satelite;
 Sphere moon(8, 20, 20);
 
-// prototipos
+//---------------------------------------------------------------------------
+// Constants
+//---------------------------------------------------------------------------
 static const unsigned int UP = 0;
 static const unsigned int DOWN = 1;
 static const unsigned int LEFT = 2;
@@ -64,6 +76,10 @@ static const unsigned int RIGHT = 3;
 static const unsigned int _IN = 4;
 static const unsigned int _OUT = 5;
 static const unsigned int _ROTATE = 6;
+
+//---------------------------------------------------------------------------
+// Functions
+//---------------------------------------------------------------------------
 void updateProjection();
 void updateCamera();
 void rotate(double &vx, double &vy, double &vz, double ax, double ay, double az, double angle);
@@ -346,8 +362,12 @@ void display(void) {
 
 	glutSwapBuffers(); // Hay dos buffers que se van intercambiando para ir pinando en ellos
 }
-//---------------------------------------------------------------------------
-
+//-------------------------------------------------------------------------------------------
+// moveCamera 
+// description : Moves the camera relative to the camera's viewpoint
+// parameter   : direction - direction to move, include rotation
+// return      : none
+//-------------------------------------------------------------------------------------------
 void moveCamera(unsigned int direction){
 	GLdouble eX, eY, eZ;
 	GLdouble lX, lY, lZ;
@@ -358,27 +378,27 @@ void moveCamera(unsigned int direction){
 	switch (direction)
 	{
 	case UP:
-		// Ojo
+		// e is "camera position"
 		eX = currentView->eyeX;
 		eY = currentView->eyeY;
 		eZ = currentView->eyeZ;
 
-		// Mira
+		// l is "camera look at"
 		lX = currentView->lookX;
 		lY = currentView->lookY;
 		lZ = currentView->lookZ;
 
-		// U = Ojo - Mira
+		// u is the vector between the two points
 		uX = eX - lX;
 		uY = eY - lY;
 		uZ = eZ - lZ;		
 
-		// V = -Up
+		// v is up vector.
 		vX = -currentView->upX;
 		vY = -currentView->upY;
 		vZ = -currentView->upZ;
 
-		// W = U x V
+		// w = u x v
 		wX = uY * vZ - uZ * vY;
 		wY = uZ * vX - uX * vZ;
 		wZ = uX * vY - uY * vX;
@@ -388,49 +408,49 @@ void moveCamera(unsigned int direction){
 		vY = wY;
 		vZ = wZ;
 		
-		// W = U x V
+		// w = u x v. The newly obtained vector points upwards.
 		wX = uY * vZ - uZ * vY;
 		wY = uZ * vX - uX * vZ;
 		wZ = uX * vY - uY * vX;
 
-		// Normaliza W
+		// Normalize w
 		length = sqrt((wX * wX)+(wY * wY)+(wZ * wZ));
 		wX /= length;
 		wY /= length;
 		wZ /= length;
 
-		// Suma W al Ojo
+		// Add it to "camera position"
 		currentView->eyeX += wX;
 		currentView->eyeY += wY;
 		currentView->eyeZ += wZ;
 		
-		// Suma W a la Mira
+		// The ""camera position"" and the ""camera look at"" move in parallel
 		currentView->lookX += wX;
 		currentView->lookY += wY;
 		currentView->lookZ += wZ;
 		break;
 	case DOWN:
-		// Ojo
+		// e is "camera position"
 		eX = currentView->eyeX;
 		eY = currentView->eyeY;
 		eZ = currentView->eyeZ;
 
-		// Mira
+		// l is "camera look at"
 		lX = currentView->lookX;
 		lY = currentView->lookY;
 		lZ = currentView->lookZ;
 
-		// U = Ojo - Mira
+		// u is the vector between the two points
 		uX = eX - lX;
 		uY = eY - lY;
 		uZ = eZ - lZ;		
 
-		// V = Up
+		// v is up vector.
 		vX = currentView->upX;
 		vY = currentView->upY;
 		vZ = currentView->upZ;
 
-		// W = U x V
+		// w = u x v
 		wX = uY * vZ - uZ * vY;
 		wY = uZ * vX - uX * vZ;
 		wZ = uX * vY - uY * vX;
@@ -440,180 +460,182 @@ void moveCamera(unsigned int direction){
 		vY = wY;
 		vZ = wZ;
 		
-		// W = U x V
+		// w = u x v. The newly obtained vector points downwards
 		wX = uY * vZ - uZ * vY;
 		wY = uZ * vX - uX * vZ;
 		wZ = uX * vY - uY * vX;
 
-		// Normaliza W
+		// Normalize w
 		length = sqrt((wX * wX)+(wY * wY)+(wZ * wZ));
 		wX /= length;
 		wY /= length;
 		wZ /= length;
 
-		// Suma W al Ojo
+		// Add it to "camera position"
 		currentView->eyeX += wX;
 		currentView->eyeY += wY;
 		currentView->eyeZ += wZ;
 		
-		// Suma W a la Mira
+		// The "camera position" and the "camera look at" move in parallel
 		currentView->lookX += wX;
 		currentView->lookY += wY;
 		currentView->lookZ += wZ;
 		break;
 	case LEFT:
-		// Ojo
+		// e is "camera position"
 		eX = currentView->eyeX;
 		eY = currentView->eyeY;
 		eZ = currentView->eyeZ;
 
-		// Mira
+		// l is "camera look at"
 		lX = currentView->lookX;
 		lY = currentView->lookY;
 		lZ = currentView->lookZ;
 
-		// U = Ojo - Mira
+		// u is the vector between two points
 		uX = eX - lX;
 		uY = eY - lY;
 		uZ = eZ - lZ;		
 
-		// V = Up
+		// v is up vector.
 		vX = currentView->upX;
 		vY = currentView->upY;
 		vZ = currentView->upZ;
 
-		// W = U x V
+		// w = u x v
 		wX = uY * vZ - uZ * vY;
 		wY = uZ * vX - uX * vZ;
 		wZ = uX * vY - uY * vX;
 
-		// Normaliza W
+		// Normalize w
 		length = sqrt((wX * wX)+(wY * wY)+(wZ * wZ));
 		wX /= length;
 		wY /= length;
 		wZ /= length;
 
-		// Suma W al Ojo
+		// Add it to "camera position"
 		currentView->eyeX += wX;
 		currentView->eyeY += wY;
 		currentView->eyeZ += wZ;
 		
-		// Suma W a la Mira
+		// The "camera position" and the "camera look at" move in parallel
 		currentView->lookX += wX;
 		currentView->lookY += wY;
 		currentView->lookZ += wZ;
 		break;
 	case RIGHT:
-		// Ojo
+		// e is "camera position"
 		eX = currentView->eyeX;
 		eY = currentView->eyeY;
 		eZ = currentView->eyeZ;
 
-		// Mira
+		// l is "camera look at"
 		lX = currentView->lookX;
 		lY = currentView->lookY;
 		lZ = currentView->lookZ;
 
-		// U = Ojo - Mira
+		// u is the vector between two points
 		uX = eX - lX;
 		uY = eY - lY;
 		uZ = eZ - lZ;		
 
-		// V = -Up
+		// v is up vector.
 		vX = -currentView->upX;
 		vY = -currentView->upY;
 		vZ = -currentView->upZ;
 
-		// W = U x V
+		// w = u x v
 		wX = uY * vZ - uZ * vY;
 		wY = uZ * vX - uX * vZ;
 		wZ = uX * vY - uY * vX;
 
-		// Normaliza W
+		// Normalize w
 		length = sqrt((wX * wX)+(wY * wY)+(wZ * wZ));
 		wX /= length;
 		wY /= length;
 		wZ /= length;
 
-		// Suma W al Ojo
+		// Add it to "camera position"
 		currentView->eyeX += wX;
 		currentView->eyeY += wY;
 		currentView->eyeZ += wZ;
 		
-		// Suma W a la Mira
+		// The "camera position" and the "camera look at" move in parallel
 		currentView->lookX += wX;
 		currentView->lookY += wY;
 		currentView->lookZ += wZ;
 		break;
 	case _IN:
-		// Ojo
+		// e is "camera position"
 		eX = currentView->eyeX;
 		eY = currentView->eyeY;
 		eZ = currentView->eyeZ;
 
-		// Mira
+		// l is "camera look at"
 		lX = currentView->lookX;
 		lY = currentView->lookY;
 		lZ = currentView->lookZ;
 
-		// U = Ojo - Mira
+		// u is the vector between two points
 		uX = eX - lX;
 		uY = eY - lY;
 		uZ = eZ - lZ;	
 
-		// Normaliza W
+		// Normalize u
 		length = sqrt((uX * uX)+(uY * uY)+(uZ * uZ)) * .5;
 		uX /= length;
 		uY /= length;
 		uZ /= length;
 
+		// Add it to "camera position"
 		currentView->eyeX += uX;
 		currentView->eyeY += uY;
 		currentView->eyeZ += uZ;
 		break;
 	case _OUT:
-		// Ojo
+		// e is "camera position"
 		eX = currentView->eyeX;
 		eY = currentView->eyeY;
 		eZ = currentView->eyeZ;
 
-		// Mira
+		// l is "camera look at"
 		lX = currentView->lookX;
 		lY = currentView->lookY;
 		lZ = currentView->lookZ;
 
-		// U = Ojo - Mira
+		// u is the vector between two points
 		uX = eX - lX;
 		uY = eY - lY;
 		uZ = eZ - lZ;	
 
-		// Normaliza W
+		// Normalize u
 		length = sqrt((uX * uX)+(uY * uY)+(uZ * uZ)) * .5;
 		uX /= length;
 		uY /= length;
 		uZ /= length;
 
+		// Subtract it from "camera position"
 		currentView->eyeX -= uX;
 		currentView->eyeY -= uY;
 		currentView->eyeZ -= uZ;
 		break;
 	case _ROTATE: {
-		// Ojo
+		// e is "camera position"
 		eX = currentView->eyeX;
 		eY = currentView->eyeY;
 		eZ = currentView->eyeZ;
 
-		// Mira
+		// l is "camera look at"
 		lX = currentView->lookX;
 		lY = currentView->lookY;
 		lZ = currentView->lookZ;
 
-		// N = Ojo - Mira
-		// n = eye ?look
+		// n is the vector between two points
 		GLdouble nX = eX - lX;
 		GLdouble nY = eY - lY;
 		GLdouble nZ = eZ - lZ;
 
+		// up vector
 		GLdouble upX = currentView->upX;
 		GLdouble upY = currentView->upY;
 		GLdouble upZ = currentView->upZ;
@@ -628,21 +650,27 @@ void moveCamera(unsigned int direction){
 		vY = nZ * uX - nX * uZ;
 		vZ = nX * uY - nY * uX;
 
-		// Normaliza v
+		// Normalize v
 		length = sqrt((vX * vX)+(vY * vY)+(vZ * vZ));
 		vX /= length;
 		vY /= length;
 		vZ /= length;
 
+		// Rotate "camera look at" based on v vector.
 		rotate(currentView->lookX, currentView->lookY, currentView->lookZ, vX, vY, vZ, 0.1);
 		break;
 	} default:
 		break;
 	}
 }
-//--------------------------------------------------------------------------
-
-// rotate the vector (vx, vy, vz) around (ax, ay, az) by an angle "angle". A vector must be normalized.
+//-------------------------------------------------------------------------------------------
+// rotate
+// description : Rotate v vector based on a point.
+// parameter   : vector v - vector to rotate
+// parameter   : point a  - rotation axis
+// parameter   : angle    - rotation angle
+// return      : none
+//-------------------------------------------------------------------------------------------
 void rotate(double &vx, double &vy, double &vz, double ax, double ay, double az, double angle) {
 	double ca = cos(angle);
 	double sa = sin(angle);
@@ -657,8 +685,15 @@ void rotate(double &vx, double &vy, double &vz, double ax, double ay, double az,
 	vy = ry; 
 	vz = rz;
 }
-//--------------------------------------------------------------------------
 
+//-------------------------------------------------------------------------------------------
+// keyPres
+// description : Use the keys to determine the action.
+// parameter   : key - the key input
+// parameter   : mX  - no use
+// parameter   : mY  - no use
+// return      : none
+//-------------------------------------------------------------------------------------------
 void keyPres(unsigned char key, int mX, int mY){
 	bool need_redisplay = true;
 	if(key == 27) {  /* Escape key */  //continue_in_main_loop = false; (**)
@@ -731,6 +766,7 @@ void keyPres(unsigned char key, int mX, int mY){
 		uY /= length;
 		uZ /= length;
 
+		// Rotate "camera position" based on v vector.
 		rotate(currentView->eyeX, currentView->eyeY, currentView->eyeZ, uX, uY, uZ, 0.1);
 		updateCamera();
 	} else if(key == 'R') {
@@ -745,16 +781,23 @@ void keyPres(unsigned char key, int mX, int mY){
 
 		rotate(currentView->eyeX, currentView->eyeY, currentView->eyeZ, uX, uY, uZ, -0.1);
 		updateCamera();
-	} else {
+	} else {		
 		need_redisplay = false;
 	}
 
+	// If current window needs to be redisplayed, redisplay it.
 	if (need_redisplay) { 
 		glutPostRedisplay(); // Esto vuelve a invocar a "display"
 	}
 }
-//---------------------------------------------------------------------------
-
+//-------------------------------------------------------------------------------------------
+// keySp
+// description : Use the arrow keys to determine the action.
+// parameter   : key - the key input
+// parameter   : mX  - no use
+// parameter   : mY  - no use
+// return      : none
+//-------------------------------------------------------------------------------------------
 void keySp(int key, int mX, int mY){
   bool need_redisplay = true;
   if(key == GLUT_KEY_UP) glRotatef(5.0, 1.0,0.0,0.0);   
@@ -763,6 +806,7 @@ void keySp(int key, int mX, int mY){
   else if(key == GLUT_KEY_LEFT) glTranslatef(-5.0, 0.0,0.0); 
   else need_redisplay = false;
 
+  // If current window needs to be redisplayed, redisplay it.
   if (need_redisplay) glutPostRedisplay();
 }
 //---------------------------------------------------------------------------
