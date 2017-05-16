@@ -17,7 +17,7 @@
 #ifndef AxisH
 #define AxisH
 
-#include "Actor.h"	//Actor 헤드파일 포함
+#include "Actor.h"	//Actor 헤더파일 포함
 
 
 class Axis :
