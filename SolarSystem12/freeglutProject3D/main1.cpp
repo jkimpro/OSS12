@@ -115,7 +115,6 @@ void display();
 void keyPres(unsigned char key, int mX, int mY);
 void keySp(int key, int mX, int mY);
 //---------------------------------------------------------------------------
-
 // programa principal
 int main(int argc, char* argv[]){ 
 	srand((unsigned)time(NULL));
