@@ -100,8 +100,8 @@ static const unsigned int LEFT = 2;
 static const unsigned int RIGHT = 3;
 static const unsigned int _IN = 4;
 static const unsigned int _OUT = 5;
-static const unsigned int _ROTATE = 6;
-
+static const unsigned int CLOCKWISE = 6;
+static const unsigned int CCLOCKWISE = 7;
 //-------------------------------------------------------------------------
 // 함수
 //-------------------------------------------------------------------------
@@ -115,6 +115,8 @@ void resize(int wW, int wH);
 void display();
 void keyPres(unsigned char key, int mX, int mY);
 void keySp(int key, int mX, int mY);
+void setCamera(GLdouble x, GLdouble y, GLdouble z);
+void rotateCamera(unsigned int direction);
 //---------------------------------------------------------------------------
 // programa principal
 //-------------------------------------------------------------------------
@@ -405,6 +407,29 @@ void display(void) {
 	glutSwapBuffers(); 
 }
 //-------------------------------------------------------------------------
+// setCamera
+// 설명 : 주어진 벡터를 받아 카메라와 카메라 시점을 이동시킴
+// 인수 : 3차원 벡터값 x,y,z
+// 반환 : void
+//-------------------------------------------------------------------------
+void setCamera(GLdouble x, GLdouble y, GLdouble z)
+{
+	GLdouble length = sqrt((x * x) + (y * y) + (z * z));
+	x /= length;
+	y /= length;
+	z /= length;
+
+	// 카메라 위치에 더해줌
+	currentView->eyeX += x;
+	currentView->eyeY += y;
+	currentView->eyeZ += z;
+
+	// 카메라와 카메라가 보는 지점은 평행이동
+	currentView->lookX += x;
+	currentView->lookY += y;
+	currentView->lookZ += z;
+}
+//-------------------------------------------------------------------------
 // moveCamera 
 // 설명 : 카메라와 카메라 시점을 옮기는 함수
 // 인수 : direction - 카메라가 이동할 방향
@@ -416,294 +441,87 @@ void moveCamera(unsigned int direction){
 	GLdouble uX, uY, uZ;
 	GLdouble vX, vY, vZ;
 	GLdouble wX, wY, wZ;
+	GLdouble hX, hY, hZ;
 	GLdouble length;
+
+	// e 벡터 - 카메라 위치
+	eX = currentView->eyeX;
+	eY = currentView->eyeY;
+	eZ = currentView->eyeZ;
+
+	// l 벡터 - 카메라가 보는 지점
+	lX = currentView->lookX;
+	lY = currentView->lookY;
+	lZ = currentView->lookZ;
+
+	// u 벡터 - e와 l 두 점을 잇는 벡터
+	uX = eX - lX;
+	uY = eY - lY;
+	uZ = eZ - lZ;
+
+	// v 벡터 - 업벡터
+	vX = -currentView->upX;
+	vY = -currentView->upY;
+	vZ = -currentView->upZ;
+
+	// w = u x v
+	wX = uY * vZ - uZ * vY;
+	wY = uZ * vX - uX * vZ;
+	wZ = uX * vY - uY * vX;
+
+	// w = u x v. w 벡터는 윗방향을 가르킴
+	hX = uY * wZ - uZ * wY;
+	hY = uZ * wX - uX * wZ;
+	hZ = uX * wY - uY * wX;
+
 	switch (direction)
 	{
 	case UP:
-		// e 벡터 - 카메라 위치
-		eX = currentView->eyeX;
-		eY = currentView->eyeY;
-		eZ = currentView->eyeZ;
-
-		// l 벡터 - 카메라가 보는 지점
-		lX = currentView->lookX;
-		lY = currentView->lookY;
-		lZ = currentView->lookZ;
-
-		// u 벡터 - e와 l 두 점을 잇는 벡터
-		uX = eX - lX;
-		uY = eY - lY;
-		uZ = eZ - lZ;		
-
-		// v 벡터 - 업벡터
-		vX = -currentView->upX;
-		vY = -currentView->upY;
-		vZ = -currentView->upZ;
-
-		// w = u x v
-		wX = uY * vZ - uZ * vY;
-		wY = uZ * vX - uX * vZ;
-		wZ = uX * vY - uY * vX;
-
-		// 새롭게 얻어진 벡터는 오른쪽방향을 카르킴
-		vX = wX;
-		vY = wY;
-		vZ = wZ;
-		
-		// w = u x v. w 벡터는 윗방향을 가르킴
-		wX = uY * vZ - uZ * vY;
-		wY = uZ * vX - uX * vZ;
-		wZ = uX * vY - uY * vX;
-
-		// w 길이 1로 정규화 
-		length = sqrt((wX * wX)+(wY * wY)+(wZ * wZ));
-		wX /= length;
-		wY /= length;
-		wZ /= length;
-
-		// 카메라 위치에 더해줌
-		currentView->eyeX += wX;
-		currentView->eyeY += wY;
-		currentView->eyeZ += wZ;
-		
-		// 카메라와 카메라가 보는 지점은 평행이동
-		currentView->lookX += wX;
-		currentView->lookY += wY;
-		currentView->lookZ += wZ;
+		setCamera(hX, hY, hZ);
 		break;
 	case DOWN:
-		// e 벡터 - 카메라 위치
-		eX = currentView->eyeX;
-		eY = currentView->eyeY;
-		eZ = currentView->eyeZ;
-
-		// l 벡터 - 카메라가 보는 지점
-		lX = currentView->lookX;
-		lY = currentView->lookY;
-		lZ = currentView->lookZ;
-
-		// u 벡터 - e와 l 두 점을 잇는 벡터
-		uX = eX - lX;
-		uY = eY - lY;
-		uZ = eZ - lZ;		
-
-		// v 벡터 - 업벡터
-		vX = currentView->upX;
-		vY = currentView->upY;
-		vZ = currentView->upZ;
-
-		// w = u x v
-		wX = uY * vZ - uZ * vY;
-		wY = uZ * vX - uX * vZ;
-		wZ = uX * vY - uY * vX;
-
-		// 새롭게 얻어진 벡터는 왼쪽방향을 카르킴
-		vX = wX;
-		vY = wY;
-		vZ = wZ;
-		
-		// w = u x v. w 벡터는 윗방향을 가르킴
-		wX = uY * vZ - uZ * vY;
-		wY = uZ * vX - uX * vZ;
-		wZ = uX * vY - uY * vX;
-
-		// w 길이 1로 정규화 
-		length = sqrt((wX * wX)+(wY * wY)+(wZ * wZ));
-		wX /= length;
-		wY /= length;
-		wZ /= length;
-
-		// 카메라 위치에 더해줌
-		currentView->eyeX += wX;
-		currentView->eyeY += wY;
-		currentView->eyeZ += wZ;
-		
-		// 카메라와 카메라가 보는 지점은 평행이동
-		currentView->lookX += wX;
-		currentView->lookY += wY;
-		currentView->lookZ += wZ;
+		setCamera(-hX, -hY, -hZ);
 		break;
 	case LEFT:
-		// e 벡터 - 카메라 위치
-		eX = currentView->eyeX;
-		eY = currentView->eyeY;
-		eZ = currentView->eyeZ;
-
-		// l 벡터 - 카메라가 보는 지점
-		lX = currentView->lookX;
-		lY = currentView->lookY;
-		lZ = currentView->lookZ;
-
-		// u 벡터 - e와 l 두 점을 잇는 벡터
-		uX = eX - lX;
-		uY = eY - lY;
-		uZ = eZ - lZ;		
-
-		// v 벡터 - 업벡터
-		vX = currentView->upX;
-		vY = currentView->upY;
-		vZ = currentView->upZ;
-
-		// w = u x v 새롭게 얻어진 벡터는 왼쪽방향을 카르킴
-		wX = uY * vZ - uZ * vY;
-		wY = uZ * vX - uX * vZ;
-		wZ = uX * vY - uY * vX;
-
-		// w 길이 1로 정규화 
-		length = sqrt((wX * wX)+(wY * wY)+(wZ * wZ));
-		wX /= length;
-		wY /= length;
-		wZ /= length;
-
-		// 카메라 위치에 더해줌
-		currentView->eyeX += wX;
-		currentView->eyeY += wY;
-		currentView->eyeZ += wZ;
-		
-		// 카메라와 카메라가 보는 지점은 평행이동
-		currentView->lookX += wX;
-		currentView->lookY += wY;
-		currentView->lookZ += wZ;
+		setCamera(-wX, -wY, -wZ);
 		break;
 	case RIGHT:
-		// e 벡터 - 카메라 위치
-		eX = currentView->eyeX;
-		eY = currentView->eyeY;
-		eZ = currentView->eyeZ;
-
-		// l 벡터 - 카메라가 보는 지점
-		lX = currentView->lookX;
-		lY = currentView->lookY;
-		lZ = currentView->lookZ;
-
-		// u 벡터 - e와 l 두 점을 잇는 벡터
-		uX = eX - lX;
-		uY = eY - lY;
-		uZ = eZ - lZ;		
-
-		// v 벡터 - 업벡터
-		vX = -currentView->upX;
-		vY = -currentView->upY;
-		vZ = -currentView->upZ;
-
-		// w = u x v 새롭게 얻어진 벡터는 오른쪽방향을 카르킴
-		wX = uY * vZ - uZ * vY;
-		wY = uZ * vX - uX * vZ;
-		wZ = uX * vY - uY * vX;
-
-		// w 길이 1로 정규화 
-		length = sqrt((wX * wX)+(wY * wY)+(wZ * wZ));
-		wX /= length;
-		wY /= length;
-		wZ /= length;
-
-		// 카메라 위치에 더해줌
-		currentView->eyeX += wX;
-		currentView->eyeY += wY;
-		currentView->eyeZ += wZ;
-		
-		// 카메라와 카메라가 보는 지점은 평행이동
-		currentView->lookX += wX;
-		currentView->lookY += wY;
-		currentView->lookZ += wZ;
+		setCamera(wX, wY, wZ);
 		break;
 	case _IN:
-		// e 벡터 - 카메라 위치
-		eX = currentView->eyeX;
-		eY = currentView->eyeY;
-		eZ = currentView->eyeZ;
-
-		// l 벡터 - 카메라가 보는 지점
-		lX = currentView->lookX;
-		lY = currentView->lookY;
-		lZ = currentView->lookZ;
-
-		// u 벡터 - e와 l 두 점을 잇는 벡터
-		uX = eX - lX;
-		uY = eY - lY;
-		uZ = eZ - lZ;	
-
-		// w 길이 0.5로 조절
-		length = sqrt((uX * uX)+(uY * uY)+(uZ * uZ)) * .5;
-		uX /= length;
-		uY /= length;
-		uZ /= length;
-
-		// 카메라 위치에 더해줌
-		currentView->eyeX += uX;
-		currentView->eyeY += uY;
-		currentView->eyeZ += uZ;
+		setCamera(-uX, -uY, -uZ);
 		break;
 	case _OUT:
-		// e 벡터 - 카메라 위치
-		eX = currentView->eyeX;
-		eY = currentView->eyeY;
-		eZ = currentView->eyeZ;
-
-		// l 벡터 - 카메라가 보는 지점
-		lX = currentView->lookX;
-		lY = currentView->lookY;
-		lZ = currentView->lookZ;
-
-		// u 벡터 - e와 l 두 점을 잇는 벡터
-		uX = eX - lX;
-		uY = eY - lY;
-		uZ = eZ - lZ;	
-
-		// w 길이 0.5로 조절
-		length = sqrt((uX * uX)+(uY * uY)+(uZ * uZ)) * .5;
-		uX /= length;
-		uY /= length;
-		uZ /= length;
-
-		// 카메라 위치에서 빼줌
-		currentView->eyeX -= uX;
-		currentView->eyeY -= uY;
-		currentView->eyeZ -= uZ;
+		setCamera(uX, uY, uZ);
 		break;
-	case _ROTATE: {
-		// e 벡터 - 카메라 위치
-		eX = currentView->eyeX;
-		eY = currentView->eyeY;
-		eZ = currentView->eyeZ;
-
-		// l 벡터 - 카메라가 보는 지점
-		lX = currentView->lookX;
-		lY = currentView->lookY;
-		lZ = currentView->lookZ;
-
-		// n 벡터 - e와 l 두 점을 잇는 벡터
-		GLdouble nX = eX - lX;
-		GLdouble nY = eY - lY;
-		GLdouble nZ = eZ - lZ;
-
-		// up 벡터
-		GLdouble upX = currentView->upX;
-		GLdouble upY = currentView->upY;
-		GLdouble upZ = currentView->upZ;
-		
-		// u = up x n
-		GLdouble uX = upY * nZ - upZ * nY;
-		GLdouble uY = upZ * nX - upX * nZ;
-		GLdouble uZ = upX * nY - upY * nX;
-
-		// v = n x u
-		vX = nY * uZ - nZ * uY;
-		vY = nZ * uX - nX * uZ;
-		vZ = nX * uY - nY * uX;
-
-		// v 길이 1로 정규화
-		length = sqrt((vX * vX)+(vY * vY)+(vZ * vZ));
-		vX /= length;
-		vY /= length;
-		vZ /= length;
-
-		// 카메라가 보는 지점을 v벡터를 이용하여 회전
-		rotate(currentView->lookX, currentView->lookY, currentView->lookZ, vX, vY, vZ, 0.1);
-		break;
-	} default:
+	 default:
 		break;
 	}
+}
+//-------------------------------------------------------------------------
+// rotateCamera
+// 설명 : 시계방향, 또는 시계반대방향을 받아 그게 맞게 카메라를 회전
+// 인수 : direction - 카메라를 회전시킬 방향
+// 반환 : void
+//-------------------------------------------------------------------------
+void rotateCamera(unsigned int direction) {
+	GLdouble uX = currentView->upX;
+	GLdouble uY = currentView->upY;
+	GLdouble uZ = currentView->upZ;
+
+	if (direction == CLOCKWISE)
+	{
+		uX = -uX;
+		uY = -uY;
+		uZ = -uZ;
+	}
+
+	GLdouble length = sqrt((uX*uX) + (uY*uY) + (uZ*uZ));
+	uX /= length;
+	uY /= length;
+	uZ /= length;
+
+	rotate(currentView->eyeX, currentView->eyeY, currentView->eyeZ, uX, uY, uZ, 0.1);
 }
 //-------------------------------------------------------------------------
 // rotate
@@ -748,7 +566,7 @@ void keyPres(unsigned char key, int mX, int mY){
 		if(scale > 0.3) {
 			scale -=0.25; resize(Vp.w, Vp.h);
 		} 
-	} else if(key == 's') { 
+	} else if(key == 'q') { 
 		sun.setAngle(sun.getAngle() + 5); 
 		earthSystem.setAngle(earthSystem.getAngle() + 4); 
 		(*earthRef).setAngle((*earthRef).getAngle() + 6); 
@@ -777,16 +595,16 @@ void keyPres(unsigned char key, int mX, int mY){
 	} else if(key == 'M') {
 		scale -= 0.05;
 		updateProjection();
-	} else if(key == 'n') {
+	} else if(key == 'w') {
 		moveCamera(_IN);
 		updateCamera();
-	} else if(key == 'N') {
+	} else if(key == 's') {
 		moveCamera(_OUT);
 		updateCamera();
-	} else if(key == 'u') {
+	} else if(key == 'd') {
 		moveCamera(RIGHT);
 		updateCamera();
-	} else if(key == 'U') {
+	} else if(key == 'a') {
 		moveCamera(LEFT);
 		updateCamera();
 	} else if(key == 'v') {
@@ -795,33 +613,11 @@ void keyPres(unsigned char key, int mX, int mY){
 	} else if(key == 'V') {
 		moveCamera(DOWN);
 		updateCamera();
-	} else if(key == 'g') {
-		moveCamera(_ROTATE);
-		updateCamera();
 	} else if(key == 'r') {
-		GLdouble uX = currentView->upX;
-		GLdouble uY = currentView->upY; 
-		GLdouble uZ = currentView->upZ;
-
-		GLdouble length = sqrt((uX*uX)+(uY*uY)+(uZ*uZ));
-		uX /= length;
-		uY /= length;
-		uZ /= length;
-
-		// 업벡터를 기준으로 카메라를 회전시킴
-		rotate(currentView->eyeX, currentView->eyeY, currentView->eyeZ, uX, uY, uZ, 0.1);
+		rotateCamera(CLOCKWISE);
 		updateCamera();
 	} else if(key == 'R') {
-		GLdouble uX = currentView->upX;
-		GLdouble uY = currentView->upY; 
-		GLdouble uZ = currentView->upZ;
-
-		GLdouble length = sqrt((uX*uX)+(uY*uY)+(uZ*uZ));
-		uX /= length;
-		uY /= length;
-		uZ /= length;
-
-		rotate(currentView->eyeX, currentView->eyeY, currentView->eyeZ, uX, uY, uZ, -0.1);
+		rotateCamera(CCLOCKWISE);
 		updateCamera();
 	} else {		
 		need_redisplay = false;
