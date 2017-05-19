@@ -159,12 +159,12 @@ int main(int argc, char* argv[]){
 	earthOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&earthOrbit);
 
-	// Earth system
+	// Earth system//
 	solarSystem.addChildren(&earthSystem);
 	earthSystem.setX(130);
 	earthSystem.setAngleVector(0, 1, 0);
 
-	//지구 생성
+	//지구 생성//
 	Earth earth;
 	earthRef = &earth;
 	earth.setColor(1, 1, 1, 1);
