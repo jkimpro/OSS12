@@ -65,7 +65,8 @@ struct viewVolume{GLdouble xRight, xLeft;
 
 
 GLdouble scale = 1;
-bool tiling, ortho = true;
+bool ortho = false;
+int bpx, bpy;
 viewCamera * currentView = &initial;
 GLfloat light_position1[] = {0, 0, 0, 1.0f};
 
@@ -113,6 +114,8 @@ void initScene();
 void initGL();
 void resize(int wW, int wH);
 void display();
+void mouseFunc(int b1, int b2, int x, int y);
+void motionFunc(int x,int y);
 void keyPres(unsigned char key, int mX, int mY);
 void keySp(int key, int mX, int mY);
 void setCamera(GLdouble x, GLdouble y, GLdouble z);
@@ -134,6 +137,8 @@ int main(int argc, char* argv[]){
 	//창에 관련된 함수  
 	glutDisplayFunc(display);
 	glutReshapeFunc(resize);
+	glutMouseFunc(mouseFunc);
+	glutMotionFunc(motionFunc);
 	glutKeyboardFunc(keyPres);
 	glutSpecialFunc(keySp);
 	// OpenGL basic setting
@@ -286,7 +291,6 @@ void initScene(){
 	earthSystem.setAngle(0);
 	satelite.setAngle(0);
 	moon.setAngle(0);
-	tiling = false;				//태양계를 타일 모양으로 여러개 출력하는 변수
 	currentView = &initial;
 
 	initial.eyeX = 350;
@@ -330,7 +334,7 @@ void initScene(){
 	lateral.upZ = 0;
 
 	updateCamera();
-	ortho = true;
+	ortho = false;
 	updateProjection();
 }
 
@@ -362,8 +366,7 @@ void updateProjection(){
 	if(ortho){
 		glOrtho(Pj.xLeft,Pj.xRight, Pj.yBot,Pj.yTop, Pj.zNear, Pj.zFar);
 	} else {
-		glFrustum(Pj.xLeft,Pj.xRight, Pj.yBot,Pj.yTop, Pj.zNear*300, Pj.zFar);
-		//gluPerspective(80, Vp.w / Vp.h, Pj.zNear, Pj.zFar );
+		gluPerspective(80, Vp.w / Vp.h, Pj.zNear, Pj.zFar );
 	}
 }
 //-------------------------------------------------------------------------
@@ -378,31 +381,17 @@ void display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
 	glMatrixMode(GL_MODELVIEW);
 	
-	//타일 모양이 아닐경우 일반적인 화면 출력
-	if(!tiling){
-		for(int i =0; i<8; i++)			//임의 장식별 출력
-		{
-			glPushMatrix();
-			glTranslatef(star[i].x, star[i].y, star[i].z);
-			printf("%f %f %f \n", star[i].x, 0.0, star[i].z);
-			glColor3f(0.5, 0.5, 0.5);
-			glutSolidSphere(10.0, 8, 8);
-			glPopMatrix();
-		}
-		glViewport(0,0, Vp.w, Vp.h); 
-		root.render();
-	} else {			//타일 모양 출력을 위해 4개의 행렬을 선언하여 viewport 세팅
-		int columns = 4;
-		int rows = 4;
-		GLsizei vpW = Vp.w / columns;
-		GLsizei vpH = Vp.h / rows;
-		for(int i = 0; i < rows; ++i){
-			for(int j = 0; j < columns; ++j){
-				glViewport(i * vpW, j * vpH, vpW, vpH); 
-				root.render();
-			}
-		}
+	for(int i =0; i<8; i++)			//임의 장식별 출력
+	{
+		glPushMatrix();
+		glTranslatef(star[i].x, star[i].y, star[i].z);
+//		printf("%f %f %f \n", star[i].x, 0.0, star[i].z);
+		glColor3f(0.5, 0.5, 0.5);
+		glutSolidSphere(10.0, 8, 8);
+		glPopMatrix();
 	}
+	glViewport(0,0, Vp.w, Vp.h); 
+	root.render();
 
 	glutSwapBuffers(); 
 }
@@ -442,7 +431,6 @@ void moveCamera(unsigned int direction){
 	GLdouble vX, vY, vZ;
 	GLdouble wX, wY, wZ;
 	GLdouble hX, hY, hZ;
-	GLdouble length;
 
 	// e 벡터 - 카메라 위치
 	eX = currentView->eyeX;
@@ -500,7 +488,7 @@ void moveCamera(unsigned int direction){
 }
 //-------------------------------------------------------------------------
 // rotateCamera
-// 설명 : 시계방향, 또는 시계반대방향을 받아 그게 맞게 카메라를 회전
+// 설명 : 시계방향, 또는 시계반대방향을 받아 그에 맞게 카메라를 회전
 // 인수 : direction - 카메라를 회전시킬 방향
 // 반환 : void
 //-------------------------------------------------------------------------
@@ -520,8 +508,68 @@ void rotateCamera(unsigned int direction) {
 	uX /= length;
 	uY /= length;
 	uZ /= length;
-
 	rotate(currentView->eyeX, currentView->eyeY, currentView->eyeZ, uX, uY, uZ, 0.1);
+}
+//-------------------------------------------------------------------------
+// rotateView
+// 설명 : 카메라 시점을 방향에 따라 이동시켜줌
+// 인수 : direction - 카메라를 회전시킬 방향
+// 반환 : void
+//-------------------------------------------------------------------------
+void rotateView(int x, int y) {
+	GLdouble eX, eY, eZ;
+	GLdouble lX, lY, lZ;
+	GLdouble uX, uY, uZ;
+	GLdouble vX, vY, vZ;
+	GLdouble wX, wY, wZ;
+	GLdouble hX, hY, hZ;
+
+	// e 벡터 - 카메라 위치
+	eX = currentView->eyeX;
+	eY = currentView->eyeY;
+	eZ = currentView->eyeZ;
+
+	// l 벡터 - 카메라가 보는 지점
+	lX = currentView->lookX;
+	lY = currentView->lookY;
+	lZ = currentView->lookZ;
+
+	// u 벡터 - e와 l 두 점을 잇는 벡터
+	uX = lX - eX;
+	uY = lY - eY;
+	uZ = lZ - eZ;
+
+	// v 벡터 - 업벡터
+	vX = currentView->upX;
+	vY = currentView->upY;
+	vZ = currentView->upZ;
+
+	// w = u x v
+	wX = uY * vZ - uZ * vY;
+	wY = uZ * vX - uX * vZ;
+	wZ = uX * vY - uY * vX;
+
+	// h = u x v. w 벡터는 윗방향을 가르킴
+	hX = uY * wZ - uZ * wY;
+	hY = uZ * wX - uX * wZ;
+	hZ = uX * wY - uY * wX;
+
+	GLdouble length = sqrt((wX*wX) + (wY*wY) + (wZ*wZ));
+	wX /= length;
+	wY /= length;
+	wZ /= length;
+
+	length = sqrt((hX*hX) + (hY*hY) + (hZ*hZ));
+	hX /= length;
+	hY /= length;
+	hZ /= length;
+
+	rotate(uX, uY, uZ, hX, hY, hZ, float(x)/-360*3.141592);
+	rotate(uX, uY, uZ, wX, wY, wZ, float(y)/360*3.141592);
+	currentView->lookX = uX - eX;
+	currentView->lookY = uY - eY;
+	currentView->lookZ = uZ - eZ;
+	updateCamera();
 }
 //-------------------------------------------------------------------------
 // rotate
@@ -573,8 +621,6 @@ void keyPres(unsigned char key, int mX, int mY){
 		satelite.setAngle(satelite.getAngle() + 2); 
 		plane.setAngle(plane.getAngle() + 1); 
 		moon.setAngle(moon.getAngle() + 3); 
-	} else if(key == 't') { 
-		tiling = !tiling; 
 	} else if(key == 'i') {
 		initScene(); 
 	} else if(key == 'x') {
@@ -646,5 +692,21 @@ void keySp(int key, int mX, int mY){
 
   // 현재창의 업데이트가 필요할 경우 다시 디스플레이
   if (need_redisplay) glutPostRedisplay();
+}
+void mouseFunc(int button1, int button2,int x, int y)
+{
+	bpx = x;
+	bpy = y;
+}
+void motionFunc(int x, int y)
+{
+	int bx = bpx - x;
+	int by = bpy - y;
+	bpx = x;
+	bpy = y;
+	rotateView(bx, by);
+	printf("%d  %d\n", bx,by);
+	
+	glutPostRedisplay();
 }
 //-------------------------------------------------------------------------
