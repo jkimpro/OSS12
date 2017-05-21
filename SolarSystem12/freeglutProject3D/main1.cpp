@@ -24,7 +24,8 @@
 #include "Sun.h"
 #include "Axis.h" 
 #include "Sphere.h" 
-#include "Earth.h" 
+#include "Earth.h"
+#include "Mars.h"
 #include "Disk.h" 
 #include "Satelite.h" 
 #include "Group.h"
@@ -87,8 +88,13 @@ int random(int n)//맵 범위 좌표를 위한 랜덤함수
 Mesh plane("f-16.obj", 20);
 Group root;
 Sun sun;
+
 Group earthSystem;
+Group marsSystem;
+
 Earth* earthRef;
+Mars* marsRef;
+
 Satelite satelite;
 Sphere moon(8, 20, 20);
 
@@ -174,6 +180,37 @@ int main(int argc, char* argv[]){
 	earthRef = &earth;
 	earth.setColor(1, 1, 1, 1);
 	earth.setAngleVector(0, 0, 1);
+
+	/*
+	innerRadius = 128;	//안쪽 반지름 값을 128로 초기화
+	outerRadius = 132;	//바깥쪽 반지름 값을 132로 초기화
+	slices = 180;		//슬라이스 값을 180로 초기화
+	loops = 1;		//루프(스택) 값을 1로 초기화
+	*/
+
+	//화성 궤도 생성 FIX//
+	Disk marsOrbit(80,84,200,1);
+	marsOrbit.setColor(1.0, 0.0, 0.0, 1.0);
+	marsOrbit.setAngle(90);
+	marsOrbit.setAngleVector(1, 0, 0);
+	solarSystem.addChildren(&marsOrbit);
+	
+	// Mars system FIX//
+	solarSystem.addChildren(&marsSystem);
+	marsSystem.setX(130);
+	marsSystem.setAngleVector(0, 1, 0);
+	
+	//화성 생성 FIX//
+	Mars mars;
+	marsRef = &mars;
+	mars.setColor(1, 1, 1, 1);
+	mars.setAngleVector(0, 0, 1);
+
+
+
+
+
+
 
 	// 지구 자전을 위한 earthContainer Group 생성
 	Group earthContainer;

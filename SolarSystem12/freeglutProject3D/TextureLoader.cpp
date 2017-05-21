@@ -60,7 +60,7 @@ unsigned char * loadBMPRaw(const char * imagepath, unsigned int& outWidth, unsig
 	// Make sure this is a 24bpp file
 	if ( *(int*)&(header[0x1E])!=0  )         {printf("Not a correct BMP file\n");    return NULL;}
 	if ( *(int*)&(header[0x1C])!=24 )         {printf("Not a correct BMP file\n");    return NULL;}
-
+	
 	// Read the information about the image
 	dataPos    = *(int*)&(header[0x0A]);
 	imageSize  = *(int*)&(header[0x22]);

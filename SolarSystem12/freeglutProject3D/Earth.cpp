@@ -25,8 +25,6 @@
 
 		}
 
-
-
 	Earth::~Earth()			//Earth의 소멸자
 		{
 
