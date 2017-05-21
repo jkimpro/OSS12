@@ -163,6 +163,18 @@ int main(int argc, char* argv[]){
 	sun.setColor(1.0, 1.0, 0.0, 1.0);
 	solarSystem.addChildren(&sun);
 
+	//화성 궤도 생성//
+	Disk marsOrbit(198, 202, 200, 10);
+	marsOrbit.setColor(1.0, 0.0, 0.0, 1.0);
+	marsOrbit.setAngle(90);
+	marsOrbit.setAngleVector(1, 0, 0);
+	solarSystem.addChildren(&marsOrbit);
+
+	// Mars system //
+	solarSystem.addChildren(&marsSystem);
+	marsSystem.setX(200);
+	marsSystem.setAngleVector(0, 1, 0);
+
 	//지구 궤도 생성
 	Disk earthOrbit;
 	earthOrbit.setColor(1.0, 1.0, 0.0, 1.0);
@@ -188,29 +200,17 @@ int main(int argc, char* argv[]){
 	loops = 1;		//루프(스택) 값을 1로 초기화
 	*/
 
-	//화성 궤도 생성 FIX//
-	Disk marsOrbit(80,84,200,1);
-	marsOrbit.setColor(1.0, 0.0, 0.0, 1.0);
-	marsOrbit.setAngle(90);
-	marsOrbit.setAngleVector(1, 0, 0);
-	solarSystem.addChildren(&marsOrbit);
-	
-	// Mars system FIX//
-	solarSystem.addChildren(&marsSystem);
-	marsSystem.setX(130);
-	marsSystem.setAngleVector(0, 1, 0);
-	
-	//화성 생성 FIX//
+	//화성 생성//
 	Mars mars;
 	marsRef = &mars;
 	mars.setColor(1, 1, 1, 1);
 	mars.setAngleVector(0, 0, 1);
 
-
-
-
-
-
+	Group marsContainer;
+	marsContainer.addChildren(&mars);
+	marsContainer.setAngle(-90);
+	marsContainer.setAngleVector(1, 0, 0);
+	marsSystem.addChildren(&marsContainer);
 
 	// 지구 자전을 위한 earthContainer Group 생성
 	Group earthContainer;
@@ -653,6 +653,8 @@ void keyPres(unsigned char key, int mX, int mY){
 		} 
 	} else if(key == 'q') { 
 		sun.setAngle(sun.getAngle() + 5); 
+		marsSystem.setAngle(marsSystem.getAngle() + 2.5);
+		(*marsRef).setAngle((*marsRef).getAngle() + 4);
 		earthSystem.setAngle(earthSystem.getAngle() + 4); 
 		(*earthRef).setAngle((*earthRef).getAngle() + 6); 
 		satelite.setAngle(satelite.getAngle() + 2); 
@@ -742,7 +744,6 @@ void motionFunc(int x, int y)
 	bpx = x;
 	bpy = y;
 	rotateView(bx, by);
-	printf("%d  %d\n", bx,by);
 	
 	glutPostRedisplay();
 }

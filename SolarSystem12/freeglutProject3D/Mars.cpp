@@ -5,7 +5,7 @@
 
 
 Mars::Mars()		
-	: Sphere(30, 45, 45)	//Sphere(구)의 중심 좌표 설정
+	: Sphere(25, 45, 45)	//Sphere(구)의 중심 좌표 설정
 
 {
 
