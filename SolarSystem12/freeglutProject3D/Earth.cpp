@@ -9,9 +9,6 @@
  Date of final modification (최종 수정일):			2017년 5월 16일
 */
 
-
-
-
 #include "Earth.h"
 #include "TextureLoader.h"
 

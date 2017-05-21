@@ -62,7 +62,7 @@ struct viewVolume{GLdouble xRight, xLeft;
 			float z;
 		}RandomStar;
 
-		RandomStar star[8];
+		RandomStar star[60];
 
 
 GLdouble scale = 1;
@@ -152,7 +152,7 @@ int main(int argc, char* argv[]){
 
 	// X Y Z 축 생성하기
 	Axis axis;
-	root.addChildren(&axis);
+	//root.addChildren(&axis);
 	
 	//Solar System Group 생성
 	Group solarSystem;
@@ -265,7 +265,7 @@ int main(int argc, char* argv[]){
 //-------------------------------------------------------------------------
 
 void initGL(){
-	for (int i = 0; i < 8; i++)			//태양계 장식 임의 좌표 저장
+	for (int i = 0; i < 60; i++)			//태양계 장식 임의 좌표 저장
 	{
 		star[i].x = random(1);
 		star[i].y = random(1);
@@ -418,13 +418,12 @@ void display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
 	glMatrixMode(GL_MODELVIEW);
 	
-	for(int i =0; i<8; i++)			//임의 장식별 출력
+	for(int i =0; i<60; i++)			//임의 장식별 출력
 	{
 		glPushMatrix();
 		glTranslatef(star[i].x, star[i].y, star[i].z);
-//		printf("%f %f %f \n", star[i].x, 0.0, star[i].z);
 		glColor3f(0.5, 0.5, 0.5);
-		glutSolidSphere(10.0, 8, 8);
+		glutSolidSphere(1.0, 8, 8);
 		glPopMatrix();
 	}
 	glViewport(0,0, Vp.w, Vp.h); 
