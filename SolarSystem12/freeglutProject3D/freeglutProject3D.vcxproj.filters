@@ -66,6 +66,9 @@
     <ClCompile Include="pixmap24RGB.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Mars.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -104,12 +107,18 @@
     <ClInclude Include="pixmap24RGB.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Mars.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\..\..\Downloads\earth.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\..\..\..\..\..\Downloads\sun.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="mars.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

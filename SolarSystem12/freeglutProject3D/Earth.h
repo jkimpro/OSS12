@@ -27,7 +27,6 @@ class Earth :
 			GLuint textureID;	//텍스쳐ID를  나타냄
 			void init();	
 
-
 		public:				//Earth 클래스의 Public 멤버
 			Earth();		//Earth 객체 생성자
 			~Earth();		//Earth 객체 소멸자
