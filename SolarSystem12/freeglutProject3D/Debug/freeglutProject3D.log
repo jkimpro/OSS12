@@ -10,6 +10,10 @@ c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(270): warni
 c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(271): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(272): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(655): warning C4244: '인수': 'double'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Actor.cpp
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\actor.cpp : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\actor.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+  코드를 생성하고 있습니다...
 c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(84): warning C4715: 'random': 모든 제어 경로에서 값을 반환하지는 않습니다.
   freeglutProject3D.vcxproj -> C:\Users\김준혁\Project\SolarSystem12\Debug\SolarSystem.exe
   freeglutProject3D.vcxproj -> C:\Users\김준혁\Project\SolarSystem12\Debug\SolarSystem.pdb (Full PDB)

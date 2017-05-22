@@ -62,7 +62,7 @@ struct viewVolume{GLdouble xRight, xLeft;
 			float z;
 		}RandomStar;
 
-		RandomStar star[60];
+		RandomStar star[80];
 
 
 GLdouble scale = 1;
@@ -265,7 +265,7 @@ int main(int argc, char* argv[]){
 //-------------------------------------------------------------------------
 
 void initGL(){
-	for (int i = 0; i < 60; i++)			//태양계 장식 임의 좌표 저장
+	for (int i = 0; i < 80; i++)			//태양계 장식 임의 좌표 저장
 	{
 		star[i].x = random(1);
 		star[i].y = random(1);

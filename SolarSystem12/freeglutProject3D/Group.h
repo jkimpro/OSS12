@@ -11,6 +11,8 @@
 #ifndef GroupH
 #define GroupH
 
+using namespace std;
+
 /* Actor 클래스를 상속 받는 Group 클래스 */
 class Group : public Actor                                
 {                               
