@@ -5,13 +5,13 @@
 ---------------------------------------------------------------------------
  OpenSource Software Project (https://github.com/okjcd123/OSS12)
  Department of Digital Contents
- ê¹€ì¤€í˜ ë¬¸í¬í˜¸ ì´ìƒí˜‘ ì •ì§€í˜œ
+ ±èÁØÇõ ¹®ÈñÈ£ ÀÌ»óÇù Á¤ÁöÇı
 
- Date of preparation (ì‘ì„±ì¼):						2017ë…„ 5ì›” 12ì¼
- Date of final modification (ìµœì¢… ìˆ˜ì •ì¼):			2017ë…„ 5ì›” 16ì¼
+ Date of preparation (ÀÛ¼ºÀÏ):						2017³â 5¿ù 12ÀÏ
+ Date of final modification (ÃÖÁ¾ ¼öÁ¤ÀÏ):			2017³â 5¿ù 16ÀÏ
 */
 //-------------------------------------------------------------------------
-// í—¤ë”
+// Çì´õ
 //-------------------------------------------------------------------------
 #include <Windows.h>
 #include <gl/GL.h>
@@ -32,13 +32,13 @@
 #include <stdio.h>
 
 //-------------------------------------------------------------------------
-// êµ¬ì¡°ì²´ ë° ì§€ì—­ë³€ìˆ˜
+// ±¸Á¶Ã¼ ¹× Áö¿ªº¯¼ö
 //-------------------------------------------------------------------------
-// ë·°í¬íŠ¸, í˜„ì¬ í™”ë©´ì˜ ì‚¬ê°í˜•ì˜ í¬ê¸°
+// ºäÆ÷Æ®, ÇöÀç È­¸éÀÇ »ç°¢ÇüÀÇ Å©±â
 struct viewPort{GLsizei w; GLsizei h;} Vp = {700, 700};
 
-// ì¹´ë©”ë¼ êµ¬ì¡°ì²´, ì¹´ë©”ë¼ì˜ ìœ„ì¹˜, ë³´ëŠ” ì§€ì , ìœ—ë°©í–¥ì„ ì •ì˜
-// upX, upY, upZ ëŠ” ì—…ë²¡í„°ì´ë©° ì–´ëŠ ë°©í–¥ì´ ìœ„ìª½ì¸ê°€ë¥¼ ì •ì˜
+// Ä«¸Ş¶ó ±¸Á¶Ã¼, Ä«¸Ş¶óÀÇ À§Ä¡, º¸´Â ÁöÁ¡, À­¹æÇâÀ» Á¤ÀÇ
+// upX, upY, upZ ´Â ¾÷º¤ÅÍÀÌ¸ç ¾î´À ¹æÇâÀÌ À§ÂÊÀÎ°¡¸¦ Á¤ÀÇ
 struct viewCamera{GLdouble eyeX, eyeY, eyeZ;
         GLdouble lookX, lookY, lookZ;
         GLdouble upX, upY, upZ;} 
@@ -47,10 +47,10 @@ struct viewCamera{GLdouble eyeX, eyeY, eyeZ;
 			topView = {0, 450, 0, 0,0,0, 1,0,1}, 
 			lateral = {550, 0, 0, 0,0,0, 0,1,0};
 
-// íˆ¬ì˜í•  ê³µê°„ì„ ì •ì˜
-// zNear - ê³µê°„ì˜ ì‹œì‘ì§€ì 
-// zFar  - ê³µê°„ì˜ ëì§€ì 
-// others- ê³µê°„ì˜ ìƒí•˜ì¢Œìš° í¬ê¸°ë¥¼ ì„¤ì •
+// Åõ¿µÇÒ °ø°£À» Á¤ÀÇ
+// zNear - °ø°£ÀÇ ½ÃÀÛÁöÁ¡
+// zFar  - °ø°£ÀÇ ³¡ÁöÁ¡
+// others- °ø°£ÀÇ »óÇÏÁÂ¿ì Å©±â¸¦ ¼³Á¤
 struct viewVolume{GLdouble xRight, xLeft;
         GLdouble yTop, yBot;
         GLdouble zNear, zFar;} Pj = {350, -350, 350,-350, 1, 1000};
@@ -71,12 +71,12 @@ int bpx, bpy;
 viewCamera * currentView = &initial;
 GLfloat light_position1[] = {0, 0, 0, 1.0f};
 
-int random(int n)//ë§µ ë²”ìœ„ ì¢Œí‘œë¥¼ ìœ„í•œ ëœë¤í•¨ìˆ˜
+int random(int n)//¸Ê ¹üÀ§ ÁÂÇ¥¸¦ À§ÇÑ ·£´ıÇÔ¼ö
 {
 	int num = rand();
 	if (n == 1)
 	{
-		if (num % 2 == 1) //num ìˆ«ìê°€ í™€ìˆ˜ì¼ê²½ìš° -ë¥¼ ë¶™ì´ê³ 
+		if (num % 2 == 1) //num ¼ıÀÚ°¡ È¦¼öÀÏ°æ¿ì -¸¦ ºÙÀÌ°í
 			return -rand()%350;
 		else
 			return rand()%350;
@@ -84,7 +84,7 @@ int random(int n)//ë§µ ë²”ìœ„ ì¢Œí‘œë¥¼ ìœ„í•œ ëœë¤í•¨ìˆ˜
 }
 
 
-// í™”ë©´ì— í‘œì‹œí•  ê°œì²´ë“¤ì„ êµ¬ì¡°ì²´ í˜•íƒœë¡œ í‘œí˜„
+// È­¸é¿¡ Ç¥½ÃÇÒ °³Ã¼µéÀ» ±¸Á¶Ã¼ ÇüÅÂ·Î Ç¥Çö
 Mesh plane("f-16.obj", 20);
 Group root;
 Sun sun;
@@ -98,8 +98,9 @@ Mars* marsRef;
 Satelite satelite;
 Sphere moon(8, 20, 20);
 
+
 //-------------------------------------------------------------------------
-// ìƒìˆ˜
+// »ó¼ö
 //-------------------------------------------------------------------------
 static const unsigned int UP = 0;
 static const unsigned int DOWN = 1;
@@ -110,7 +111,7 @@ static const unsigned int _OUT = 5;
 static const unsigned int CLOCKWISE = 6;
 static const unsigned int CCLOCKWISE = 7;
 //-------------------------------------------------------------------------
-// í•¨ìˆ˜
+// ÇÔ¼ö
 //-------------------------------------------------------------------------
 void updateProjection();
 void updateCamera();
@@ -126,11 +127,16 @@ void keyPres(unsigned char key, int mX, int mY);
 void keySp(int key, int mX, int mY);
 void setCamera(GLdouble x, GLdouble y, GLdouble z);
 void rotateCamera(unsigned int direction);
+void myMenu(int id);
+void TimerFunction(int value);
+
+
 //---------------------------------------------------------------------------
 // programa principal
 //-------------------------------------------------------------------------
 
-int main(int argc, char* argv[]){ 
+int main(int argc, char* argv[])
+{ 
 	srand((unsigned)time(NULL));
 	// Initialization 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
@@ -140,7 +146,7 @@ int main(int argc, char* argv[]){
 	// Window construction
 	int win=glutCreateWindow("Solar System OSS12");
 
-	//ì°½ì— ê´€ë ¨ëœ í•¨ìˆ˜  
+	//Ã¢¿¡ °ü·ÃµÈ ÇÔ¼ö  
 	glutDisplayFunc(display);
 	glutReshapeFunc(resize);
 	glutMouseFunc(mouseFunc);
@@ -150,20 +156,20 @@ int main(int argc, char* argv[]){
 	// OpenGL basic setting
 	initGL();
 
-	// X Y Z ì¶• ìƒì„±í•˜ê¸°
+	// X Y Z Ãà »ı¼ºÇÏ±â
 	Axis axis;
 	//root.addChildren(&axis);
 	
-	//Solar System Group ìƒì„±
+	//Solar System Group »ı¼º
 	Group solarSystem;
 	root.addChildren(&solarSystem);
-	solarSystem.setAngleVector(0, 1, 0);			//yì¶•ì„ ê¸°ì¤€ìœ¼ë¡œ íšŒì „
+	solarSystem.setAngleVector(0, 1, 0);			//yÃàÀ» ±âÁØÀ¸·Î È¸Àü
 
 	sun.setAngleVector(0, 1, 0);
 	sun.setColor(1.0, 1.0, 0.0, 1.0);
 	solarSystem.addChildren(&sun);
 
-	//í™”ì„± ê¶¤ë„ ìƒì„±//
+	//È­¼º ±Ëµµ »ı¼º//
 	Disk marsOrbit(198, 202, 200, 10);
 	marsOrbit.setColor(1.0, 0.0, 0.0, 1.0);
 	marsOrbit.setAngle(90);
@@ -175,7 +181,7 @@ int main(int argc, char* argv[]){
 	marsSystem.setX(200);
 	marsSystem.setAngleVector(0, 1, 0);
 
-	//ì§€êµ¬ ê¶¤ë„ ìƒì„±
+	//Áö±¸ ±Ëµµ »ı¼º
 	Disk earthOrbit;
 	earthOrbit.setColor(1.0, 1.0, 0.0, 1.0);
 	earthOrbit.setAngle(90);					
@@ -187,20 +193,20 @@ int main(int argc, char* argv[]){
 	earthSystem.setX(130);
 	earthSystem.setAngleVector(0, 1, 0);
 
-	//ì§€êµ¬ ìƒì„±//
+	//Áö±¸ »ı¼º//
 	Earth earth;
 	earthRef = &earth;
 	earth.setColor(1, 1, 1, 1);
 	earth.setAngleVector(0, 0, 1);
 
 	/*
-	innerRadius = 128;	//ì•ˆìª½ ë°˜ì§€ë¦„ ê°’ì„ 128ë¡œ ì´ˆê¸°í™”
-	outerRadius = 132;	//ë°”ê¹¥ìª½ ë°˜ì§€ë¦„ ê°’ì„ 132ë¡œ ì´ˆê¸°í™”
-	slices = 180;		//ìŠ¬ë¼ì´ìŠ¤ ê°’ì„ 180ë¡œ ì´ˆê¸°í™”
-	loops = 1;		//ë£¨í”„(ìŠ¤íƒ) ê°’ì„ 1ë¡œ ì´ˆê¸°í™”
+	innerRadius = 128;	//¾ÈÂÊ ¹İÁö¸§ °ªÀ» 128·Î ÃÊ±âÈ­
+	outerRadius = 132;	//¹Ù±ùÂÊ ¹İÁö¸§ °ªÀ» 132·Î ÃÊ±âÈ­
+	slices = 180;		//½½¶óÀÌ½º °ªÀ» 180·Î ÃÊ±âÈ­
+	loops = 1;		//·çÇÁ(½ºÅÃ) °ªÀ» 1·Î ÃÊ±âÈ­
 	*/
 
-	//í™”ì„± ìƒì„±//
+	//È­¼º »ı¼º//
 	Mars mars;
 	marsRef = &mars;
 	mars.setColor(1, 1, 1, 1);
@@ -212,60 +218,107 @@ int main(int argc, char* argv[]){
 	marsContainer.setAngleVector(1, 0, 0);
 	marsSystem.addChildren(&marsContainer);
 
-	// ì§€êµ¬ ìì „ì„ ìœ„í•œ earthContainer Group ìƒì„±
+	// Áö±¸ ÀÚÀüÀ» À§ÇÑ earthContainer Group »ı¼º
 	Group earthContainer;
 	earthContainer.addChildren(&earth);
 	earthContainer.setAngle(-90);
 	earthContainer.setAngleVector(1, 0, 0);
 	earthSystem.addChildren(&earthContainer);
 
-	//ë‹¬ê¶¤ë„ ìƒì„±
+	//´Ş±Ëµµ »ı¼º
 	Disk moonOrbit(52, 54, 60, 1);
 	moonOrbit.setColor(1, 1, 1, 1);
 	moonOrbit.setAngle(90);					
 	moonOrbit.setAngleVector(1, 0, 0);
 	earthSystem.addChildren(&moonOrbit);
 
-	//ë‹¬ ìƒì„±
+	//´Ş »ı¼º
 	moon.setColor(1, 1, 1, 1);
 	moon.setAngleVector(0, 1, 0);
 	moon.setX(53);
 	earthSystem.addChildren(&moon);
 
-	//ì¸ê³µìœ„ì„± ê¶¤ë„ ìƒì„±
+	//ÀÎ°øÀ§¼º ±Ëµµ »ı¼º
 	Disk sateliteOrbit(52, 54, 60, 1);
 	sateliteOrbit.setColor(0, 1, 0, 1);
 	earthSystem.addChildren(&sateliteOrbit);
 
-	//ì¸ê³µìœ„ì„± ìƒì„±
+	//ÀÎ°øÀ§¼º »ı¼º
 	satelite.setColor(0, 1, 0, 1);
 	satelite.setAngleVector(0, 0, 1);
 	satelite.setY(53);
 	earthSystem.addChildren(&satelite);
 
-	//ë¹„í–‰ê¸° ê¶¤ë„ ìƒì„±
+	//ºñÇà±â ±Ëµµ »ı¼º
 	Disk planeOrbit(52, 54, 60, 1);
 	planeOrbit.setColor(0, 1, 1, 1);
 	planeOrbit.setAngle(90);
 	planeOrbit.setAngleVector(0, 1, 0);
 	earthSystem.addChildren(&planeOrbit);
 
-	//ë¹„í–‰ê¸° ìƒì„±
+	//ºñÇà±â »ı¼º
 	plane.setColor(0, 1, 1, 1);
 	plane.setAngleVector(1, 0, 0);
 	plane.setY(53);
 	earthSystem.addChildren(&plane);
   
-	initScene();				//ì¹´ë©”ë¼ ì‹œì ì— ê´€í•œ ë¶€ë¶„ ì´ˆê¸°í™”
+	initScene();				//Ä«¸Ş¶ó ½ÃÁ¡¿¡ °üÇÑ ºÎºĞ ÃÊ±âÈ­
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION) ;
-	glutMainLoop();  //glutMainLoopEvent(); ë‚´ì¥í•¨ìˆ˜ì— ë”°ë¼ì„œ ì§„í–‰
+
+	glutTimerFunc(100, TimerFunction, 1);
+	glutCreateMenu(myMenu);
+	glutAddMenuEntry("Automatically",1);
+	glutAddMenuEntry("Maually", 2);
+	glutAddMenuEntry("Quit", 3);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+
+	glutMainLoop();  //glutMainLoopEvent(); ³»ÀåÇÔ¼ö¿¡ µû¶ó¼­ ÁøÇà
 	glutDestroyWindow(win);
 	return 0;
 }
+
+bool automatic = false;
+
+void TimerFunction(int value)
+{
+	if (automatic)
+	{
+		sun.setAngle(sun.getAngle() + 5);
+		marsSystem.setAngle(marsSystem.getAngle() + 2.5);
+		(*marsRef).setAngle((*marsRef).getAngle() + 4);
+		earthSystem.setAngle(earthSystem.getAngle() + 4);
+		(*earthRef).setAngle((*earthRef).getAngle() + 6);
+		satelite.setAngle(satelite.getAngle() + 2);
+		plane.setAngle(plane.getAngle() + 1);
+		moon.setAngle(moon.getAngle() + 3);
+	}
+	glutPostRedisplay();
+	glutTimerFunc(100, TimerFunction, 1);
+}
+
+void myMenu(int id)
+{
+	switch (id)
+	{
+	case 1:
+	{
+		automatic = true;                  //ÀÚµ¿À¸·Î
+		break;
+	}
+	case 2:
+	{
+		automatic = false;                 //ºñÀÚµ¿À¸·Î 
+		break;
+	}
+	case 3: exit(0); break;
+	default: break;
+	}
+}
+
 //-------------------------------------------------------------------------
 
 void initGL(){
-	for (int i = 0; i < 80; i++)			//íƒœì–‘ê³„ ì¥ì‹ ì„ì˜ ì¢Œí‘œ ì €ì¥
+	for (int i = 0; i < 80; i++)			//ÅÂ¾ç°è Àå½Ä ÀÓÀÇ ÁÂÇ¥ ÀúÀå
 	{
 		star[i].x = random(1);
 		star[i].y = random(1);
@@ -297,7 +350,7 @@ void initGL(){
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
 
 
-	// ë¹› íì…°ì´ë”© ì´ˆê¸°í™”
+	// ºû Æş¼ÎÀÌµù ÃÊ±âÈ­
 	glEnable(GL_LIGHT1);	
 	GLfloat light_specular1[] = {0.4f, 0.4f, 0.4f, 1.0f};
 	GLfloat light_diffuse1[] = {0.4f, 0.4f, 0.4f, 1.0f};
@@ -306,7 +359,7 @@ void initGL(){
 	glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient);
 	
 
-	// ë¬¼ì§ˆ íì…°ì´ë”© ì´ˆê¸°í™”
+	// ¹°Áú Æş¼ÎÀÌµù ÃÊ±âÈ­
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
@@ -315,9 +368,9 @@ void initGL(){
 	glShadeModel(GL_SMOOTH);
 
 	//glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);			//ê²€ì€ìƒ‰ ë°°ê²½ìœ¼ë¡œ ì„ì‹œ ë³€ê²½
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);			//°ËÀº»ö ¹è°æÀ¸·Î ÀÓ½Ã º¯°æ
 
-	// ê¸°ë³¸ì ì¸ ì¹´ë©”ë¼ ì„¸íŒ…
+	// ±âº»ÀûÀÎ Ä«¸Ş¶ó ¼¼ÆÃ
 	updateCamera();
 	updateProjection();
 }
@@ -408,8 +461,9 @@ void updateProjection(){
 }
 //-------------------------------------------------------------------------
 
-void display(void) {
-	
+void display(void) 
+{
+
 	light_position1[0] = static_cast<GLfloat>((*currentView).eyeX);
 	light_position1[1] = static_cast<GLfloat>((*currentView).eyeY);
 	light_position1[2] = static_cast<GLfloat>((*currentView).eyeZ);
@@ -418,7 +472,7 @@ void display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
 	glMatrixMode(GL_MODELVIEW);
 	
-	for(int i =0; i<60; i++)			//ì„ì˜ ì¥ì‹ë³„ ì¶œë ¥
+	for(int i =0; i<60; i++)			//ÀÓÀÇ Àå½Äº° Ãâ·Â
 	{
 		glPushMatrix();
 		glTranslatef(star[i].x, star[i].y, star[i].z);
@@ -433,9 +487,9 @@ void display(void) {
 }
 //-------------------------------------------------------------------------
 // setCamera
-// ì„¤ëª… : ì£¼ì–´ì§„ ë²¡í„°ë¥¼ ë°›ì•„ ì¹´ë©”ë¼ì™€ ì¹´ë©”ë¼ ì‹œì ì„ ì´ë™ì‹œí‚´
-// ì¸ìˆ˜ : 3ì°¨ì› ë²¡í„°ê°’ x,y,z
-// ë°˜í™˜ : void
+// ¼³¸í : ÁÖ¾îÁø º¤ÅÍ¸¦ ¹Ş¾Æ Ä«¸Ş¶ó¿Í Ä«¸Ş¶ó ½ÃÁ¡À» ÀÌµ¿½ÃÅ´
+// ÀÎ¼ö : 3Â÷¿ø º¤ÅÍ°ª x,y,z
+// ¹İÈ¯ : void
 //-------------------------------------------------------------------------
 void setCamera(GLdouble x, GLdouble y, GLdouble z)
 {
@@ -444,21 +498,21 @@ void setCamera(GLdouble x, GLdouble y, GLdouble z)
 	y /= length;
 	z /= length;
 
-	// ì¹´ë©”ë¼ ìœ„ì¹˜ì— ë”í•´ì¤Œ
+	// Ä«¸Ş¶ó À§Ä¡¿¡ ´õÇØÁÜ
 	currentView->eyeX += x;
 	currentView->eyeY += y;
 	currentView->eyeZ += z;
 
-	// ì¹´ë©”ë¼ì™€ ì¹´ë©”ë¼ê°€ ë³´ëŠ” ì§€ì ì€ í‰í–‰ì´ë™
+	// Ä«¸Ş¶ó¿Í Ä«¸Ş¶ó°¡ º¸´Â ÁöÁ¡Àº ÆòÇàÀÌµ¿
 	currentView->lookX += x;
 	currentView->lookY += y;
 	currentView->lookZ += z;
 }
 //-------------------------------------------------------------------------
 // moveCamera 
-// ì„¤ëª… : ì¹´ë©”ë¼ì™€ ì¹´ë©”ë¼ ì‹œì ì„ ì˜®ê¸°ëŠ” í•¨ìˆ˜
-// ì¸ìˆ˜ : direction - ì¹´ë©”ë¼ê°€ ì´ë™í•  ë°©í–¥
-// ë°˜í™˜ : void
+// ¼³¸í : Ä«¸Ş¶ó¿Í Ä«¸Ş¶ó ½ÃÁ¡À» ¿Å±â´Â ÇÔ¼ö
+// ÀÎ¼ö : direction - Ä«¸Ş¶ó°¡ ÀÌµ¿ÇÒ ¹æÇâ
+// ¹İÈ¯ : void
 //-------------------------------------------------------------------------
 void moveCamera(unsigned int direction){
 	GLdouble eX, eY, eZ;
@@ -468,22 +522,22 @@ void moveCamera(unsigned int direction){
 	GLdouble wX, wY, wZ;
 	GLdouble hX, hY, hZ;
 
-	// e ë²¡í„° - ì¹´ë©”ë¼ ìœ„ì¹˜
+	// e º¤ÅÍ - Ä«¸Ş¶ó À§Ä¡
 	eX = currentView->eyeX;
 	eY = currentView->eyeY;
 	eZ = currentView->eyeZ;
 
-	// l ë²¡í„° - ì¹´ë©”ë¼ê°€ ë³´ëŠ” ì§€ì 
+	// l º¤ÅÍ - Ä«¸Ş¶ó°¡ º¸´Â ÁöÁ¡
 	lX = currentView->lookX;
 	lY = currentView->lookY;
 	lZ = currentView->lookZ;
 
-	// u ë²¡í„° - eì™€ l ë‘ ì ì„ ì‡ëŠ” ë²¡í„°
+	// u º¤ÅÍ - e¿Í l µÎ Á¡À» ÀÕ´Â º¤ÅÍ
 	uX = eX - lX;
 	uY = eY - lY;
 	uZ = eZ - lZ;
 
-	// v ë²¡í„° - ì—…ë²¡í„°
+	// v º¤ÅÍ - ¾÷º¤ÅÍ
 	vX = -currentView->upX;
 	vY = -currentView->upY;
 	vZ = -currentView->upZ;
@@ -493,7 +547,7 @@ void moveCamera(unsigned int direction){
 	wY = uZ * vX - uX * vZ;
 	wZ = uX * vY - uY * vX;
 
-	// w = u x v. w ë²¡í„°ëŠ” ìœ—ë°©í–¥ì„ ê°€ë¥´í‚´
+	// w = u x v. w º¤ÅÍ´Â À­¹æÇâÀ» °¡¸£Å´
 	hX = uY * wZ - uZ * wY;
 	hY = uZ * wX - uX * wZ;
 	hZ = uX * wY - uY * wX;
@@ -524,9 +578,9 @@ void moveCamera(unsigned int direction){
 }
 //-------------------------------------------------------------------------
 // rotateCamera
-// ì„¤ëª… : ì‹œê³„ë°©í–¥, ë˜ëŠ” ì‹œê³„ë°˜ëŒ€ë°©í–¥ì„ ë°›ì•„ ê·¸ì— ë§ê²Œ ì¹´ë©”ë¼ë¥¼ íšŒì „
-// ì¸ìˆ˜ : direction - ì¹´ë©”ë¼ë¥¼ íšŒì „ì‹œí‚¬ ë°©í–¥
-// ë°˜í™˜ : void
+// ¼³¸í : ½Ã°è¹æÇâ, ¶Ç´Â ½Ã°è¹İ´ë¹æÇâÀ» ¹Ş¾Æ ±×¿¡ ¸Â°Ô Ä«¸Ş¶ó¸¦ È¸Àü
+// ÀÎ¼ö : direction - Ä«¸Ş¶ó¸¦ È¸Àü½ÃÅ³ ¹æÇâ
+// ¹İÈ¯ : void
 //-------------------------------------------------------------------------
 void rotateCamera(unsigned int direction) {
 	GLdouble uX = currentView->upX;
@@ -548,9 +602,9 @@ void rotateCamera(unsigned int direction) {
 }
 //-------------------------------------------------------------------------
 // rotateView
-// ì„¤ëª… : ì¹´ë©”ë¼ ì‹œì ì„ ë°©í–¥ì— ë”°ë¼ ì´ë™ì‹œì¼œì¤Œ
-// ì¸ìˆ˜ : direction - ì¹´ë©”ë¼ë¥¼ íšŒì „ì‹œí‚¬ ë°©í–¥
-// ë°˜í™˜ : void
+// ¼³¸í : Ä«¸Ş¶ó ½ÃÁ¡À» ¹æÇâ¿¡ µû¶ó ÀÌµ¿½ÃÄÑÁÜ
+// ÀÎ¼ö : direction - Ä«¸Ş¶ó¸¦ È¸Àü½ÃÅ³ ¹æÇâ
+// ¹İÈ¯ : void
 //-------------------------------------------------------------------------
 void rotateView(int x, int y) {
 	GLdouble eX, eY, eZ;
@@ -560,22 +614,22 @@ void rotateView(int x, int y) {
 	GLdouble wX, wY, wZ;
 	GLdouble hX, hY, hZ;
 
-	// e ë²¡í„° - ì¹´ë©”ë¼ ìœ„ì¹˜
+	// e º¤ÅÍ - Ä«¸Ş¶ó À§Ä¡
 	eX = currentView->eyeX;
 	eY = currentView->eyeY;
 	eZ = currentView->eyeZ;
 
-	// l ë²¡í„° - ì¹´ë©”ë¼ê°€ ë³´ëŠ” ì§€ì 
+	// l º¤ÅÍ - Ä«¸Ş¶ó°¡ º¸´Â ÁöÁ¡
 	lX = currentView->lookX;
 	lY = currentView->lookY;
 	lZ = currentView->lookZ;
 
-	// u ë²¡í„° - eì™€ l ë‘ ì ì„ ì‡ëŠ” ë²¡í„°
+	// u º¤ÅÍ - e¿Í l µÎ Á¡À» ÀÕ´Â º¤ÅÍ
 	uX = lX - eX;
 	uY = lY - eY;
 	uZ = lZ - eZ;
 
-	// v ë²¡í„° - ì—…ë²¡í„°
+	// v º¤ÅÍ - ¾÷º¤ÅÍ
 	vX = currentView->upX;
 	vY = currentView->upY;
 	vZ = currentView->upZ;
@@ -585,7 +639,7 @@ void rotateView(int x, int y) {
 	wY = uZ * vX - uX * vZ;
 	wZ = uX * vY - uY * vX;
 
-	// h = u x v. w ë²¡í„°ëŠ” ìœ—ë°©í–¥ì„ ê°€ë¥´í‚´
+	// h = u x v. w º¤ÅÍ´Â À­¹æÇâÀ» °¡¸£Å´
 	hX = uY * wZ - uZ * wY;
 	hY = uZ * wX - uX * wZ;
 	hZ = uX * wY - uY * wX;
@@ -609,11 +663,11 @@ void rotateView(int x, int y) {
 }
 //-------------------------------------------------------------------------
 // rotate
-// ì„¤ëª… : v ë²¡í„°ë¥¼ aë²¡í„°ë¥¼ ì¶•ìœ¼ë¡œ í•˜ì—¬ íšŒì „
-// ì¸ìˆ˜ : vector v - íšŒì „í•  ë²¡í„°
-// ì¸ìˆ˜ : point a  - íšŒì „ ì¶•
-// ì¸ìˆ˜ : angle    - íšŒì „ì‹œí‚¬ ê°ë„
-// ë°˜í™˜ : void
+// ¼³¸í : v º¤ÅÍ¸¦ aº¤ÅÍ¸¦ ÃàÀ¸·Î ÇÏ¿© È¸Àü
+// ÀÎ¼ö : vector v - È¸ÀüÇÒ º¤ÅÍ
+// ÀÎ¼ö : point a  - È¸Àü Ãà
+// ÀÎ¼ö : angle    - È¸Àü½ÃÅ³ °¢µµ
+// ¹İÈ¯ : void
 //-------------------------------------------------------------------------
 void rotate(double &vx, double &vy, double &vz, double ax, double ay, double az, double angle) {
 	double ca = cos(angle);
@@ -632,16 +686,16 @@ void rotate(double &vx, double &vy, double &vz, double ax, double ay, double az,
 
 //-------------------------------------------------------------------------
 // keyPres
-// ì„¤ëª… : í‚¤ë¥¼ ì´ìš©í•˜ì—¬ í–‰ë™ì„ ê²°ì •
-// ì¸ìˆ˜ : key - ì…ë ¥ë°›ì€ í‚¤ê°’
-// ì¸ìˆ˜ : mX  - ì‚¬ìš©ì•ˆí•¨
-// ì¸ìˆ˜ : mY  - ì‚¬ìš©ì•ˆí•¨
-// ë°˜í™˜ : void
+// ¼³¸í : Å°¸¦ ÀÌ¿ëÇÏ¿© Çàµ¿À» °áÁ¤
+// ÀÎ¼ö : key - ÀÔ·Â¹ŞÀº Å°°ª
+// ÀÎ¼ö : mX  - »ç¿ë¾ÈÇÔ
+// ÀÎ¼ö : mY  - »ç¿ë¾ÈÇÔ
+// ¹İÈ¯ : void
 //-------------------------------------------------------------------------
 void keyPres(unsigned char key, int mX, int mY){
 	bool need_redisplay = true;
 	if(key == 27) {  /* Esc key */  //continue_in_main_loop = false; (**)
-		glutLeaveMainLoop (); //glut ë£¨í”„ë¥¼ ë©ˆì¶”ëŠ” Freeglutí•¨ìˆ˜
+		glutLeaveMainLoop (); //glut ·çÇÁ¸¦ ¸ØÃß´Â FreeglutÇÔ¼ö
 	} else if(key == '+') { 
 		if(scale < 10.) {
 			scale +=0.25; resize(Vp.w, Vp.h);
@@ -707,18 +761,18 @@ void keyPres(unsigned char key, int mX, int mY){
 		need_redisplay = false;
 	}
 
-	// í˜„ì¬ì°½ì˜ ì—…ë°ì´íŠ¸ê°€ í•„ìš”í•  ê²½ìš° ë‹¤ì‹œ ë””ìŠ¤í”Œë ˆì´
+	// ÇöÀçÃ¢ÀÇ ¾÷µ¥ÀÌÆ®°¡ ÇÊ¿äÇÒ °æ¿ì ´Ù½Ã µğ½ºÇÃ·¹ÀÌ
 	if (need_redisplay) { 
 		glutPostRedisplay();
 	}
 }
 //-------------------------------------------------------------------------
 // keySp
-// ì„¤ëª… : í™”ì‚´í‘œ í‚¤ë¥¼ ì´ìš©í•˜ì—¬ í–‰ë™ì„ ê²°ì •
-// ì¸ìˆ˜ : key - ì…ë ¥ë°›ì€ í‚¤ê°’
-// ì¸ìˆ˜ : mX  - ì‚¬ìš©ì•ˆí•¨
-// ì¸ìˆ˜ : mY  - ì‚¬ìš©ì•ˆí•¨
-// ë°˜í™˜ : void
+// ¼³¸í : È­»ìÇ¥ Å°¸¦ ÀÌ¿ëÇÏ¿© Çàµ¿À» °áÁ¤
+// ÀÎ¼ö : key - ÀÔ·Â¹ŞÀº Å°°ª
+// ÀÎ¼ö : mX  - »ç¿ë¾ÈÇÔ
+// ÀÎ¼ö : mY  - »ç¿ë¾ÈÇÔ
+// ¹İÈ¯ : void
 //-------------------------------------------------------------------------
 void keySp(int key, int mX, int mY){
   bool need_redisplay = true;
@@ -728,7 +782,7 @@ void keySp(int key, int mX, int mY){
   else if(key == GLUT_KEY_LEFT) glTranslatef(-5.0, 0.0,0.0); 
   else need_redisplay = false;
 
-  // í˜„ì¬ì°½ì˜ ì—…ë°ì´íŠ¸ê°€ í•„ìš”í•  ê²½ìš° ë‹¤ì‹œ ë””ìŠ¤í”Œë ˆì´
+  // ÇöÀçÃ¢ÀÇ ¾÷µ¥ÀÌÆ®°¡ ÇÊ¿äÇÒ °æ¿ì ´Ù½Ã µğ½ºÇÃ·¹ÀÌ
   if (need_redisplay) glutPostRedisplay();
 }
 void mouseFunc(int button1, int button2,int x, int y)
@@ -747,3 +801,4 @@ void motionFunc(int x, int y)
 	glutPostRedisplay();
 }
 //-------------------------------------------------------------------------
+
