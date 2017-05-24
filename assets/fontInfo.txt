@@ -1,0 +1,59 @@
+
+▶ 임포트 방식으로 로드하려면 style.css 파일 최상단에 소스코드를 추가하면 됩니다.
+
+ @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+▶ 참조 링크 방식
+헤드 태크의 타이틀 아래에 보기처럼 삽입합니다.
+
+<head>
+
+<title>[##_page_title_##] - [##_title_##]</title>
+<link rel='stylesheet' href='http://fonts.googleapis.com/earlyaccess/nanumgothic.css'>
+<link rel="stylesheet" href="./style.css">
+
+</head>
+
+구글 한글 웹 폰트 바로가기 http://www.google.com/fonts/earlyaccess
+
+<한글 웹 폰트 종류별 소스코드>
+
+Hanna
+@import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+font-family: 'Hanna', serif;
+
+Jeju Gothic
+@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+font-family: 'Jeju Gothic', serif;
+
+Jeju Hallasan
+@import url(http://fonts.googleapis.com/earlyaccess/jejuhallasan.css);
+font-family: 'Jeju Hallasan', serif;
+
+Jeju Myeongjo
+@import url(http://fonts.googleapis.com/earlyaccess/jejumyeongjo.css);
+font-family: 'Jeju Myeongjo', serif;
+
+KoPub Batang
+@import url(http://fonts.googleapis.com/earlyaccess/kopubbatang.css);
+font-family: 'KoPub Batang', serif;
+
+Nanum Brush Script
+@import url(http://fonts.googleapis.com/earlyaccess/nanumbrushscript.css);
+font-family: 'Nanum Brush Script', serif;
+
+Nanum Gothic
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+font-family: 'Nanum Gothic', serif;
+
+Nanum Gothic Coding
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
+font-family: 'Nanum Gothic Coding', serif;
+
+Nanum Myeongjo
+@import url(http://fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+font-family: 'Nanum Myeongjo', serif;
+
+Nanum Pen Script 
+@import url(http://fonts.googleapis.com/earlyaccess/nanumpenscript.css);
+font-family: 'Nanum Pen Script', serif;
