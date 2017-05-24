@@ -6,6 +6,8 @@
 ***************************************************************************************************/
 
 #include "Group.h"
+#include<iostream>
+
 	
 	/* Group 객체 생성자 정의 */
 	Group::Group()
@@ -32,7 +34,15 @@
 		unsigned int size = children.size();                       //size : children vector의 크기(객체의 갯수)
 
 		for(i = 0; i < size; ++i)
-		{                     
+		{                
+			try                                                     //vector 범위 벗어나게 되면 예외를 날림 
+			{
+				children.at(i);                                     //i번째가 vector 범위 벗어 났는지 검사 
+			}     
+			catch(exception &e)
+			{
+				cout<<"drawChildren 함수의 vector 범위 벗어남"<<endl;
+			}     
 			Actor* child = children[i];                            //Actor 포인터 변수 child 선언 후에 children vector의 i번째 원소 대입
 			(*child).render();                                     //child에 저장된 Actor 객체를 render 함수를 사용하여 객체 생성
 		}
@@ -64,4 +74,5 @@
 	{
 		drawChildren();
 	}
+
 
