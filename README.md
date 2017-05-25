@@ -3,8 +3,8 @@
 </div>
 
 
-# SolarSystem
-A C++ OpenGL project for Visual Studio 2012 with a solar system formed by the Sun, Earth, Moon and a statelite.
+# Solar System Simulator
+A C++ OpenGL project for Visual Studio 2015 with a solar system formed by the Sun, Earth, Moon and a statelite.
  
 Copyright [Dan Cristia, Rotaru]
 
