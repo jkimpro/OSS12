@@ -69,6 +69,12 @@
     <ClCompile Include="Mars.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Mercury.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Venus.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -110,6 +116,12 @@
     <ClInclude Include="Mars.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Mercury.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Venus.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\..\..\Downloads\earth.bmp">
@@ -119,6 +131,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="mars.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="mercury.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="venus.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sun.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

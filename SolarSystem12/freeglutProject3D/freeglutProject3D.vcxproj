@@ -76,12 +76,14 @@
     <ClCompile Include="main1.cpp" />
     <ClCompile Include="Disk.cpp" />
     <ClCompile Include="Mars.cpp" />
+    <ClCompile Include="Mercury.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="pixmap24RGB.cpp" />
     <ClCompile Include="Satelite.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Sun.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
+    <ClCompile Include="Venus.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -91,17 +93,22 @@
     <ClInclude Include="Group.h" />
     <ClInclude Include="Disk.h" />
     <ClInclude Include="Mars.h" />
+    <ClInclude Include="Mercury.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="pixmap24RGB.h" />
     <ClInclude Include="Satelite.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Sun.h" />
     <ClInclude Include="TextureLoader.h" />
+    <ClInclude Include="Venus.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\..\..\Downloads\earth.bmp" />
     <Image Include="..\..\..\..\..\..\Downloads\sun.bmp" />
     <Image Include="mars.bmp" />
+    <Image Include="mercury.bmp" />
+    <Image Include="sun.bmp" />
+    <Image Include="venus.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
