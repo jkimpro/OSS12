@@ -6,7 +6,6 @@ https://github.com/RotaruDan/SolarSystem
 OpenSource Software Project (https://github.com/okjcd123/OSS12)
 Department of Digital Contents
 김준혁 문희호 이상협 정지혜
-
 Date of preparation (작성일):						2017년 5월 12일
 Date of final modification (최종 수정일):			2017년 5월 16일
 */
@@ -187,7 +186,7 @@ int main(int argc, char* argv[])
 
 	//수성 궤도 생성
 	Disk mercuryOrbit(80, 84, 100, 10);
-	mercuryOrbit.setColor(1.0f, 1.0f, 1.0f, 0.0f);
+	mercuryOrbit.setColor(0.5f, 0.5f, 0.0f, 0.0f);
 	mercuryOrbit.setAngle(90);
 	mercuryOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&mercuryOrbit);
@@ -200,7 +199,7 @@ int main(int argc, char* argv[])
 
 	//금성 궤도 생성
 	Disk venusOrbit(120, 124, 100, 10);
-	venusOrbit.setColor(1.0, 1.0, 0.0, 1.0);
+	venusOrbit.setColor(0.6, 0.6, 0.0, 0.0);
 	venusOrbit.setAngle(90);
 	venusOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&venusOrbit);
@@ -214,7 +213,7 @@ int main(int argc, char* argv[])
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//지구 궤도 생성
 	Disk earthOrbit(180, 184, 200, 10);
-	earthOrbit.setColor(1.0, 1.0, 0.0, 1.0);
+	earthOrbit.setColor(0.7, 0.7, 0.0, 0.0);
 	earthOrbit.setAngle(90);
 	earthOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&earthOrbit);
@@ -234,7 +233,7 @@ int main(int argc, char* argv[])
 
 	//화성 궤도 생성//
 	Disk marsOrbit(230, 234, 200, 10);
-	marsOrbit.setColor(1.0, 0.0, 0.0, 1.0);
+	marsOrbit.setColor(0.8, 0.8, 0.0, 0.0);
 	marsOrbit.setAngle(90);
 	marsOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&marsOrbit);
@@ -338,12 +337,12 @@ int main(int argc, char* argv[])
 	initScene();				//카메라 시점에 관한 부분 초기화
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 
-	glutTimerFunc(100, TimerFunction, 1);
 	glutCreateMenu(myMenu);
 	glutAddMenuEntry("Automatically", 1);
 	glutAddMenuEntry("Maually", 2);
 	glutAddMenuEntry("Quit", 3);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	glutTimerFunc(1000 / 60, TimerFunction, 1);
 
 	glutMainLoop();  //glutMainLoopEvent(); 내장함수에 따라서 진행
 
@@ -375,30 +374,29 @@ void TimerFunction(int value)
 		moon.setAngle(moon.getAngle() + 3);
 	}
 	glutPostRedisplay();
-	glutTimerFunc(100, TimerFunction, 1);
+	glutTimerFunc(1000/60, TimerFunction, 1);
 }
 
 void myMenu(int id)
 {
 	switch (id)
 	{
-	case 1:
-	{
-		automatic = true;                  //자동으로
-		break;
-	}
-	case 2:
-	{
-		automatic = false;                 //비자동으로 
-		break;
-	}
-	case 3:
-	{
-		glutDestroyWindow(1);
-		exit(1);
-		break;
-	}
-	default: break;
+		case 1:
+		{
+			automatic = true;                  //자동으로
+			break;
+		}
+		case 2:
+		{
+			automatic = false;                 //비자동으로 
+			break;
+		}
+		case 3:
+		{
+			glutDestroyWindow(1);
+			break;
+		}
+		default: break;
 	}
 }
 
@@ -551,22 +549,26 @@ void updateProjection() {
 
 void display(void)
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
 
 	light_position1[0] = static_cast<GLfloat>((*currentView).eyeX);
 	light_position1[1] = static_cast<GLfloat>((*currentView).eyeY);
 	light_position1[2] = static_cast<GLfloat>((*currentView).eyeZ);
 	glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
 
-	for (int i = 0; i<60; i++)			//임의 장식별 출력
+	for (int i = 0; i<80; i++)			//임의 장식별 출력
 	{
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_LIGHTING);
 		glPushMatrix();
 		glTranslatef(star[i].x, star[i].y, star[i].z);
-		glColor4d(1.0, 1.0, 1.0, 1.0);
-		glutSolidSphere(100.0, 8, 8);
+		glColor3f(0.7, 0.7, 0.7);
+		glutSolidSphere(1.0, 8, 8);
 		glPopMatrix();
+		glPopAttrib();
 	}
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
 
 
 	glViewport(0, 0, Vp.w, Vp.h);
@@ -918,4 +920,3 @@ void motionFunc(int x, int y)
 	glutPostRedisplay();
 }
 //-------------------------------------------------------------------------
-

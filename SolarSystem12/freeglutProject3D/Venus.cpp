@@ -14,7 +14,7 @@ Venus::Venus()		//Earth의 생성자
 Venus::~Venus()			//Earth의 소멸자
 {
 
-	Venus::~Venus();
+	Sphere::~Sphere();
 
 }
 

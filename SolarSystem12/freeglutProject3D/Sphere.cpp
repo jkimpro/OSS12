@@ -43,7 +43,7 @@
 	/* Sphere 클래스 소멸자 정의 */
 	Sphere::~Sphere()
 	{
-		gluDeleteQuadric(quadric);                    //이차곡면 객체 삭제
+		//gluDeleteQuadric(quadric);                    //이차곡면 객체 삭제
 	}
 		
 	/*

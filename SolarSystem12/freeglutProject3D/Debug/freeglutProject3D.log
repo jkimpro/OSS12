@@ -1,19 +1,23 @@
 ﻿  main1.cpp
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\mesh.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\actor.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\sun.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\axis.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\earth.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\disk.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\main1.cpp(361): warning C4244: '인수': 'double'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\main1.cpp(364): warning C4244: '인수': 'double'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\main1.cpp(368): warning C4244: '인수': 'double'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\main1.cpp(410): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\main1.cpp(411): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\main1.cpp(412): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\main1.cpp(802): warning C4244: '인수': 'double'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\main1.cpp(805): warning C4244: '인수': 'double'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\main1.cpp(809): warning C4244: '인수': 'double'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\김준혁\project\oss12\solarsystem12\freeglutproject3d\main1.cpp(90): warning C4715: 'random': 모든 제어 경로에서 값을 반환하지는 않습니다.
-  freeglutProject3D.vcxproj -> C:\Users\김준혁\Project\OSS12\SolarSystem12\Debug\SolarSystem.exe
-  freeglutProject3D.vcxproj -> C:\Users\김준혁\Project\OSS12\SolarSystem12\Debug\SolarSystem.pdb (Full PDB)
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\mesh.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\actor.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\sun.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\axis.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\earth.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\disk.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(202): warning C4305: '인수': 'double'에서 'GLfloat'(으)로 잘립니다.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(216): warning C4305: '인수': 'double'에서 'GLfloat'(으)로 잘립니다.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(236): warning C4305: '인수': 'double'에서 'GLfloat'(으)로 잘립니다.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(360): warning C4244: '인수': 'double'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(363): warning C4244: '인수': 'double'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(367): warning C4244: '인수': 'double'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(408): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(409): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(410): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(567): warning C4305: '인수': 'double'에서 'GLfloat'(으)로 잘립니다.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(804): warning C4244: '인수': 'double'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(807): warning C4244: '인수': 'double'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(811): warning C4244: '인수': 'double'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\김준혁\project\solarsystem12\freeglutproject3d\main1.cpp(89): warning C4715: 'random': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  freeglutProject3D.vcxproj -> C:\Users\김준혁\Project\SolarSystem12\Debug\SolarSystem.exe
+  freeglutProject3D.vcxproj -> C:\Users\김준혁\Project\SolarSystem12\Debug\SolarSystem.pdb (Full PDB)
