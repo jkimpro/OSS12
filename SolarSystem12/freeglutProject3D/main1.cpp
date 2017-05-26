@@ -72,7 +72,10 @@ RandomStar star[80];
 
 GLdouble scale = 1;
 bool ortho = false;
+bool automatic = false;
+bool Presskey[4] = {0,};
 int bpx, bpy;
+
 viewCamera * currentView = &initial;
 GLfloat light_position1[] = { 0, 0, 0, 1.0f };
 
@@ -134,9 +137,11 @@ void moveCamera(unsigned int direction);
 void initScene();
 void initGL();
 void resize(int wW, int wH);
+void idle();
 void display();
 void mouseFunc(int b1, int b2, int x, int y);
 void motionFunc(int x, int y);
+void keyUp(unsigned char key, int mX, int mY);
 void keyPres(unsigned char key, int mX, int mY);
 void keySp(int key, int mX, int mY);
 void setCamera(GLdouble x, GLdouble y, GLdouble z);
@@ -145,10 +150,12 @@ void myMenu(int id);
 void TimerFunction(int value);
 
 
-//---------------------------------------------------------------------------
-// programa principal
-//-------------------------------------------------------------------------//
-
+//-------------------------------------------------------------------------
+// main
+// 설명 : 메인. opengl 화면출력의 전체 루프를 정의함.
+// 인수 : argc, argv[]
+// 반환 : void
+//-------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
 	srand((unsigned)time(NULL));
@@ -163,10 +170,12 @@ int main(int argc, char* argv[])
 	//창에 관련된 함수  
 	glutDisplayFunc(display);
 	glutReshapeFunc(resize);
-	glutMouseFunc(mouseFunc);
 	glutMotionFunc(motionFunc);
+	glutMouseFunc(mouseFunc);
 	glutKeyboardFunc(keyPres);
+	glutKeyboardUpFunc(keyUp);
 	glutSpecialFunc(keySp);
+	glutIdleFunc(idle);
 	// OpenGL basic setting
 	initGL();
 
@@ -349,8 +358,12 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-bool automatic = false;
-
+//-------------------------------------------------------------------------
+// TimerFunction
+// 설명 : 시간별로 호출되는 함수. 자동 회전할 때 사용된다.
+// 인수 : id
+// 반환 : void
+//-------------------------------------------------------------------------
 void TimerFunction(int value)
 {
 	if (automatic)
@@ -377,6 +390,12 @@ void TimerFunction(int value)
 	glutTimerFunc(1000/60, TimerFunction, 1);
 }
 
+//-------------------------------------------------------------------------
+// myMenu
+// 설명 : 오른쪽 마우스 버튼을 눌렀을 때 메뉴 설정
+// 인수 : id
+// 반환 : void
+//-------------------------------------------------------------------------
 void myMenu(int id)
 {
 	switch (id)
@@ -401,7 +420,11 @@ void myMenu(int id)
 }
 
 //-------------------------------------------------------------------------
-
+// initGL
+// 설명 : 처음 시작할 때의 퐁 셰이딩 설정
+// 인수 : void
+// 반환 : void
+//-------------------------------------------------------------------------
 void initGL() {
 	for (int i = 0; i < 80; i++)			//태양계 장식 임의 좌표 저장
 	{
@@ -460,6 +483,12 @@ void initGL() {
 	updateProjection();
 }
 
+//-------------------------------------------------------------------------
+// initScene
+// 설명 : 처음 시작할 때 화면의 셋팅
+// 인수 : void
+// 반환 : void
+//-------------------------------------------------------------------------
 void initScene() {
 
 	sun.setAngle(0);
@@ -513,6 +542,12 @@ void initScene() {
 	updateProjection();
 }
 
+//-------------------------------------------------------------------------
+// updateCamera
+// 설명 : 카메라의 새로운 위치를 설정해줌
+// 인수 : void
+// 반환 : void
+//-------------------------------------------------------------------------
 void updateCamera() {
 	glMatrixMode(GL_MODELVIEW);   // VIEW
 	glLoadIdentity();
@@ -521,8 +556,13 @@ void updateCamera() {
 		(*currentView).upX, (*currentView).upY, (*currentView).upZ);
 
 }
-//-------------------------------------------------------------------------
 
+//-------------------------------------------------------------------------
+// resize
+// 설명 : 화면의 크기를 사용자가 임의로 늘리거나 줄일 때의 행동을 정의
+// 인수 : wW, wH
+// 반환 : void
+//-------------------------------------------------------------------------
 void resize(int wW, int wH) {
 	// Viewport set up     
 	Vp.w = wW; Vp.h = wH;
@@ -533,6 +573,12 @@ void resize(int wW, int wH) {
 	glutPostRedisplay();
 }
 
+//-------------------------------------------------------------------------
+// updateProjection
+// 설명 : 현재 화면 모드를 정사영으로 할지 원근투영으로 할 지를 결정
+// 인수 : void
+// 반환 : void
+//-------------------------------------------------------------------------
 void updateProjection() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -546,7 +592,43 @@ void updateProjection() {
 	}
 }
 //-------------------------------------------------------------------------
+// idle
+// 설명 : 아무것도 하지 않을 때의 행동을 정의. 
+// 인수 : void
+// 반환 : void
+//-------------------------------------------------------------------------
+void idle(void)
+{
+	//키가 눌려진 상태일 때 카메라를 이동시키는 부분.
+	if (Presskey[0] == true)
+	{
+		moveCamera(_IN);
+		updateCamera();
+	}
+	if (Presskey[1] == true)
+	{
+		moveCamera(_OUT);
+		updateCamera();
+	}
+	if (Presskey[2] == true)
+	{
+		moveCamera(RIGHT);
+		updateCamera();
+	}
+	if (Presskey[3] == true)
+	{
+		moveCamera(LEFT);
+		updateCamera();
+	}
+	glutPostRedisplay();
+}
 
+//-------------------------------------------------------------------------
+// display
+// 설명 : 화면을 출력할 때의 모드를 정의함.
+// 인수 : void
+// 반환 : void
+//-------------------------------------------------------------------------
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -576,6 +658,7 @@ void display(void)
 
 	glutSwapBuffers();
 }
+
 //-------------------------------------------------------------------------
 // setCamera
 // 설명 : 주어진 벡터를 받아 카메라와 카메라 시점을 이동시킴
@@ -599,6 +682,7 @@ void setCamera(GLdouble x, GLdouble y, GLdouble z)
 	currentView->lookY += y;
 	currentView->lookZ += z;
 }
+
 //-------------------------------------------------------------------------
 // moveCamera 
 // 설명 : 카메라와 카메라 시점을 옮기는 함수
@@ -667,6 +751,7 @@ void moveCamera(unsigned int direction) {
 		break;
 	}
 }
+
 //-------------------------------------------------------------------------
 // rotateCamera
 // 설명 : 시계방향, 또는 시계반대방향을 받아 그에 맞게 카메라를 회전
@@ -691,6 +776,7 @@ void rotateCamera(unsigned int direction) {
 	uZ /= length;
 	rotate(currentView->eyeX, currentView->eyeY, currentView->eyeZ, uX, uY, uZ, 0.1);
 }
+
 //-------------------------------------------------------------------------
 // rotateView
 // 설명 : 카메라 시점을 방향에 따라 이동시켜줌
@@ -776,6 +862,34 @@ void rotate(double &vx, double &vy, double &vz, double ax, double ay, double az,
 }
 
 //-------------------------------------------------------------------------
+// keyUp
+// 설명 : 키보드에서 버튼이 떼였을 때 행동을 정의함.
+// 인수 : key - 입력받은 키값
+// 인수 : mX  - 사용안함
+// 인수 : mY  - 사용안함
+// 반환 : void
+//-------------------------------------------------------------------------
+void keyUp(unsigned char key, int mX, int mY)
+{
+	switch(key)
+	{
+		case 'w' :
+			Presskey[0] = false;
+			break;
+		case 's' :
+			Presskey[1] = false;
+			break;
+		case 'd' :
+			Presskey[2] = false;
+			break;
+		case 'a' :
+			Presskey[3] = false;
+			break;
+	}
+
+}
+
+//-------------------------------------------------------------------------
 // keyPres
 // 설명 : 키를 이용하여 행동을 결정
 // 인수 : key - 입력받은 키값
@@ -845,20 +959,16 @@ void keyPres(unsigned char key, int mX, int mY) {
 		updateProjection();
 	}
 	else if (key == 'w') {
-		moveCamera(_IN);
-		updateCamera();
+		Presskey[0] = true;
 	}
 	else if (key == 's') {
-		moveCamera(_OUT);
-		updateCamera();
+		Presskey[1] = true;
 	}
 	else if (key == 'd') {
-		moveCamera(RIGHT);
-		updateCamera();
+		Presskey[2] = true;
 	}
 	else if (key == 'a') {
-		moveCamera(LEFT);
-		updateCamera();
+		Presskey[3] = true;
 	}
 	else if (key == 'v') {
 		moveCamera(UP);
@@ -904,11 +1014,29 @@ void keySp(int key, int mX, int mY) {
 	// 현재창의 업데이트가 필요할 경우 다시 디스플레이
 	if (need_redisplay) glutPostRedisplay();
 }
-void mouseFunc(int button1, int button2, int x, int y)
+
+//-------------------------------------------------------------------------
+// mouseFunc
+// 설명 : 마우스를 클릭 했을 때 행동을 정의함
+// 인수 : button1 - 마우스 왼쪽버튼의 상태
+// 인수 : button2 - 마우스 오른쪽버튼의 상태
+// 인수 : x  - 클릭한 점의 x 좌표
+// 인수 : y  - 클릭한 점의 y 좌표
+// 반환 : void
+//-------------------------------------------------------------------------
+void mouseFunc(int b1, int b2, int x, int y)
 {
 	bpx = x;
 	bpy = y;
 }
+
+//-------------------------------------------------------------------------
+// motionFunc
+// 설명 : 마우스를 드래그할 때의 행동을 정의함
+// 인수 : x  - 현재 마우스의 x 좌표
+// 인수 : y  - 현재 마우스의 y 좌표
+// 반환 : void
+//-------------------------------------------------------------------------
 void motionFunc(int x, int y)
 {
 	int bx = bpx - x;
