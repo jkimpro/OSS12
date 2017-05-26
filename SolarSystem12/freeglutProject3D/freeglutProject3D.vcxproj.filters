@@ -75,6 +75,9 @@
     <ClCompile Include="Venus.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Jupiter.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -122,12 +125,12 @@
     <ClInclude Include="Venus.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Jupiter.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\..\..\Downloads\earth.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\..\..\..\Downloads\sun.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="mars.bmp">
@@ -140,6 +143,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="sun.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="jupiter.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

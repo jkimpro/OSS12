@@ -73,6 +73,7 @@
     <ClCompile Include="Earth.cpp" />
     <ClCompile Include="glm.cpp" />
     <ClCompile Include="Group.cpp" />
+    <ClCompile Include="Jupiter.cpp" />
     <ClCompile Include="main1.cpp" />
     <ClCompile Include="Disk.cpp" />
     <ClCompile Include="Mars.cpp" />
@@ -92,6 +93,7 @@
     <ClInclude Include="glm.h" />
     <ClInclude Include="Group.h" />
     <ClInclude Include="Disk.h" />
+    <ClInclude Include="Jupiter.h" />
     <ClInclude Include="Mars.h" />
     <ClInclude Include="Mercury.h" />
     <ClInclude Include="Mesh.h" />
@@ -104,7 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\..\..\Downloads\earth.bmp" />
-    <Image Include="..\..\..\..\..\..\Downloads\sun.bmp" />
+    <Image Include="jupiter.bmp" />
     <Image Include="mars.bmp" />
     <Image Include="mercury.bmp" />
     <Image Include="sun.bmp" />
