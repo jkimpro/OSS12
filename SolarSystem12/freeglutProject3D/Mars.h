@@ -9,7 +9,7 @@ class Mars :
 	public Sphere				//Sphere 클래스의 Public 멤버 호출
 {
 
-private: 				// Earth 클래스의 Private 멤버
+private: 				// Mars 클래스의 Private 멤버
 	GLuint textureID;	//텍스쳐ID를  나타냄
 	void init();
 

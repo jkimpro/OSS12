@@ -27,6 +27,7 @@ Date of final modification (弥辆 荐沥老):			2017斥 5岿 16老
 #include "Sphere.h" 
 #include "Earth.h"
 #include "Mars.h"
+#include "Jupiter.h"
 #include "Disk.h" 
 #include "Satelite.h" 
 #include "Group.h"
@@ -98,18 +99,18 @@ Group root;
 Sun sun;
 
 
-
 Group mercurySystem;
 Group venusSystem;
 Group earthSystem;
 Group marsSystem;
+Group jupiterSystem;
 
 Sun* sunRef;
 Mercury* mercuryRef;
 Venus* venusRef;
 Earth* earthRef;
 Mars* marsRef;
-
+Jupiter* jupiterRef;
 
 
 Satelite satelite;
@@ -253,6 +254,19 @@ int main(int argc, char* argv[])
 	marsSystem.setAngleVector(0, 1, 0);
 
 
+	//格己 彼档 积己//
+	Disk jupiterOrbit(280, 284, 200, 10);
+	jupiterOrbit.setColor(0.8, 0.8, 0.0, 0.0);
+	jupiterOrbit.setAngle(90);
+	jupiterOrbit.setAngleVector(1, 0, 0);
+	solarSystem.addChildren(&jupiterOrbit);
+
+	// Jupiter system //
+	solarSystem.addChildren(&jupiterSystem);
+	jupiterSystem.setX(282);
+	jupiterSystem.setAngleVector(0, 1, 0);
+	
+
 	//荐己 积己//
 	Mercury mercury;
 	mercuryRef = &mercury;
@@ -277,6 +291,13 @@ int main(int argc, char* argv[])
 	marsRef = &mars;
 	mars.setColor(1, 1, 1, 1);
 	mars.setAngleVector(0, 0, 1);
+
+
+	//拳己 积己//
+	Jupiter jupiter;
+	jupiterRef = &jupiter;
+	jupiter.setColor(1, 1, 1, 1);
+	jupiter.setAngleVector(0, 0, 1);
 
 
 	Group mercuryContainer;
@@ -305,6 +326,12 @@ int main(int argc, char* argv[])
 	marsContainer.setAngle(-90);
 	marsContainer.setAngleVector(1, 0, 0);
 	marsSystem.addChildren(&marsContainer);
+
+	Group jupiterContainer;
+	jupiterContainer.addChildren(&jupiter);
+	jupiterContainer.setAngle(-90);
+	jupiterContainer.setAngleVector(1, 0, 0);
+	jupiterSystem.addChildren(&jupiterContainer);
 
 	//崔彼档 积己
 	Disk moonOrbit(52, 54, 60, 1);
@@ -379,6 +406,9 @@ void TimerFunction(int value)
 
 		marsSystem.setAngle(marsSystem.getAngle() + 2.5);
 		(*marsRef).setAngle((*marsRef).getAngle() + 4);
+
+		jupiterSystem.setAngle(jupiterSystem.getAngle() + 2.5);
+		(*jupiterRef).setAngle((*jupiterRef).getAngle() + 4);
 
 		earthSystem.setAngle(earthSystem.getAngle() + 4);
 		(*earthRef).setAngle((*earthRef).getAngle() + 6);
@@ -924,6 +954,10 @@ void keyPres(unsigned char key, int mX, int mY) {
 
 		marsSystem.setAngle(marsSystem.getAngle() + 2.5);
 		(*marsRef).setAngle((*marsRef).getAngle() + 4);
+
+		jupiterSystem.setAngle(jupiterSystem.getAngle() + 2.5);
+		(*jupiterRef).setAngle((*jupiterRef).getAngle() + 4);
+
 
 		earthSystem.setAngle(earthSystem.getAngle() + 4);
 		(*earthRef).setAngle((*earthRef).getAngle() + 6);

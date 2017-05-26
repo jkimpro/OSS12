@@ -181,7 +181,7 @@ void Actor::render()
 	draw();                                                     //도형 객체를 화면에 그려주는 함수 
 	if( a==0)
 	{
-	glPopAttrib();
+		glPopAttrib();
 	}
 	glPopMatrix();                                           //행렬 스택에 저장된 마지막 모델 뷰 행렬 반환 
 }
