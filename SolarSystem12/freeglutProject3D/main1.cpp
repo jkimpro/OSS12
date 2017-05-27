@@ -77,6 +77,8 @@ bool automatic = false;
 bool Presskey[4] = {0,};
 int bpx, bpy;
 
+bool leftButton = false;                                                 //마우스 왼쪽 버튼이 눌려진 경우에 true
+
 viewCamera * currentView = &initial;
 GLfloat light_position1[] = { 0, 0, 0, 1.0f };
 
@@ -1058,10 +1060,19 @@ void keySp(int key, int mX, int mY) {
 // 인수 : y  - 클릭한 점의 y 좌표
 // 반환 : void
 //-------------------------------------------------------------------------
-void mouseFunc(int b1, int b2, int x, int y)
+void mouseFunc(int button1, int button2, int x, int y)
 {
-	bpx = x;
-	bpy = y;
+	if (button1 == GLUT_LEFT_BUTTON && button2 == GLUT_DOWN)
+	{
+		leftButton = true;
+		bpx = x;
+		bpy = y;
+	}
+
+	if (button1 == GLUT_LEFT_BUTTON && button2 == GLUT_UP)
+	{
+		leftButton = false;
+	}
 }
 
 //-------------------------------------------------------------------------
@@ -1073,12 +1084,15 @@ void mouseFunc(int b1, int b2, int x, int y)
 //-------------------------------------------------------------------------
 void motionFunc(int x, int y)
 {
-	int bx = bpx - x;
-	int by = bpy - y;
-	bpx = x;
-	bpy = y;
-	rotateView(bx, by);
-
+	if (leftButton)
+	{
+		int bx = bpx - x;
+		int by = bpy - y;
+		bpx = x;
+		bpy = y;
+		rotateView(bx, by);
+	}
 	glutPostRedisplay();
 }
 //-------------------------------------------------------------------------
+
