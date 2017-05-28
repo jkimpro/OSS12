@@ -5,22 +5,22 @@
 제한사항 : Satellite 클래스가 Actor 클래스를 상속받기 때문에 클래스 내에서 draw 함수 재정의 필요
 ********************************************************************************************/
 
-#include "satellite.h"
+#include "Satellite.h"
 
 	/* Satellite 객체 생성자 정의 */
-	satellite::satellite()
+	Satellite::Satellite()
 	{
 		scale = 20;                               //멤버 변수 scale의 값 20으로 초기화 
 	}
 	
 	/* 매개 변수 scale의 값을 인자로 하는 Satellite 생성자 */
-	satellite::satellite(GLdouble scale)
+	Satellite::Satellite(GLdouble scale)
 	{
-		satellite::scale = scale;                  //매개 변수 scale의 값을 멤버 변수 scale에 대입
+		Satellite::scale = scale;                  //매개 변수 scale의 값을 멤버 변수 scale에 대입
 	}
 
 	/* Satellite 클래스 소멸자 정의 */
-	satellite::~satellite()
+	Satellite::~Satellite()
 	{
 		//void
 	}
@@ -32,7 +32,7 @@
 	인자 : void
 	반환 : void
 	*/
-	void satellite::draw()
+	void Satellite::draw()
 	{
 		glColor3f(0.0, 0.29, 0.29);
 		glRotatef(90.0, 0.0, 1.0, 0.0);

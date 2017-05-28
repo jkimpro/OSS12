@@ -24,12 +24,15 @@ Date of final modification (弥辆 荐沥老):			2017斥 5岿 16老
 #include "Axis.h" 
 #include "Mercury.h"
 #include "Venus.h"
+#include "Uranus.h"
+#include "Naptune.h"
+#include "Saturn.h"
 #include "Sphere.h" 
 #include "Earth.h"
 #include "Mars.h"
 #include "Jupiter.h"
 #include "Disk.h" 
-#include "satellite.h" 
+#include "Satellite.h" 
 #include "Group.h"
 #include <stdio.h>
 
@@ -106,6 +109,9 @@ Group venusSystem;
 Group earthSystem;
 Group marsSystem;
 Group jupiterSystem;
+Group saturnSystem;
+Group uranusSystem;
+Group naptuneSystem;
 
 Sun* sunRef;
 Mercury* mercuryRef;
@@ -113,9 +119,11 @@ Venus* venusRef;
 Earth* earthRef;
 Mars* marsRef;
 Jupiter* jupiterRef;
+Saturn* saturnRef;
+Uranus* uranusRef;
+Naptune* naptuneRef;
 
-
-satellite satellite;
+Satellite satellite;
 Sphere moon(8, 20, 20);
 
 
@@ -268,6 +276,43 @@ int main(int argc, char* argv[])
 	jupiterSystem.setX(282);
 	jupiterSystem.setAngleVector(0, 1, 0);
 	
+	//配己 彼档 积己//
+	Disk saturnOrbit(320, 324, 200, 10);
+	saturnOrbit.setColor(0.8, 0.8, 0.0, 0.0);
+	saturnOrbit.setAngle(90);
+	saturnOrbit.setAngleVector(1, 0, 0);
+	solarSystem.addChildren(&saturnOrbit);
+
+	// Jupiter system //
+	solarSystem.addChildren(&saturnSystem);
+	saturnSystem.setX(322);
+	saturnSystem.setAngleVector(0, 1, 0);
+
+	//玫空己 彼档 积己//
+	Disk uranusOrbit(360, 364, 200, 10);
+	uranusOrbit.setColor(0.8, 0.8, 0.0, 0.0);
+	uranusOrbit.setAngle(90);
+	uranusOrbit.setAngleVector(1, 0, 0);
+	solarSystem.addChildren(&uranusOrbit);
+
+	// Uranus system //
+	solarSystem.addChildren(&uranusSystem);
+	uranusSystem.setX(362);
+	uranusSystem.setAngleVector(0, 1, 0);
+
+	//秦空己 彼档 积己//
+	Disk naptuneOrbit(400, 404, 200, 10);
+	naptuneOrbit.setColor(0.8, 0.8, 0.0, 0.0);
+	naptuneOrbit.setAngle(90);
+	naptuneOrbit.setAngleVector(1, 0, 0);
+	solarSystem.addChildren(&naptuneOrbit);
+
+	// Uranus system //
+	solarSystem.addChildren(&naptuneSystem);
+	naptuneSystem.setX(402);
+	naptuneSystem.setAngleVector(0, 1, 0);
+
+
 
 	//荐己 积己//
 	Mercury mercury;
@@ -301,6 +346,23 @@ int main(int argc, char* argv[])
 	jupiter.setColor(1, 1, 1, 1);
 	jupiter.setAngleVector(0, 0, 1);
 
+	//配己 积己//
+	Saturn saturn;
+	saturnRef = &saturn;
+	saturn.setColor(1, 1, 1, 1);
+	saturn.setAngleVector(0, 0, 1);
+
+	//玫空己 积己//
+	Uranus uranus;
+	uranusRef = &uranus;
+	uranus.setColor(1, 1, 1, 1);
+	uranus.setAngleVector(0, 0, 1);
+
+	//秦空己 积己//
+	Naptune naptune;
+	naptuneRef = &naptune;
+	naptune.setColor(1, 1, 1, 1);
+	naptune.setAngleVector(0, 0, 1);
 
 	Group mercuryContainer;
 	mercuryContainer.addChildren(&mercury);
@@ -334,6 +396,24 @@ int main(int argc, char* argv[])
 	jupiterContainer.setAngle(-90);
 	jupiterContainer.setAngleVector(1, 0, 0);
 	jupiterSystem.addChildren(&jupiterContainer);
+
+	Group saturnContainer;
+	saturnContainer.addChildren(&saturn);
+	saturnContainer.setAngle(-90);
+	saturnContainer.setAngleVector(1, 0, 0);
+	saturnSystem.addChildren(&saturnContainer);
+
+	Group uranusContainer;
+	uranusContainer.addChildren(&uranus);
+	uranusContainer.setAngle(-90);
+	uranusContainer.setAngleVector(1, 0, 0);
+	uranusSystem.addChildren(&uranusContainer);
+
+	Group naptuneContainer;
+	naptuneContainer.addChildren(&naptune);
+	naptuneContainer.setAngle(-90);
+	naptuneContainer.setAngleVector(1, 0, 0);
+	naptuneSystem.addChildren(&naptuneContainer);
 
 	//崔彼档 积己
 	Disk moonOrbit(52, 54, 60, 1);
@@ -411,6 +491,17 @@ void TimerFunction(int value)
 
 		jupiterSystem.setAngle(jupiterSystem.getAngle() + 2.5);
 		(*jupiterRef).setAngle((*jupiterRef).getAngle() + 4);
+
+		saturnSystem.setAngle(saturnSystem.getAngle() + 2.5);
+		(*saturnRef).setAngle((*saturnRef).getAngle() + 4);
+
+		uranusSystem.setAngle(uranusSystem.getAngle() + 2.5);
+		(*uranusRef).setAngle((*uranusRef).getAngle() + 4);
+
+		naptuneSystem.setAngle(naptuneSystem.getAngle() + 2.5);
+		(*naptuneRef).setAngle((*naptuneRef).getAngle() + 4);
+
+
 
 		earthSystem.setAngle(earthSystem.getAngle() + 4);
 		(*earthRef).setAngle((*earthRef).getAngle() + 6);
@@ -959,6 +1050,16 @@ void keyPres(unsigned char key, int mX, int mY) {
 
 		jupiterSystem.setAngle(jupiterSystem.getAngle() + 2.5);
 		(*jupiterRef).setAngle((*jupiterRef).getAngle() + 4);
+
+		saturnSystem.setAngle(saturnSystem.getAngle() + 2.5);
+		(*saturnRef).setAngle((*saturnRef).getAngle() + 4);
+
+		uranusSystem.setAngle(uranusSystem.getAngle() + 2.5);
+		(*uranusRef).setAngle((*uranusRef).getAngle() + 4);
+
+		naptuneSystem.setAngle(naptuneSystem.getAngle() + 2.5);
+		(*naptuneRef).setAngle((*naptuneRef).getAngle() + 4);
+
 
 
 		earthSystem.setAngle(earthSystem.getAngle() + 4);

@@ -78,6 +78,15 @@
     <ClCompile Include="Satellite.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Uranus.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Naptune.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Saturn.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -128,6 +137,15 @@
     <ClInclude Include="Satellite.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Saturn.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Uranus.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Naptune.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\..\..\Downloads\earth.bmp">
@@ -146,6 +164,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="jupiter.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="neptune.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="saturn.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="uranus.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
