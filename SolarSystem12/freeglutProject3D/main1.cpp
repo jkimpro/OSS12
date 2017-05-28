@@ -124,6 +124,7 @@ Uranus* uranusRef;
 Naptune* naptuneRef;
 
 Satellite satellite;
+
 Sphere moon(8, 20, 20);
 
 
@@ -340,7 +341,7 @@ int main(int argc, char* argv[])
 	mars.setAngleVector(0, 0, 1);
 
 
-	//화성 생성//
+	//목성 생성//
 	Jupiter jupiter;
 	jupiterRef = &jupiter;
 	jupiter.setColor(1, 1, 1, 1);
@@ -451,6 +452,27 @@ int main(int argc, char* argv[])
 	plane.setAngleVector(1, 0, 0);
 	plane.setY(53);
 	earthSystem.addChildren(&plane);
+
+
+	Disk saturnUnderOrbit1(41, 60, 60, 1);
+	saturnUnderOrbit1.setColor(0.55, 0.51,0.46, 1);
+	saturnUnderOrbit1.setAngle(130);
+	saturnUnderOrbit1.setAngleVector(1, 0, 0);
+	saturnSystem.addChildren(&saturnUnderOrbit1);
+	
+	/*
+	Disk saturnUnderOrbit2(45, 49, 60, 1);
+	saturnUnderOrbit2.setColor(0.0, 0.0, 0, 1);
+	saturnUnderOrbit2.setAngle(130);
+	saturnUnderOrbit2.setAngleVector(1, 0, 0);
+	saturnSystem.addChildren(&saturnUnderOrbit2);
+
+	Disk saturnUnderOrbit3(54, 57, 60, 1);
+	saturnUnderOrbit3.setColor(0.0, 0.0, 0, 1);
+	saturnUnderOrbit3.setAngle(130);
+	saturnUnderOrbit3.setAngleVector(1, 0, 0);
+	saturnSystem.addChildren(&saturnUnderOrbit3);
+	*/
 
 	initScene();				//카메라 시점에 관한 부분 초기화
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
