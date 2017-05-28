@@ -5,22 +5,22 @@
 제한사항 : Satellite 클래스가 Actor 클래스를 상속받기 때문에 클래스 내에서 draw 함수 재정의 필요
 ********************************************************************************************/
 
-#include "Satelite.h"
+#include "satellite.h"
 
 	/* Satellite 객체 생성자 정의 */
-	Satelite::Satelite()
+	satellite::satellite()
 	{
 		scale = 20;                               //멤버 변수 scale의 값 20으로 초기화 
 	}
 	
 	/* 매개 변수 scale의 값을 인자로 하는 Satellite 생성자 */
-	Satelite::Satelite(GLdouble scale)
+	satellite::satellite(GLdouble scale)
 	{
-		Satelite::scale = scale;                  //매개 변수 scale의 값을 멤버 변수 scale에 대입
+		satellite::scale = scale;                  //매개 변수 scale의 값을 멤버 변수 scale에 대입
 	}
 
 	/* Satellite 클래스 소멸자 정의 */
-	Satelite::~Satelite()
+	satellite::~satellite()
 	{
 		//void
 	}
@@ -32,7 +32,7 @@
 	인자 : void
 	반환 : void
 	*/
-	void Satelite::draw()
+	void satellite::draw()
 	{
 		//인공 위성의 모든 도형에 기본으로 적용되는 상태 행렬
 		glRotated(90, 0, 0, 1);                                       //z축을 기준으로 90도 만큼 회전
@@ -67,7 +67,7 @@
 	인자 : void
 	반환 : void 
 	*/
-	void Satelite::drawTriangle()
+	void satellite::drawTriangle()
 	{
 		glScaled(scale, scale, scale);                         //원점에서 x, y, z축의 방향으로 거리에 각 각 scale 곱해줌, 삼각형의 크기 변경
 		glBegin(GL_TRIANGLES);                                 //삼각형을 나타냄
@@ -92,7 +92,7 @@
 	인자 : void
 	반환 : void
 	*/
-	void Satelite::drawPiramid()
+	void satellite::drawPiramid()
 	{
 		for(int i = 0; i < 4; ++i)                              //for문 4번 반복, 사각뿔 옆면의 갯수는 4개 
 		{
@@ -108,7 +108,7 @@
 	인자 : void
 	반환 : void 
 	*/
-	void Satelite::drawSquare()
+	void satellite::drawSquare()
 	{
 		glBegin(GL_QUADS);                                    //사각형을 나타냄
 		glNormal3f(0.5, 0.5, 0.5);                            //그려지는 사각형의 법선 벡터는 원점에서 (1, 1, 1)을 가리키는 벡터

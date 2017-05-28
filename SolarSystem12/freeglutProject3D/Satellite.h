@@ -5,13 +5,13 @@
 제한사항 :	Satellite 클래스가 Actor 클래스를 상속받기 때문에 클래스 내에서 draw 함수 선언 필요
 ********************************************************************************************/
 
-#ifndef SateliteH
-#define SateliteH
+#ifndef satelliteH
+#define satelliteH
 
 #include "Actor.h"
 
 /* Actor 클래스를 상속받는 Satellite 클래스 선언 */
-class Satelite : public Actor 
+class satellite : public Actor 
 {
 	/* Satellite 클래스의 private 멤버 */
 	private:
@@ -19,9 +19,9 @@ class Satelite : public Actor
 
 	/* Satellite 클래스의 public 멤버 */
 	public:
-		Satelite();                           //Satellite 객체 생성자
-		Satelite(GLdouble scale);             //매개 변수 scale의 값을 인자로 하는 Satellite 생성자
-		~Satelite();                          //Satellite 객체 소멸자
+		satellite();                           //Satellite 객체 생성자
+		satellite(GLdouble scale);             //매개 변수 scale의 값을 인자로 하는 Satellite 생성자
+		~satellite();                          //Satellite 객체 소멸자
 		void draw();                          //객체를 화면에 그려주는 함수
 		void drawTriangle();                  //삼각형 도형 그려주는 함수
 		void drawPiramid();                   //사각뿔 도형 그려주는 함수
