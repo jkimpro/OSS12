@@ -45,9 +45,6 @@
     <ClCompile Include="Disk.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Satelite.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="TextureLoader.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
@@ -78,6 +75,9 @@
     <ClCompile Include="Jupiter.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Satellite.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -93,9 +93,6 @@
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Disk.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Satelite.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="TextureLoader.h">
@@ -126,6 +123,9 @@
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Jupiter.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Satellite.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>

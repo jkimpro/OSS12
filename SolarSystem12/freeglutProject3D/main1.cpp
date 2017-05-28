@@ -29,7 +29,7 @@ Date of final modification (최종 수정일):			2017년 5월 16일
 #include "Mars.h"
 #include "Jupiter.h"
 #include "Disk.h" 
-#include "Satelite.h" 
+#include "satellite.h" 
 #include "Group.h"
 #include <stdio.h>
 
@@ -115,7 +115,7 @@ Mars* marsRef;
 Jupiter* jupiterRef;
 
 
-Satelite satelite;
+satellite satellite;
 Sphere moon(8, 20, 20);
 
 
@@ -349,15 +349,15 @@ int main(int argc, char* argv[])
 	earthSystem.addChildren(&moon);
 
 	//인공위성 궤도 생성
-	Disk sateliteOrbit(52, 54, 60, 1);
-	sateliteOrbit.setColor(0, 1, 0, 1);
-	earthSystem.addChildren(&sateliteOrbit);
+	Disk satelliteOrbit(52, 54, 60, 1);
+	satelliteOrbit.setColor(0, 1, 0, 1);
+	earthSystem.addChildren(&satelliteOrbit);
 
 	//인공위성 생성
-	satelite.setColor(0, 1, 0, 1);
-	satelite.setAngleVector(0, 0, 1);
-	satelite.setY(53);
-	earthSystem.addChildren(&satelite);
+	satellite.setColor(0, 1, 0, 1);
+	satellite.setAngleVector(0, 0, 1);
+	satellite.setY(53);
+	earthSystem.addChildren(&satellite);
 
 	//비행기 궤도 생성
 	Disk planeOrbit(52, 54, 60, 1);
@@ -414,7 +414,7 @@ void TimerFunction(int value)
 
 		earthSystem.setAngle(earthSystem.getAngle() + 4);
 		(*earthRef).setAngle((*earthRef).getAngle() + 6);
-		satelite.setAngle(satelite.getAngle() + 2);
+		satellite.setAngle(satellite.getAngle() + 2);
 		plane.setAngle(plane.getAngle() + 1);
 		moon.setAngle(moon.getAngle() + 3);
 	}
@@ -525,7 +525,7 @@ void initScene() {
 
 	sun.setAngle(0);
 	earthSystem.setAngle(0);
-	satelite.setAngle(0);
+	satellite.setAngle(0);
 	moon.setAngle(0);
 	currentView = &initial;
 
@@ -963,7 +963,7 @@ void keyPres(unsigned char key, int mX, int mY) {
 
 		earthSystem.setAngle(earthSystem.getAngle() + 4);
 		(*earthRef).setAngle((*earthRef).getAngle() + 6);
-		satelite.setAngle(satelite.getAngle() + 2);
+		satellite.setAngle(satellite.getAngle() + 2);
 		plane.setAngle(plane.getAngle() + 1);
 		moon.setAngle(moon.getAngle() + 3);
 	}
