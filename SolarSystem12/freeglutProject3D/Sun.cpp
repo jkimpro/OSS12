@@ -3,7 +3,7 @@
 #include "TextureLoader.h"
 
 /* Sphere 클래스를 상속 받는 Sun 클래스 생성자 정의 */
-Sun::Sun() : Sphere(60, 45, 45)
+Sun::Sun() : Sphere(30, 45, 45)
 {
 	init();
 }

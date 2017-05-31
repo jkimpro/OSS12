@@ -22,6 +22,7 @@ Date of final modification (최종 수정일):			2017년 5월 16일
 #include "Mesh.h"
 #include "Sun.h"
 #include "Axis.h" 
+#include "Background.h"
 #include "Mercury.h"
 #include "Venus.h"
 #include "Uranus.h"
@@ -62,7 +63,7 @@ struct viewVolume {
 	GLdouble xRight, xLeft;
 	GLdouble yTop, yBot;
 	GLdouble zNear, zFar;
-} Pj = { 350, -350, 350,-350, 1, 1000 };
+} Pj = { 350, -350, 350,-350, 1, 5000 };
 
 typedef struct randomStar
 {
@@ -75,9 +76,12 @@ RandomStar star[80];
 
 
 GLdouble scale = 1;
+int year = 1982;
+double date = 0;
+bool orbit = false;
 bool ortho = false;
 bool automatic = false;
-bool Presskey[4] = {0,};
+bool Presskey[8] = {0,};
 int bpx, bpy;
 
 bool leftButton = false;                                                 //마우스 왼쪽 버튼이 눌려진 경우에 true
@@ -103,7 +107,7 @@ Mesh plane("f-16.obj", 20);
 Group root;
 Sun sun;
 
-
+Group backgroundSystem;
 Group mercurySystem;
 Group venusSystem;
 Group earthSystem;
@@ -113,7 +117,18 @@ Group saturnSystem;
 Group uranusSystem;
 Group naptuneSystem;
 
+Disk mercuryOrbit(40, 40.5, 100, 10);
+Disk venusOrbit(70, 70.5, 100, 10);
+Disk earthOrbit(100, 100.5, 200, 10);
+Disk marsOrbit(150, 150.5, 200, 10);
+Disk jupiterOrbit(520, 522, 200, 10);
+Disk saturnOrbit(950, 952, 200, 10);
+Disk uranusOrbit(1920, 1922, 200, 10);
+Disk naptuneOrbit(3010, 3012, 200, 10);
+Disk moonOrbit(3, 3.2, 60, 1);
+
 Sun* sunRef;
+Background* backgroundRef;
 Mercury* mercuryRef;
 Venus* venusRef;
 Earth* earthRef;
@@ -124,7 +139,7 @@ Uranus* uranusRef;
 Naptune* naptuneRef;
 
 Satellite satellite;
-Sphere moon(8, 20, 20);
+Sphere moon(0.2, 20, 20);
 
 
 //-------------------------------------------------------------------------
@@ -150,15 +165,16 @@ void initGL();
 void resize(int wW, int wH);
 void idle();
 void display();
+void SetAngle();
 void mouseFunc(int b1, int b2, int x, int y);
 void motionFunc(int x, int y);
+void keySpUp(int key, int mX, int mY);
 void keyUp(unsigned char key, int mX, int mY);
 void keyPres(unsigned char key, int mX, int mY);
 void keySp(int key, int mX, int mY);
 void setCamera(GLdouble x, GLdouble y, GLdouble z);
 void rotateCamera(unsigned int direction);
 void myMenu(int id);
-void TimerFunction(int value);
 
 
 //-------------------------------------------------------------------------
@@ -185,6 +201,7 @@ int main(int argc, char* argv[])
 	glutMouseFunc(mouseFunc);
 	glutKeyboardFunc(keyPres);
 	glutKeyboardUpFunc(keyUp);
+	glutSpecialUpFunc(keySpUp);
 	glutSpecialFunc(keySp);
 	glutIdleFunc(idle);
 	// OpenGL basic setting
@@ -203,9 +220,12 @@ int main(int argc, char* argv[])
 	solarSystem.addChildren(&sun);
 	sun.setAngleVector(0, 1, 0);
 
+	//배경 생성
+	solarSystem.addChildren(&backgroundSystem);
+	backgroundSystem.setX(0);
+	backgroundSystem.setAngleVector(0, 1, 0);
 
 	//수성 궤도 생성
-	Disk mercuryOrbit(80, 84, 100, 10);
 	mercuryOrbit.setColor(0.5f, 0.5f, 0.0f, 0.0f);
 	mercuryOrbit.setAngle(90);
 	mercuryOrbit.setAngleVector(1, 0, 0);
@@ -213,12 +233,11 @@ int main(int argc, char* argv[])
 
 	// Mercury system//
 	solarSystem.addChildren(&mercurySystem);
-	mercurySystem.setX(82);
+	mercurySystem.setX(40.25);
 	mercurySystem.setAngleVector(0, 1, 0);
 
 
-	//금성 궤도 생성
-	Disk venusOrbit(120, 124, 100, 10);
+	//금성 궤도 생성	
 	venusOrbit.setColor(0.6, 0.6, 0.0, 0.0);
 	venusOrbit.setAngle(90);
 	venusOrbit.setAngleVector(1, 0, 0);
@@ -226,13 +245,10 @@ int main(int argc, char* argv[])
 
 	// Venus system//
 	solarSystem.addChildren(&venusSystem);
-	venusSystem.setX(122);
+	venusSystem.setX(70.25);
 	venusSystem.setAngleVector(0, 1, 0);
 
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//지구 궤도 생성
-	Disk earthOrbit(180, 184, 200, 10);
 	earthOrbit.setColor(0.7, 0.7, 0.0, 0.0);
 	earthOrbit.setAngle(90);
 	earthOrbit.setAngleVector(1, 0, 0);
@@ -240,19 +256,10 @@ int main(int argc, char* argv[])
 
 	// Earth system//
 	solarSystem.addChildren(&earthSystem);
-	earthSystem.setX(182);
+	earthSystem.setX(100.25);
 	earthSystem.setAngleVector(0, 1, 0);
 
-	/*
-	innerRadius = 128;	//안쪽 반지름 값을 128로 초기화
-	outerRadius = 132;	//바깥쪽 반지름 값을 132로 초기화
-	slices = 180;		//슬라이스 값을 180로 초기화
-	loops = 1;		//루프(스택) 값을 1로 초기화
-	*/
-
-
-	//화성 궤도 생성//
-	Disk marsOrbit(230, 234, 200, 10);
+	//화성 궤도 생성//	
 	marsOrbit.setColor(0.8, 0.8, 0.0, 0.0);
 	marsOrbit.setAngle(90);
 	marsOrbit.setAngleVector(1, 0, 0);
@@ -260,12 +267,11 @@ int main(int argc, char* argv[])
 
 	// Mars system //
 	solarSystem.addChildren(&marsSystem);
-	marsSystem.setX(232);
+	marsSystem.setX(150.25);
 	marsSystem.setAngleVector(0, 1, 0);
 
 
-	//목성 궤도 생성//
-	Disk jupiterOrbit(280, 284, 200, 10);
+	//목성 궤도 생성//	
 	jupiterOrbit.setColor(0.8, 0.8, 0.0, 0.0);
 	jupiterOrbit.setAngle(90);
 	jupiterOrbit.setAngleVector(1, 0, 0);
@@ -273,23 +279,21 @@ int main(int argc, char* argv[])
 
 	// Jupiter system //
 	solarSystem.addChildren(&jupiterSystem);
-	jupiterSystem.setX(282);
+	jupiterSystem.setX(522);
 	jupiterSystem.setAngleVector(0, 1, 0);
 	
-	//토성 궤도 생성//
-	Disk saturnOrbit(320, 324, 200, 10);
+	//토성 궤도 생성//	
 	saturnOrbit.setColor(0.8, 0.8, 0.0, 0.0);
 	saturnOrbit.setAngle(90);
 	saturnOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&saturnOrbit);
 
-	// Jupiter system //
+	// Saturn system //
 	solarSystem.addChildren(&saturnSystem);
-	saturnSystem.setX(322);
+	saturnSystem.setX(952);
 	saturnSystem.setAngleVector(0, 1, 0);
 
-	//천왕성 궤도 생성//
-	Disk uranusOrbit(360, 364, 200, 10);
+	//천왕성 궤도 생성//	
 	uranusOrbit.setColor(0.8, 0.8, 0.0, 0.0);
 	uranusOrbit.setAngle(90);
 	uranusOrbit.setAngleVector(1, 0, 0);
@@ -297,11 +301,10 @@ int main(int argc, char* argv[])
 
 	// Uranus system //
 	solarSystem.addChildren(&uranusSystem);
-	uranusSystem.setX(362);
+	uranusSystem.setX(1922);
 	uranusSystem.setAngleVector(0, 1, 0);
 
-	//해왕성 궤도 생성//
-	Disk naptuneOrbit(400, 404, 200, 10);
+	//해왕성 궤도 생성//	
 	naptuneOrbit.setColor(0.8, 0.8, 0.0, 0.0);
 	naptuneOrbit.setAngle(90);
 	naptuneOrbit.setAngleVector(1, 0, 0);
@@ -309,10 +312,14 @@ int main(int argc, char* argv[])
 
 	// Uranus system //
 	solarSystem.addChildren(&naptuneSystem);
-	naptuneSystem.setX(402);
+	naptuneSystem.setX(3012);
 	naptuneSystem.setAngleVector(0, 1, 0);
 
-
+	//배경 생성//
+	Background background;
+	backgroundRef = &background;
+	background.setColor(1, 1, 1, 1);
+	background.setAngleVector(0, 0, 1);
 
 	//수성 생성//
 	Mercury mercury;
@@ -363,6 +370,12 @@ int main(int argc, char* argv[])
 	naptuneRef = &naptune;
 	naptune.setColor(1, 1, 1, 1);
 	naptune.setAngleVector(0, 0, 1);
+
+	Group backgroundContainer;
+	backgroundContainer.addChildren(&background);
+	backgroundContainer.setAngle(-90);
+	backgroundContainer.setAngleVector(1, 0, 0);
+	backgroundSystem.addChildren(&backgroundContainer);
 
 	Group mercuryContainer;
 	mercuryContainer.addChildren(&mercury);
@@ -415,32 +428,33 @@ int main(int argc, char* argv[])
 	naptuneContainer.setAngleVector(1, 0, 0);
 	naptuneSystem.addChildren(&naptuneContainer);
 
-	//달궤도 생성
-	Disk moonOrbit(52, 54, 60, 1);
+	//달궤도 생성	
 	moonOrbit.setColor(1, 1, 1, 1);
 	moonOrbit.setAngle(90);
 	moonOrbit.setAngleVector(1, 0, 0);
-	earthSystem.addChildren(&moonOrbit);
+	if (orbit) earthSystem.addChildren(&moonOrbit);
 
 	//달 생성
 	moon.setColor(1, 1, 1, 1);
 	moon.setAngleVector(0, 1, 0);
-	moon.setX(53);
+	moon.setX(4.1);
 	earthSystem.addChildren(&moon);
 
+	/*
 	//인공위성 궤도 생성
-	Disk satelliteOrbit(52, 54, 60, 1);
+	Disk satelliteOrbit(3, 3.2, 60, 1);
 	satelliteOrbit.setColor(0, 1, 0, 1);
 	earthSystem.addChildren(&satelliteOrbit);
-
+	
 	//인공위성 생성
 	satellite.setColor(0, 1, 0, 1);
 	satellite.setAngleVector(0, 0, 1);
-	satellite.setY(53);
+	satellite.setY(3.1);
 	earthSystem.addChildren(&satellite);
 
+	
 	//비행기 궤도 생성
-	Disk planeOrbit(52, 54, 60, 1);
+	Disk planeOrbit(3, 3.2, 60, 1);
 	planeOrbit.setColor(0, 1, 1, 1);
 	planeOrbit.setAngle(90);
 	planeOrbit.setAngleVector(0, 1, 0);
@@ -449,8 +463,9 @@ int main(int argc, char* argv[])
 	//비행기 생성
 	plane.setColor(0, 1, 1, 1);
 	plane.setAngleVector(1, 0, 0);
-	plane.setY(53);
+	plane.setY(3.1);
 	earthSystem.addChildren(&plane);
+	*/
 
 	initScene();				//카메라 시점에 관한 부분 초기화
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
@@ -460,57 +475,9 @@ int main(int argc, char* argv[])
 	glutAddMenuEntry("Maually", 2);
 	glutAddMenuEntry("Quit", 3);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
-	glutTimerFunc(1000 / 60, TimerFunction, 1);
 
 	glutMainLoop();  //glutMainLoopEvent(); 내장함수에 따라서 진행
-
 	return 0;
-}
-
-//-------------------------------------------------------------------------
-// TimerFunction
-// 설명 : 시간별로 호출되는 함수. 자동 회전할 때 사용된다.
-// 인수 : id
-// 반환 : void
-//-------------------------------------------------------------------------
-void TimerFunction(int value)
-{
-	if (automatic)
-	{
-		sun.setAngle(sun.getAngle() + 5);
-
-		mercurySystem.setAngle(mercurySystem.getAngle() + 2.5);
-		(*mercuryRef).setAngle((*mercuryRef).getAngle() + 4);
-
-		venusSystem.setAngle(venusSystem.getAngle() + 2.5);
-		(*venusRef).setAngle((*venusRef).getAngle() + 4);
-
-
-		marsSystem.setAngle(marsSystem.getAngle() + 2.5);
-		(*marsRef).setAngle((*marsRef).getAngle() + 4);
-
-		jupiterSystem.setAngle(jupiterSystem.getAngle() + 2.5);
-		(*jupiterRef).setAngle((*jupiterRef).getAngle() + 4);
-
-		saturnSystem.setAngle(saturnSystem.getAngle() + 2.5);
-		(*saturnRef).setAngle((*saturnRef).getAngle() + 4);
-
-		uranusSystem.setAngle(uranusSystem.getAngle() + 2.5);
-		(*uranusRef).setAngle((*uranusRef).getAngle() + 4);
-
-		naptuneSystem.setAngle(naptuneSystem.getAngle() + 2.5);
-		(*naptuneRef).setAngle((*naptuneRef).getAngle() + 4);
-
-
-
-		earthSystem.setAngle(earthSystem.getAngle() + 4);
-		(*earthRef).setAngle((*earthRef).getAngle() + 6);
-		satellite.setAngle(satellite.getAngle() + 2);
-		plane.setAngle(plane.getAngle() + 1);
-		moon.setAngle(moon.getAngle() + 3);
-	}
-	glutPostRedisplay();
-	glutTimerFunc(1000/60, TimerFunction, 1);
 }
 
 //-------------------------------------------------------------------------
@@ -584,7 +551,7 @@ void initGL() {
 	// 빛 퐁셰이딩 초기화
 	glEnable(GL_LIGHT1);
 	GLfloat light_specular1[] = { 0.4f, 0.4f, 0.4f, 1.0f };
-	GLfloat light_diffuse1[] = { 0.4f, 0.4f, 0.4f, 1.0f };
+	GLfloat light_diffuse1[] = { 0.4f, 0.4f, 0.4f, 0.4f };
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse1);
 	glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular1);
 	glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient);
@@ -665,6 +632,52 @@ void initScene() {
 	updateProjection();
 }
 
+void SetAngle()
+{
+	GLdouble day = 1.0139;
+	GLdouble cicle = 90;
+	date += day;
+	sun.setAngle(sun.getAngle() + 5);
+
+	mercurySystem.setAngle(mercurySystem.getAngle() + day/0.24);
+	(*mercuryRef).setAngle((*mercuryRef).getAngle() + cicle/59);
+
+	venusSystem.setAngle(venusSystem.getAngle() + day/0.62);
+	(*venusRef).setAngle((*venusRef).getAngle() + cicle/243);
+
+	earthSystem.setAngle(earthSystem.getAngle() + day);
+	(*earthRef).setAngle((*earthRef).getAngle() + cicle);
+
+	marsSystem.setAngle(marsSystem.getAngle() + day/1.88);
+	(*marsRef).setAngle((*marsRef).getAngle() + cicle/1.03);
+
+	jupiterSystem.setAngle(jupiterSystem.getAngle() + day/11.86);
+	(*jupiterRef).setAngle((*jupiterRef).getAngle() + cicle/0.41);
+
+	saturnSystem.setAngle(saturnSystem.getAngle() + day/29.46);
+	(*saturnRef).setAngle((*saturnRef).getAngle() + cicle/0.44);
+
+	uranusSystem.setAngle(uranusSystem.getAngle() + day/84.02);
+	(*uranusRef).setAngle((*uranusRef).getAngle() + cicle/0.65);
+
+	naptuneSystem.setAngle(naptuneSystem.getAngle() + day/164.77);
+	(*naptuneRef).setAngle((*naptuneRef).getAngle() + cicle/0.77);
+
+	satellite.setAngle(satellite.getAngle() + 2);
+	plane.setAngle(plane.getAngle() + 1);
+	moon.setAngle(moon.getAngle() + 3);
+
+	system("cls");
+	printf("%d년 %d일", year, (int)date);
+
+	if (date > 360)
+	{		
+		date = date - 360;
+		year++;		
+	}
+
+}
+
 //-------------------------------------------------------------------------
 // updateCamera
 // 설명 : 카메라의 새로운 위치를 설정해줌
@@ -711,7 +724,7 @@ void updateProjection() {
 		glOrtho(Pj.xLeft, Pj.xRight, Pj.yBot, Pj.yTop, Pj.zNear, Pj.zFar);
 	}
 	else {
-		gluPerspective(80, Vp.w / Vp.h, Pj.zNear, Pj.zFar);
+		gluPerspective(70, Vp.w / Vp.h, Pj.zNear, Pj.zFar);
 	}
 }
 //-------------------------------------------------------------------------
@@ -722,6 +735,34 @@ void updateProjection() {
 //-------------------------------------------------------------------------
 void idle(void)
 {
+	if (automatic)
+	{
+		SetAngle();
+	}
+	//궤도를 끄고 킬수있는 기능.
+	if (orbit == false)
+	{
+		marsOrbit.setAngleVector(0, 0, 0);
+		mercuryOrbit.setAngleVector(0, 0, 0);
+		venusOrbit.setAngleVector(0, 0, 0);
+		earthOrbit.setAngleVector(0, 0, 0);
+		jupiterOrbit.setAngleVector(0, 0, 0);
+		saturnOrbit.setAngleVector(0, 0, 0);
+		naptuneOrbit.setAngleVector(0, 0, 0);
+		uranusOrbit.setAngleVector(0, 0, 0);
+	}
+	else
+	{
+		marsOrbit.setAngleVector(1, 0, 0);
+		mercuryOrbit.setAngleVector(1, 0, 0);
+		venusOrbit.setAngleVector(1, 0, 0);
+		earthOrbit.setAngleVector(1, 0, 0);
+		jupiterOrbit.setAngleVector(1, 0, 0);
+		saturnOrbit.setAngleVector(1, 0, 0);
+		naptuneOrbit.setAngleVector(1, 0, 0);
+		uranusOrbit.setAngleVector(1, 0, 0);
+
+	}
 	//키가 눌려진 상태일 때 카메라를 이동시키는 부분.
 	if (Presskey[0] == true)
 	{
@@ -741,6 +782,26 @@ void idle(void)
 	if (Presskey[3] == true)
 	{
 		moveCamera(LEFT);
+		updateCamera();
+	}
+	if (Presskey[4] == true)
+	{
+		moveCamera(RIGHT);
+		updateCamera();
+	}
+	if (Presskey[5] == true)
+	{
+		moveCamera(LEFT);
+		updateCamera();
+	}
+	if (Presskey[6] == true)
+	{
+		moveCamera(UP);
+		updateCamera();
+	}
+	if (Presskey[7] == true)
+	{
+		moveCamera(DOWN);
 		updateCamera();
 	}
 	glutPostRedisplay();
@@ -770,7 +831,7 @@ void display(void)
 		glPushMatrix();
 		glTranslatef(star[i].x, star[i].y, star[i].z);
 		glColor3f(0.7, 0.7, 0.7);
-		glutSolidSphere(1.0, 8, 8);
+		glutSolidSphere(0.3, 8, 8);
 		glPopMatrix();
 		glPopAttrib();
 	}
@@ -1011,7 +1072,33 @@ void keyUp(unsigned char key, int mX, int mY)
 	}
 
 }
+//-------------------------------------------------------------------------
+// keySpUp
+// 설명 : 키보드에서 화살표 버튼이 떼였을 때 행동을 정의함.
+// 인수 : key - 입력받은 키값
+// 인수 : mX  - 사용안함
+// 인수 : mY  - 사용안함
+// 반환 : void
+//-------------------------------------------------------------------------
+void keySpUp(int key, int mX, int mY)
+{
+	switch (key)
+	{
+	case GLUT_KEY_RIGHT:
+		Presskey[4] = false;
+		break;
+	case GLUT_KEY_LEFT:
+		Presskey[5] = false;
+		break;
+	case GLUT_KEY_UP:
+		Presskey[6] = false;
+		break;
+	case GLUT_KEY_DOWN:
+		Presskey[7] = false;
+		break;
+	}
 
+}
 //-------------------------------------------------------------------------
 // keyPres
 // 설명 : 키를 이용하여 행동을 결정
@@ -1036,37 +1123,11 @@ void keyPres(unsigned char key, int mX, int mY) {
 		}
 	}
 	else if (key == 'q') {
-		sun.setAngle(sun.getAngle() + 5);
-
-		mercurySystem.setAngle(mercurySystem.getAngle() + 2.5);
-		(*mercuryRef).setAngle((*mercuryRef).getAngle() + 4);
-
-		venusSystem.setAngle(venusSystem.getAngle() + 2.5);
-		(*venusRef).setAngle((*venusRef).getAngle() + 4);
-
-
-		marsSystem.setAngle(marsSystem.getAngle() + 2.5);
-		(*marsRef).setAngle((*marsRef).getAngle() + 4);
-
-		jupiterSystem.setAngle(jupiterSystem.getAngle() + 2.5);
-		(*jupiterRef).setAngle((*jupiterRef).getAngle() + 4);
-
-		saturnSystem.setAngle(saturnSystem.getAngle() + 2.5);
-		(*saturnRef).setAngle((*saturnRef).getAngle() + 4);
-
-		uranusSystem.setAngle(uranusSystem.getAngle() + 2.5);
-		(*uranusRef).setAngle((*uranusRef).getAngle() + 4);
-
-		naptuneSystem.setAngle(naptuneSystem.getAngle() + 2.5);
-		(*naptuneRef).setAngle((*naptuneRef).getAngle() + 4);
-
-
-
-		earthSystem.setAngle(earthSystem.getAngle() + 4);
-		(*earthRef).setAngle((*earthRef).getAngle() + 6);
-		satellite.setAngle(satellite.getAngle() + 2);
-		plane.setAngle(plane.getAngle() + 1);
-		moon.setAngle(moon.getAngle() + 3);
+		SetAngle();
+	}
+	else if (key == 'b') {
+		orbit = !orbit;
+		printf("궤도");
 	}
 	else if (key == 'i') {
 		initScene();
@@ -1141,15 +1202,21 @@ void keyPres(unsigned char key, int mX, int mY) {
 // 반환 : void
 //-------------------------------------------------------------------------
 void keySp(int key, int mX, int mY) {
-	bool need_redisplay = true;
-	if (key == GLUT_KEY_UP) glRotatef(5.0, 1.0, 0.0, 0.0);
-	else if (key == GLUT_KEY_DOWN) glRotatef(-5.0, 1.0, 0.0, 0.0);
-	else if (key == GLUT_KEY_RIGHT) glTranslatef(5.0, 0.0, 0.0);
-	else if (key == GLUT_KEY_LEFT) glTranslatef(-5.0, 0.0, 0.0);
-	else need_redisplay = false;
-
-	// 현재창의 업데이트가 필요할 경우 다시 디스플레이
-	if (need_redisplay) glutPostRedisplay();
+	switch (key)
+	{
+	case GLUT_KEY_RIGHT:
+		Presskey[4] = TRUE;
+		break;
+	case GLUT_KEY_LEFT:
+		Presskey[5] = TRUE;
+		break;
+	case GLUT_KEY_UP:
+		Presskey[6] = TRUE;
+		break;
+	case GLUT_KEY_DOWN:
+		Presskey[7] = TRUE;
+		break;
+	}
 }
 
 //-------------------------------------------------------------------------

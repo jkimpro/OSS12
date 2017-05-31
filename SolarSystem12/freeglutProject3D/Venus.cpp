@@ -3,7 +3,7 @@
 
 
 Venus::Venus()		//Earth의 생성자
-	: Sphere(20, 45, 45)	//Sphere(구)의 중심 좌표 설정
+	: Sphere(3.5, 45, 45)	//Sphere(구)의 중심 좌표 설정
 
 {
 

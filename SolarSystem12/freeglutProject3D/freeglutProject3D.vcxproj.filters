@@ -87,6 +87,9 @@
     <ClCompile Include="Saturn.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -146,6 +149,9 @@
     <ClInclude Include="Naptune.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\..\..\Downloads\earth.bmp">
@@ -173,6 +179,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="uranus.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="background.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
