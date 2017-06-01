@@ -47,7 +47,7 @@ getAngle 함수 정의
 인자 : void
 반환 : GLdouble angle
 */
-GLint Actor::getAngle()
+GLdouble Actor::getAngle()
 {
 	return angle;
 }
@@ -118,7 +118,7 @@ setAngle 함수 정의
 인자 : GLint ang
 반환 : void
 */
-void Actor::setAngle(GLint ang)
+void Actor::setAngle(GLdouble ang)
 {
 	angle = ang;
 }

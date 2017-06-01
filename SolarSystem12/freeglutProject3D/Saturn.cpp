@@ -3,7 +3,7 @@
 
 
 Saturn::Saturn()		//Earth의 생성자
-	: Sphere(40, 45, 45)	//Sphere(구)의 중심 좌표 설정
+	: Sphere(21, 45, 45)	//Sphere(구)의 중심 좌표 설정
 
 {
 

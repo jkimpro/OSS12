@@ -28,7 +28,7 @@ class Actor
 {
 	/* Actor 클래스의 private 멤버 */
 	private:
-		GLint angle;                                     //각도: 도형 객체를 회전하는 각도의 크기를 나타냄, 0에서 360까지의 값 
+		GLdouble angle;                                     //각도: 도형 객체를 회전하는 각도의 크기를 나타냄, 0에서 360까지의 값 
 		GLdouble angleX, angleY, angleZ;      //기준축: x, y, z축 중에 어떤 축을 기준으로 객체를 회전하는지 나타냄, 기준축의 값은 1.0이고 나머지는 0.0 
 		GLdouble x, y, z;                              //이동거리: 도형 객체를 원점에서 x축 방향으로 x 만큼, y축 방향으로 y만큼, z축 방향으로 z만큼 이동을 나타냄
 
@@ -41,7 +41,7 @@ class Actor
 		Actor();                                                                                             //Actor 객체 생성자
 		~Actor();                                                                                           //Actor 객체 소멸자
 
-		GLint getAngle();                                                                                //멤버 변수 angle의 값을 반환하는 함수 
+		GLdouble getAngle();                                                                                //멤버 변수 angle의 값을 반환하는 함수 
 		GLdouble getAngleX();                                                                        //멤버 변수 angleX의 값을 반환해주는 함수 
 		GLdouble getAngleY();                                                                        //멤버 변수 angleY의 값을 반환해주는 함수 
 		GLdouble getAngleZ();                                                                        //멤버 변수 angleZ의 값을 반환해주는 함수
@@ -50,7 +50,7 @@ class Actor
 		GLdouble getZ();                                                                                //멤버 변수 z의 값을 반환해주는 함수
 
 		void setAngleVector(GLdouble angX, GLdouble angY, GLdouble angZ); 	//멤버 변수 angleX, angleY, angleZ에 매개 변수 angX,angY, angX의 값을 각 각 대입하는 함수 
-		void setAngle(GLint ang); 		                                                            //멤버 변수 angle에 매개 변수 ang값을 대입하는 함수
+		void setAngle(GLdouble ang); 		                                                            //멤버 변수 angle에 매개 변수 ang값을 대입하는 함수
 		void setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a); 	                    //멤버 변수 r, g, b, a에  매개 변수 r, g, b, a의 값을 각 각 대입 하는 함수
 
 		void setX(GLdouble x);                                                                       //멤버 변수 x에 매개 변수 x의 값을 대입 하는 함수 

@@ -14,7 +14,7 @@
 
 
 	Earth::Earth()		//Earth의 생성자
-	: Sphere(30, 45, 45)	//Sphere(구)의 중심 좌표 설정
+	: Sphere(4, 45, 45)	//Sphere(구)의 중심 좌표 설정
 	
 		{
 

@@ -5,7 +5,7 @@
 
 
 Jupiter::Jupiter()
-	: Sphere(45, 45, 45)	//Sphere(구)의 중심 좌표 설정
+	: Sphere(23, 45, 45)	//Sphere(구)의 중심 좌표 설정
 
 {
 

@@ -70,6 +70,7 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Axis.cpp" />
+    <ClCompile Include="Background.cpp" />
     <ClCompile Include="Earth.cpp" />
     <ClCompile Include="glm.cpp" />
     <ClCompile Include="Group.cpp" />
@@ -92,6 +93,7 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Axis.h" />
+    <ClInclude Include="Background.h" />
     <ClInclude Include="Earth.h" />
     <ClInclude Include="glm.h" />
     <ClInclude Include="Group.h" />
@@ -112,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\..\..\Downloads\earth.bmp" />
+    <Image Include="background.bmp" />
     <Image Include="jupiter.bmp" />
     <Image Include="mars.bmp" />
     <Image Include="mercury.bmp" />
