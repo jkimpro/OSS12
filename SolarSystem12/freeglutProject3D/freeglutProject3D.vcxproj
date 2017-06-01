@@ -42,7 +42,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)freeglut\include\</AdditionalIncludeDirectories>
     </ClCompile>
@@ -99,6 +99,7 @@
     <ClInclude Include="Group.h" />
     <ClInclude Include="Disk.h" />
     <ClInclude Include="Jupiter.h" />
+    <ClInclude Include="main1.h" />
     <ClInclude Include="Mars.h" />
     <ClInclude Include="Mercury.h" />
     <ClInclude Include="Mesh.h" />

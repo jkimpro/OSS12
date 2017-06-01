@@ -7,176 +7,10 @@ OpenSource Software Project (https://github.com/okjcd123/OSS12)
 Department of Digital Contents
 김준혁 문희호 이상협 정지혜
 Date of preparation (작성일):						2017년 5월 12일
-Date of final modification (최종 수정일):			2017년 5월 16일
+Date of final modification (최종 수정일):			2017년 6월  1일
 */
-//-------------------------------------------------------------------------
-// 헤더
-//-------------------------------------------------------------------------
-#include <Windows.h>
-#include <gl/GL.h>
-#include <gl/GLU.h>
-#include <GL/freeglut.h>
-#include <time.h>
-#include <stdlib.h>
-#include <cmath>
-#include "Mesh.h"
-#include "Sun.h"
-#include "Axis.h" 
-#include "Background.h"
-#include "Mercury.h"
-#include "Venus.h"
-#include "Uranus.h"
-#include "Naptune.h"
-#include "Saturn.h"
-#include "Sphere.h" 
-#include "Earth.h"
-#include "Mars.h"
-#include "Jupiter.h"
-#include "Disk.h" 
-#include "Satellite.h" 
-#include "Group.h"
-#include <stdio.h>
 
-//-------------------------------------------------------------------------
-// 구조체 및 지역변수
-//-------------------------------------------------------------------------
-// 뷰포트, 현재 화면의 사각형의 크기
-struct viewPort { GLsizei w; GLsizei h; } Vp = { 700, 700 };
-
-// 카메라 구조체, 카메라의 위치, 보는 지점, 윗방향을 정의
-// upX, upY, upZ 는 업벡터이며 어느 방향이 위쪽인가를 정의
-struct viewCamera {
-	GLdouble eyeX, eyeY, eyeZ;
-	GLdouble lookX, lookY, lookZ;
-	GLdouble upX, upY, upZ;
-}
-initial = { 350, 350, 350, 0, 0, 0, 0, 1, 0 },
-front = { 0, 0, 550, 0,0,0, 0,1,0 },
-topView = { 0, 450, 0, 0,0,0, 1,0,1 },
-lateral = { 550, 0, 0, 0,0,0, 0,1,0 };
-
-// 투영할 공간을 정의
-// zNear - 공간의 시작지점
-// zFar  - 공간의 끝지점
-// others- 공간의 상하좌우 크기를 설정
-struct viewVolume {
-	GLdouble xRight, xLeft;
-	GLdouble yTop, yBot;
-	GLdouble zNear, zFar;
-} Pj = { 350, -350, 350,-350, 1, 5000 };
-
-typedef struct randomStar
-{
-	float x;
-	float y;
-	float z;
-}RandomStar;
-
-RandomStar star[80];
-
-
-GLdouble scale = 1;
-int year = 1982;
-double date = 0;
-bool orbit = false;
-bool ortho = false;
-bool automatic = false;
-bool Presskey[9] = {0,};
-int bpx, bpy;
-
-bool leftButton = false;                                                 //마우스 왼쪽 버튼이 눌려진 경우에 true
-
-viewCamera * currentView = &initial;
-GLfloat light_position1[] = { 0, 0, 0, 1.0f };
-
-int random(int n)//맵 범위 좌표를 위한 랜덤함수
-{
-	int num = rand();
-	if (n == 1)
-	{
-		if (num % 2 == 1) //num 숫자가 홀수일경우 -를 붙이고
-			return -rand() % 350;
-		else
-			return rand() % 350;
-	}
-}
-
-
-// 화면에 표시할 개체들을 구조체 형태로 표현
-Mesh plane("f-16.obj", 20);
-Group root;
-Sun sun;
-
-Group backgroundSystem;
-Group mercurySystem;
-Group venusSystem;
-Group earthSystem;
-Group marsSystem;
-Group jupiterSystem;
-Group saturnSystem;
-Group uranusSystem;
-Group naptuneSystem;
-
-Disk mercuryOrbit(40, 40.5, 100, 10);
-Disk venusOrbit(70, 70.5, 100, 10);
-Disk earthOrbit(100, 100.5, 200, 10);
-Disk marsOrbit(150, 150.5, 200, 10);
-Disk jupiterOrbit(520, 522, 200, 10);
-Disk saturnOrbit(950, 952, 200, 10);
-Disk uranusOrbit(1920, 1922, 200, 10);
-Disk naptuneOrbit(3010, 3012, 200, 10);
-Disk moonOrbit(3, 3.2, 60, 1);
-
-Sun* sunRef;
-Background* backgroundRef;
-Mercury* mercuryRef;
-Venus* venusRef;
-Earth* earthRef;
-Mars* marsRef;
-Jupiter* jupiterRef;
-Saturn* saturnRef;
-Uranus* uranusRef;
-Naptune* naptuneRef;
-
-Satellite satellite;
-Sphere moon(0.2, 20, 20);
-
-
-//-------------------------------------------------------------------------
-// 상수
-//-------------------------------------------------------------------------
-static const unsigned int UP = 0;
-static const unsigned int DOWN = 1;
-static const unsigned int LEFT = 2;
-static const unsigned int RIGHT = 3;
-static const unsigned int _IN = 4;
-static const unsigned int _OUT = 5;
-static const unsigned int CLOCKWISE = 6;
-static const unsigned int CCLOCKWISE = 7;
-//-------------------------------------------------------------------------
-// 함수
-//-------------------------------------------------------------------------
-void updateProjection();
-void updateCamera();
-void rotate(double &vx, double &vy, double &vz, double ax, double ay, double az, double angle);
-void moveCamera(unsigned int direction);
-void initScene();
-void initGL();
-void resize(int wW, int wH);
-void idle();
-void display();
-void SetAngle();
-void mouseFunc(int b1, int b2, int x, int y);
-void motionFunc(int x, int y);
-void keySpUp(int key, int mX, int mY);
-void keyUp(unsigned char key, int mX, int mY);
-void keyPres(unsigned char key, int mX, int mY);
-void keySp(int key, int mX, int mY);
-void setCamera(GLdouble x, GLdouble y, GLdouble z);
-void rotateCamera(unsigned int direction);
-void myMenu(int id);
-
-
+#include "main1.h"
 //-------------------------------------------------------------------------
 // main
 // 설명 : 메인. opengl 화면출력의 전체 루프를 정의함.
@@ -216,13 +50,11 @@ int main(int argc, char* argv[])
 	root.addChildren(&solarSystem);
 	solarSystem.setAngleVector(0, 1, 0);			//y축을 기준으로 회전
 
-	sun.setColor(1.0f, 1.0f, 0.0, 1.0);
-	solarSystem.addChildren(&sun);
-	sun.setAngleVector(0, 1, 0);
+	solarSystem.addChildren(&sunSystem);
+	sunSystem.setAngleVector(0, 1, 0);
 
 	//배경 생성
 	solarSystem.addChildren(&backgroundSystem);
-	backgroundSystem.setX(0);
 	backgroundSystem.setAngleVector(0, 1, 0);
 
 	//수성 궤도 생성
@@ -235,7 +67,6 @@ int main(int argc, char* argv[])
 	solarSystem.addChildren(&mercurySystem);
 	mercurySystem.setX(40.25);
 	mercurySystem.setAngleVector(0, 1, 0);
-
 
 	//금성 궤도 생성	
 	venusOrbit.setColor(0.6, 0.6, 0.0, 0.0);
@@ -315,6 +146,12 @@ int main(int argc, char* argv[])
 	naptuneSystem.setX(3012);
 	naptuneSystem.setAngleVector(0, 1, 0);
 
+	//태양//
+	Sun sun;
+	sunRef = &sun;
+	sun.setColor(1, 1, 1, 1);
+	sun.setAngleVector(0, 0, 1);
+
 	//배경 생성//
 	Background background;
 	backgroundRef = &background;
@@ -371,6 +208,12 @@ int main(int argc, char* argv[])
 	naptune.setColor(1, 1, 1, 1);
 	naptune.setAngleVector(0, 0, 1);
 
+	Group sunContainer;
+	sunContainer.addChildren(&sun);
+	sunContainer.setAngle(-90);
+	sunContainer.setAngleVector(1, 0, 0);
+	sunSystem.addChildren(&sunContainer);
+
 	Group backgroundContainer;
 	backgroundContainer.addChildren(&background);
 	backgroundContainer.setAngle(-90);
@@ -416,6 +259,12 @@ int main(int argc, char* argv[])
 	saturnContainer.setAngleVector(1, 0, 0);
 	saturnSystem.addChildren(&saturnContainer);
 
+	//토성 고리 생성	
+	ringOfSaturn.setColor(0.5, 0.5, 0.5, 1);
+	ringOfSaturn.setAngle(80);
+	ringOfSaturn.setAngleVector(1, 0, 0);
+	saturnSystem.addChildren(&ringOfSaturn);
+
 	Group uranusContainer;
 	uranusContainer.addChildren(&uranus);
 	uranusContainer.setAngle(-90);
@@ -432,7 +281,7 @@ int main(int argc, char* argv[])
 	moonOrbit.setColor(1, 1, 1, 1);
 	moonOrbit.setAngle(90);
 	moonOrbit.setAngleVector(1, 0, 0);
-	if (orbit) earthSystem.addChildren(&moonOrbit);
+	earthSystem.addChildren(&moonOrbit);
 
 	//달 생성
 	moon.setColor(1, 1, 1, 1);
@@ -581,7 +430,7 @@ void initGL() {
 //-------------------------------------------------------------------------
 void initScene() {
 
-	sun.setAngle(0);
+	sunSystem.setAngle(0);
 	earthSystem.setAngle(0);
 	satellite.setAngle(0);
 	moon.setAngle(0);
@@ -637,7 +486,7 @@ void SetAngle()
 	GLdouble day = 1.0139;
 	GLdouble cicle = 90;
 	date += day;
-	sun.setAngle(sun.getAngle() + 5);
+	sunSystem.setAngle(sunSystem.getAngle() + 5);
 
 	mercurySystem.setAngle(mercurySystem.getAngle() + day/0.24);
 	(*mercuryRef).setAngle((*mercuryRef).getAngle() + cicle/59);
@@ -735,7 +584,7 @@ void updateProjection() {
 //-------------------------------------------------------------------------
 void idle(void)
 {
-	if (automatic==true || Presskey[8]==true)
+	if (automatic==true || Presskey[CCLOCKWISE]==true)
 	{
 		SetAngle();
 	}
@@ -764,42 +613,32 @@ void idle(void)
 
 	}
 	//키가 눌려진 상태일 때 카메라를 이동시키는 부분.
-	if (Presskey[0] == true)
+	if (Presskey[_IN] == true)
 	{
 		moveCamera(_IN);
 		updateCamera();
 	}
-	if (Presskey[1] == true)
+	if (Presskey[_OUT] == true)
 	{
 		moveCamera(_OUT);
 		updateCamera();
 	}
-	if (Presskey[2] == true)
+	if (Presskey[RIGHT] == true)
 	{
 		moveCamera(RIGHT);
 		updateCamera();
 	}
-	if (Presskey[3] == true)
+	if (Presskey[LEFT] == true)
 	{
 		moveCamera(LEFT);
 		updateCamera();
 	}
-	if (Presskey[4] == true)
-	{
-		moveCamera(RIGHT);
-		updateCamera();
-	}
-	if (Presskey[5] == true)
-	{
-		moveCamera(LEFT);
-		updateCamera();
-	}
-	if (Presskey[6] == true)
+	if (Presskey[UP] == true)
 	{
 		moveCamera(UP);
 		updateCamera();
 	}
-	if (Presskey[7] == true)
+	if (Presskey[DOWN] == true)
 	{
 		moveCamera(DOWN);
 		updateCamera();
@@ -1058,23 +897,23 @@ void keyUp(unsigned char key, int mX, int mY)
 	switch(key)
 	{
 		case 'w' :
-			Presskey[0] = false;
+			Presskey[_IN] = false;
 			break;
 
 		case 's' :
-			Presskey[1] = false;
+			Presskey[_OUT] = false;
 			break;
 
 		case 'd' :
-			Presskey[2] = false;
+			Presskey[RIGHT] = false;
 			break;
 
 		case 'a' :
-			Presskey[3] = false;
+			Presskey[LEFT] = false;
 			break;
 
 		case 'q':
-			Presskey[8] = false;
+			Presskey[CCLOCKWISE] = false;
 			break;
 
 		default:
@@ -1095,19 +934,19 @@ void keySpUp(int key, int mX, int mY)
 	switch (key)
 	{
 	case GLUT_KEY_RIGHT:
-		Presskey[4] = false;
+		Presskey[RIGHT] = false;
 		break;
 
 	case GLUT_KEY_LEFT:
-		Presskey[5] = false;
+		Presskey[LEFT] = false;
 		break;
 
 	case GLUT_KEY_UP:
-		Presskey[6] = false;
+		Presskey[UP] = false;
 		break;
 
 	case GLUT_KEY_DOWN:
-		Presskey[7] = false;
+		Presskey[DOWN] = false;
 		break;
 
 	default:
@@ -1145,7 +984,7 @@ void keyPres(unsigned char key, int mX, int mY) {
 		break;
 
 	case 'q':
-		Presskey[8] = true;
+		Presskey[CCLOCKWISE] = true;
 		break;
 
 	case 'b':
@@ -1187,19 +1026,19 @@ void keyPres(unsigned char key, int mX, int mY) {
 		break;
 
 	case 'w':
-		Presskey[0] = true;
+		Presskey[_IN] = true;
 		break;
 
 	case 's':
-		Presskey[1] = true;
+		Presskey[_OUT] = true;
 		break;
 
 	case 'd':
-		Presskey[2] = true;
+		Presskey[RIGHT] = true;
 		break;
 
 	case 'a':
-		Presskey[3] = true;
+		Presskey[LEFT] = true;
 		break;
 
 	case 'r':
@@ -1232,19 +1071,19 @@ void keySp(int key, int mX, int mY) {
 	switch (key)
 	{
 	case GLUT_KEY_RIGHT:
-		Presskey[4] = TRUE;
+		Presskey[RIGHT] = TRUE;
 		break;
 
 	case GLUT_KEY_LEFT:
-		Presskey[5] = TRUE;
+		Presskey[LEFT] = TRUE;
 		break;
 
 	case GLUT_KEY_UP:
-		Presskey[6] = TRUE;
+		Presskey[UP] = TRUE;
 		break;
 
 	case GLUT_KEY_DOWN:
-		Presskey[7] = TRUE;
+		Presskey[DOWN] = TRUE;
 		break;
 
 	default :
