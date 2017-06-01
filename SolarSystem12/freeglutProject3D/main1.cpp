@@ -81,7 +81,7 @@ double date = 0;
 bool orbit = false;
 bool ortho = false;
 bool automatic = false;
-bool Presskey[8] = {0,};
+bool Presskey[9] = {0,};
 int bpx, bpy;
 
 bool leftButton = false;                                                 //마우스 왼쪽 버튼이 눌려진 경우에 true
@@ -735,7 +735,7 @@ void updateProjection() {
 //-------------------------------------------------------------------------
 void idle(void)
 {
-	if (automatic)
+	if (automatic==true || Presskey[8]==true)
 	{
 		SetAngle();
 	}
@@ -1060,14 +1060,24 @@ void keyUp(unsigned char key, int mX, int mY)
 		case 'w' :
 			Presskey[0] = false;
 			break;
+
 		case 's' :
 			Presskey[1] = false;
 			break;
+
 		case 'd' :
 			Presskey[2] = false;
 			break;
+
 		case 'a' :
 			Presskey[3] = false;
+			break;
+
+		case 'q':
+			Presskey[8] = false;
+			break;
+
+		default:
 			break;
 	}
 
@@ -1087,14 +1097,20 @@ void keySpUp(int key, int mX, int mY)
 	case GLUT_KEY_RIGHT:
 		Presskey[4] = false;
 		break;
+
 	case GLUT_KEY_LEFT:
 		Presskey[5] = false;
 		break;
+
 	case GLUT_KEY_UP:
 		Presskey[6] = false;
 		break;
+
 	case GLUT_KEY_DOWN:
 		Presskey[7] = false;
+		break;
+
+	default:
 		break;
 	}
 
@@ -1109,85 +1125,96 @@ void keySpUp(int key, int mX, int mY)
 //-------------------------------------------------------------------------
 void keyPres(unsigned char key, int mX, int mY) {
 	bool need_redisplay = true;
-	if (key == 27) {  /* Esc key */  //continue_in_main_loop = false; (**)
+
+	switch (key)
+	{
+	case 27: /* Esc key */  //continue_in_main_loop = false; (**)
 		glutLeaveMainLoop(); //glut 루프를 멈추는 Freeglut함수
-	}
-	else if (key == '+') {
+		break;
+
+	case '+':
 		if (scale < 10.) {
 			scale += 0.25; resize(Vp.w, Vp.h);
 		}
-	}
-	else if (key == '-') {
+		break;
+
+	case '-':
 		if (scale > 0.3) {
 			scale -= 0.25; resize(Vp.w, Vp.h);
 		}
-	}
-	else if (key == 'q') {
-		SetAngle();
-	}
-	else if (key == 'b') {
+		break;
+
+	case 'q':
+		Presskey[8] = true;
+		break;
+
+	case 'b':
 		orbit = !orbit;
-		printf("궤도");
-	}
-	else if (key == 'i') {
+		break;
+
+	case 'i':
 		initScene();
-	}
-	else if (key == 'x') {
+		break;
+
+	case 'x':
 		currentView = &lateral;
 		updateCamera();
-	}
-	else if (key == 'y') {
+		break;
+
+	case 'y':
 		currentView = &front;
 		updateCamera();
-	}
-	else if (key == 'z') {
+		break;
+
+	case 'z':
 		currentView = &topView;
 		updateCamera();
-	}
-	else if (key == 'p') {
+		break;
+
+	case 'p':
 		ortho = !ortho;
 		updateProjection();
-	}
-	else if (key == 'm') {
+		break;
+
+	case 'm':
 		scale += 0.05;
 		updateProjection();
-	}
-	else if (key == 'M') {
+		break;
+
+	case 'M':
 		scale -= 0.05;
 		updateProjection();
-	}
-	else if (key == 'w') {
+		break;
+
+	case 'w':
 		Presskey[0] = true;
-	}
-	else if (key == 's') {
+		break;
+
+	case 's':
 		Presskey[1] = true;
-	}
-	else if (key == 'd') {
+		break;
+
+	case 'd':
 		Presskey[2] = true;
-	}
-	else if (key == 'a') {
+		break;
+
+	case 'a':
 		Presskey[3] = true;
-	}
-	else if (key == 'v') {
-		moveCamera(UP);
-		updateCamera();
-	}
-	else if (key == 'V') {
-		moveCamera(DOWN);
-		updateCamera();
-	}
-	else if (key == 'r') {
+		break;
+
+	case 'r':
 		rotateCamera(CLOCKWISE);
 		updateCamera();
-	}
-	else if (key == 'R') {
+		break;
+
+	case 'R':
 		rotateCamera(CCLOCKWISE);
 		updateCamera();
-	}
-	else {
+		break;
+
+	default:
 		need_redisplay = false;
 	}
-
 	// 현재창의 업데이트가 필요할 경우 다시 디스플레이
 	if (need_redisplay) {
 		glutPostRedisplay();
@@ -1207,14 +1234,20 @@ void keySp(int key, int mX, int mY) {
 	case GLUT_KEY_RIGHT:
 		Presskey[4] = TRUE;
 		break;
+
 	case GLUT_KEY_LEFT:
 		Presskey[5] = TRUE;
 		break;
+
 	case GLUT_KEY_UP:
 		Presskey[6] = TRUE;
 		break;
+
 	case GLUT_KEY_DOWN:
 		Presskey[7] = TRUE;
+		break;
+
+	default :
 		break;
 	}
 }
