@@ -365,7 +365,7 @@ void myMenu(int id)
 // 반환 : void
 //-------------------------------------------------------------------------
 void initGL() {
-	for (int i = 0; i < 80; i++)			//태양계 장식 임의 좌표 저장
+	for (int i = 0; i < 1000; i++)			//태양계 장식 임의 좌표 저장
 	{
 		star[i].x = random(1);
 		star[i].y = random(1);
@@ -517,13 +517,138 @@ void SetAngle()
 	moon.setAngle(moon.getAngle() + 3);
 
 	system("cls");
-	printf("%d년 %d일", year, (int)date);
-
-	if (date > 360)
-	{		
-		date = date - 360;
-		year++;		
+	if (year % 4 == 0)
+	{
+		printf("%d년 %d월 %d일", year, month, (int)date - leapyearArr[month]);
 	}
+	else
+	{
+		printf("%d년 %d월 %d일", year, month, (int)date - normalyearArr[month]);
+	}
+
+	if (year%4 == 0) //윤년인경우
+	{
+		if (date >= 0 && date <= 31)
+		{
+			month = 1;
+		}
+		else if (date > 31 && date <= 60)
+		{
+			month = 2;
+		}
+		else if (date > 60 && date <= 91)
+		{
+			month = 3;
+		}
+		else if (date > 91 && date <=121)
+		{
+			month = 4;
+		}
+		else if (date > 121 && date <= 152)
+		{
+			month = 5;
+		}
+		else if (date > 152 && date <= 182)
+		{
+			month = 6;
+		}
+		else if (date > 182 && date <= 213)
+		{
+			month = 7;
+		}
+		else if (date > 213 && date <= 244)
+		{
+			month = 8;
+		}
+		else if (date > 244 && date <= 274)
+		{
+			month = 9;
+		}
+		else if (date > 274 && date <= 305)
+		{
+			month = 10;
+		}
+		else if (date > 305 && date <= 335)
+		{
+			month = 11;
+		}
+		else if (date > 335 && date <= 366)
+		{
+			month = 12;
+		}
+
+
+		if (date > 365)
+		{
+			date = date - 365;
+			month = 1;
+			year++;
+		}
+	}
+	else//윤년이 아닌 경우
+	{
+		if (date >= 0 && date <= 31)
+		{
+			month = 1;
+		}
+		else if (date > 31 && date <= 59)
+		{
+			month = 2;
+		}
+		else if (date > 59 && date <= 90)
+		{
+			month = 3;
+		}
+		else if (date > 90 && date <= 120)
+		{
+			month = 4;
+		}
+		else if (date > 120 && date <= 151)
+		{
+			month = 5;
+		}
+		else if (date > 151 && date <= 181)
+		{
+			month = 6;
+		}
+		else if (date > 181 && date <= 212)
+		{
+			month = 7;
+		}
+		else if (date > 212 && date <= 243)
+		{
+			month = 8;
+		}
+		else if (date > 243 && date <= 273)
+		{
+			month = 9;
+		}
+		else if (date > 273 && date <= 304)
+		{
+			month = 10;
+		}
+		else if (date > 304 && date <= 334)
+		{
+			month = 11;
+		}
+		else if (date > 334 && date <= 365)
+		{
+			month = 12;
+		}
+
+
+		if (date > 364)
+		{
+			date = date - 364;
+			month = 1;
+			year++;
+		}
+	}
+	/*if (date > 360)
+		{
+			date = date - 360;
+			year++;
+		}*/
 
 }
 
@@ -662,7 +787,7 @@ void display(void)
 	light_position1[2] = static_cast<GLfloat>((*currentView).eyeZ);
 	glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
 
-	for (int i = 0; i<80; i++)			//임의 장식별 출력
+	for (int i = 0; i<1000; i++)			//임의 장식별 출력
 	{
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		glDisable(GL_TEXTURE_2D);

@@ -74,12 +74,16 @@ typedef struct randomStar
 	float z;
 }RandomStar;
 
-RandomStar star[80];
+RandomStar star[1000];
 
 
 GLdouble scale = 1;
 int year = 1982;
-double date = 0;
+int month = 3;
+double date = 69;
+int leapyearArr[14] = {0, 0,31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366};
+int normalyearArr[14] = { 0, 0,31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365};
+
 bool orbit = false;
 bool ortho = false;
 bool automatic = false;
@@ -97,9 +101,9 @@ int random(int n)//맵 범위 좌표를 위한 랜덤함수
 	if (n == 1)
 	{
 		if (num % 2 == 1) //num 숫자가 홀수일경우 -를 붙이고
-			return -rand() % 350;
+			return -rand() % 700;
 		else
-			return rand() % 350;
+			return rand() % 700;
 	}
 }
 
