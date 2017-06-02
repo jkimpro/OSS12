@@ -316,6 +316,7 @@ int main(int argc, char* argv[])
 	earthSystem.addChildren(&plane);
 	*/
 
+
 	initScene();				//카메라 시점에 관한 부분 초기화
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 

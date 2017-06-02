@@ -119,12 +119,12 @@ setColor 함수 정의
 인자 : GLfloat r, GLfloat g, GLfloat b, GLfloat a
 반환 : void
 */
-void Actor::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
+void Actor::setColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
 {
-	Actor::r = r;
-	Actor::g = g;
-	Actor::b = b;
-	Actor::a = a;
+	r = red;
+	g = green;
+	b = blue;
+	a = alpha;
 }
 
 /*
@@ -134,18 +134,19 @@ setX 함수 정의 (setY, setZ 함수 동일)
 인자 : GLdouble x
 반환 : void
 */
-void Actor::setX(GLdouble x)
+void Actor::setX(GLdouble v_x)
 {
-	Actor::x = x;
+	x = v_x;
 }
 
-void Actor::setY(GLdouble y) {
-	Actor::y = y;
+void Actor::setY(GLdouble v_y)
+{
+	y = v_y;
 }
 
-void Actor::setZ(GLdouble z)
+void Actor::setZ(GLdouble v_z)
 {
-	Actor::z = z;
+	z = v_z;
 }
 
 /*
