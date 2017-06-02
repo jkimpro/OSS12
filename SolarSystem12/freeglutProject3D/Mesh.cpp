@@ -1,47 +1,49 @@
+/*********************************************************************************************
+ÆÄ ÀÏ ¸í : Mesh.cpp
+¸ñ    Àû : Mesh Å¬·¡½ºÀÇ Á¤ÀÇ
+»ç¿ë¹æ½Ä : Source Files ³»ºÎ¿¡ À§Ä¡
+Á¦ÇÑ»çÇ× : Mesh Å¬·¡½º°¡ Actor Å¬·¡½º¸¦ »ó¼Ó¹Ş±â ¶§¹®¿¡ Å¬·¡½º ³»¿¡¼­ draw ÇÔ¼ö ÀçÁ¤ÀÇ ÇÊ¿ä
+**********************************************************************************************/
+
+#include "Mesh.h"	
+
+/* Mesh Å¬·¡½º »ı¼ºÀÚ Á¤ÀÇ */
+Mesh::Mesh(char* charname)	
+{
+	//obj ÆÄÀÏÀ» ºÒ·¯¿È
+	model = glmReadOBJ(charname);	
+}
+
+/* ¸Å°³ º¯¼ö charname, scaleÀ» ÀÎÀÚ·Î ÇÏ´Â Mesh Å¬·¡½º »ı¼ºÀÚ Á¤ÀÇ */
+Mesh::Mesh(char* charname, GLfloat scale)
+{
+	//OBJ ÆÄÀÏ¿¡¼­ modelÀÇ Á¤º¸¸¦ ºÒ·¯¿È
+	model = glmReadOBJ(charname);	
+	//model ¿øÇü¿¡ ¸Â°Ô Å©±â Á¶Àı
+	glmUnitize(model);	
+	//modelÀÇ facet ¹ı¼±À» »ı¼º
+	glmFacetNormals(model);		
+	//scale ¸¸Å­ model Å©±â Á¶Àı
+	glmScale(model, scale);		
+}
+
+/* Mesh Å¬·¡½º ¼Ò¸êÀÚ Á¤ÀÇ */
+Mesh::~Mesh()		
+{
+	//model °´Ã¼ÀÇ ±¸Á¶ Áö¿ò
+	glmDelete(model);	
+}
+
 /*
----------------------------------------------------------------------------
- Copied from Dan Cristia, Rotaru
- https://github.com/RotaruDan/SolarSystem
----------------------------------------------------------------------------
- OpenSource Software Project (https://github.com/okjcd123/OSS12)
- Digital Contents ê¹€ì¤€í˜ ë¬¸í¬í˜¸ ì´ìƒí˜‘ ì •ì§€í˜œ
- Date of preparation (ì‘ì„±ì¼):					2017ë…„ 5ì›” 12ì¼
- Date of final modification (ìµœì¢… ìˆ˜ì •ì¼):			2017ë…„ 5ì›” 16ì¼
+draw ÇÔ¼ö Á¤ÀÇ
+
+±â´É : model °´Ã¼¸¦ È­¸é¿¡ ±×·ÁÁÖ´Â ÇÁ·Î½ÃÀú
+ÀÎÀÚ : void
+¹İÈ¯ : void
 */
+void Mesh::draw()	
+{
+	//¸ğµ¨ °´Ã¼¸¦ GL_SMOOTH ¿É¼Ç Àû¿ëÇÏ¿© ·»´õ¸µ
+	glmDraw(model, GL_SMOOTH);	
+}
 
-
-
-#include "Mesh.h"	//Mesh í—¤ë”íŒŒì¼ì„ í¬í•¨
-
-	Mesh::Mesh(char* charname)	//Mesh ìƒì„±ì
-	 {
-
-		model = glmReadOBJ(charname);	//obj íŒŒì¼ì„ ë¶ˆëŸ¬ì˜¨ë‹¤
-
-	 }
-
-
-	Mesh::Mesh(char* charname, GLfloat scale)
-	 {
-
-		model = glmReadOBJ(charname);	//OBJ íŒŒì¼ì—ì„œ Modelì˜ ì •ë³´ë¥¼ ë¶ˆëŸ¬ì˜¨ë‹¤
-		glmUnitize(model);		//Model ì›í˜•ì— ë§ê²Œ í¬ê¸° ì¡°ì ˆ
-		glmFacetNormals(model);		//Modelì˜ Facet ë²•ì„ ì„ ìƒì„±
-		glmScale(model, scale);		//ì£¼ì–´ì§„ í¬ê¸°ë§Œí¼ Model í¬ê¸° ì¡°ì ˆ
-
-	 }
-
-
-	Mesh::~Mesh()		//Mesh ì†Œë©¸ì
-	{
-
-		glmDelete(model);	//Model ê°ì²´ì˜ êµ¬ì¡°ë¥¼ ì§€ìš´ë‹¤
-
-	}
-
-	void Mesh::draw()	//Meshë¥¼ í™”ë©´ì— ê·¸ë¦°ë‹¤
-	{
-
-		glmDraw(model, GL_SMOOTH);	//ì •ì  ë²•ì„ ì„ ì‚¬ìš©í•˜ì—¬ ë Œë”ë§í•œë‹¤
-
-	}

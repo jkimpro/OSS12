@@ -1,67 +1,74 @@
-/*
----------------------------------------------------------------------------
- Copied from Dan Cristia, Rotaru
- https://github.com/RotaruDan/SolarSystem
----------------------------------------------------------------------------
- OpenSource Software Project (https://github.com/okjcd123/OSS12)
- Digital Contents ê¹€ì¤€í˜ ë¬¸í¬í˜¸ ì´ìƒí˜‘ ì •ì§€í˜œ
- Date of preparation (ì‘ì„±ì¼):					2017ë…„ 5ì›” 12ì¼
- Date of final modification (ìµœì¢… ìˆ˜ì •ì¼):			2017ë…„ 5ì›” 16ì¼
-*/
+/*********************************************************************************************
+ÆÄ ÀÏ ¸í : Earth.cpp
+¸ñ    Àû : Earth Å¬·¡½ºÀÇ Á¤ÀÇ
+»ç¿ë¹æ½Ä : Source Files ³»ºÎ¿¡ À§Ä¡
+Á¦ÇÑ»çÇ× : Earth Å¬·¡½º°¡ Sphere Å¬·¡½º¸¦ »ó¼Ó¹Ş±â ¶§¹®¿¡ Å¬·¡½º ³»¿¡¼­ draw ÇÔ¼ö ÀçÁ¤ÀÇ ÇÊ¿ä
+**********************************************************************************************/
 
 #include "Earth.h"
 #include "TextureLoader.h"
 
+/* Sphere Å¬·¡½º¸¦ »ó¼Ó ¹Ş´Â Earth Å¬·¡½º »ı¼ºÀÚ Á¤ÀÇ */
+Earth::Earth() : Sphere(4, 45, 45) //±¸ÀÇ Áß½É ÁÂÇ¥ ¼³Á¤
+{
+	init();
+}
 
-	Earth::Earth()		//Earthì˜ ìƒì„±ì
-	: Sphere(4, 45, 45)	//Sphere(êµ¬)ì˜ ì¤‘ì‹¬ ì¢Œí‘œ ì„¤ì •
-	
-		{
+/* Sphere Å¬·¡½º¸¦ »ó¼Ó ¹Ş´Â Earth Å¬·¡½º ¼Ò¸êÀÚ Á¤ÀÇ */
+Earth::~Earth()
+{
+	Sphere::~Sphere();
+}
 
-		  init();
+/*
+init ÇÔ¼ö Á¤ÀÇ
 
-		}
+±â´É : Áö±¸ ÀÌ¹ÌÁö¸¦ ±¸¿¡ ¸ÅÇÎÇØÁÖ±â À§ÇÑ ÃÊ±âÈ­ ÇÔ¼ö
+ÀÎÀÚ : void
+¹İÈ¯ : void
+*/
+void Earth::init()
+{
+	unsigned int width, height;						                        //³Êºñ¿Í ³ôÀÌ »ı¼º
+	unsigned char * data = loadBMPRaw("earth.bmp", width, height, false);	//"earth.bmp"ÆÄÀÏÀ» ºÒ·¯¿Â´Ù
 
-	Earth::~Earth()			//Earthì˜ ì†Œë©¸ì
-		{
+																			//OpenGL ÅØ½ºÃ³ ÀÌ¸§ »ı¼º
+	glGenTextures(1, &textureID);
 
-		Sphere::~Sphere();
+	//»ı¼ºÇÑ ÅØ½ºÃ³ ID ¿¬°á
+	glBindTexture(GL_TEXTURE_2D, textureID);
 
-		}
+	//ÀÌ¹ÌÁö¸¦ ÅØ½ºÃ³·Î ¼±¾ğ
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR_EXT, GL_UNSIGNED_BYTE, data);
+
+	//ÅØ½ºÃ³ Àû¿ë ¹æ½Ä ¼³Á¤ 
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);        //texture¿Í shading È¥ÇÕ ¹æ½Ä ¼³Á¤
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);		//Wrapping Mode ¼³Á¤
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);		//Wrapping Mode ¼³Á¤
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	//È®´ë ÇÊÅÍ¸µ ¼³Á¤ 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 	//Ãà¼Ò ÇÊÅÍ¸µ ¼³Á¤ 
+
+	delete[] data; //µ¿Àû ÇÒ´ç ÇØÁ¦
+
+}
+
+/*
+draw ÇÔ¼ö Á¤ÀÇ
+
+±â´É : Áö±¸ ÀÌ¹ÌÁö°¡ ¸ÅÇÎµÈ ±¸¸¦ ±×·ÁÁÖ´Â ÇÁ·¯½ÃÀú
+ÀÎÀÚ : void
+¹İÈ¯ : void
+*/
+void Earth::draw()	//È­¸é¿¡ Earth¸¦ ±×¸°´Ù
+{
+	//»ı¼ºÇÑ ÅØ½ºÃ³ ID ¿¬°á
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	//ÇöÀç ÅØ½ºÃ³¸¦ ÀÌÈÄÀÇ ¸ğµç ÅØ½ºÃ³¿¡ Àû¿ë
+	gluQuadricTexture(quadric, GL_TRUE);
+	//È­¸é¿¡ Áö±¸¸¦ ±×¸°´Ù
+	Sphere::draw();
+	//È­¸é¿¡ Sphere¸¦ ±×¸°´Ù
+}
 
 
-
-	void Earth::init()
-		{	
-
-		unsigned int width, height;						//ë„ˆë¹„ì™€ ë†’ì´ ìƒì„±
-		unsigned char * data = loadBMPRaw("earth.bmp", width, height, false);	//"earth.bmp"íŒŒì¼ì„ ë¶ˆëŸ¬ì˜¨ë‹¤
-
-		glGenTextures(1, &textureID);						//OpenGL í…ìŠ¤ì³ë¥¼ ë§Œë“ ë‹¤
-		glBindTexture(GL_TEXTURE_2D, textureID);				//ì‚¬ìš©í•  í…ìŠ¤ì³ ì˜¤ë¸Œì íŠ¸. ì´í›„ì˜ í…ìŠ¤ì³ëŠ” ì´ í…ìŠ¤ì³ë¡œ ìˆ˜ì •í•œë‹¤.
-
-	
-		//OpenGLì— ì´ë¯¸ì§€ ì •ë³´ë¥¼ ì „ë‹¬í•œë‹¤.	
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR_EXT, GL_UNSIGNED_BYTE, data);
-		glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-
-		//ì¢Œí‘œ í•„í„°ë§
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);		//ì–´ë“œë ˆì‹±
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);		//ì–´ë“œë ˆì‹±
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	//í™•ëŒ€ í•„í„°ë§
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 	//ì¶•ì†Œ í•„í„°ë§
-		delete[] data;
-	
-		}
-
-
-	void Earth::draw()	//í™”ë©´ì— Earthë¥¼ ê·¸ë¦°ë‹¤
-		{		
-
-		glBindTexture(GL_TEXTURE_2D, textureID);	//ì‚¬ìš©í•  í…ìŠ¤ì³ ì˜¤ë¸Œì íŠ¸
-		gluQuadricTexture(quadric, GL_TRUE);		//ì´í›„ì˜ ëª¨ë“  í…ìŠ¤ì³ë“¤ì€ ì´ í…ìŠ¤ì³ë¥¼ ì‚¬ìš©í•œë‹¤.
-		Sphere::draw();					//í™”ë©´ì— Sphereë¥¼ ê·¸ë¦°ë‹¤
-
-		}
 

@@ -1,44 +1,38 @@
-/*
----------------------------------------------------------------------------
- Copied from Dan Cristia, Rotaru
- https://github.com/RotaruDan/SolarSystem
----------------------------------------------------------------------------
- OpenSource Software Project (https://github.com/okjcd123/OSS12)
- Digital Contents ê¹€ì¤€í˜ ë¬¸í¬í˜¸ ì´ìƒí˜‘ ì •ì§€í˜œ
- Date of preparation (ì‘ì„±ì¼):					2017ë…„ 5ì›” 12ì¼
- Date of final modification (ìµœì¢… ìˆ˜ì •ì¼):			2017ë…„ 5ì›” 16ì¼
-*/
-
-
-
-/* AxisH í—¤ë”íŒŒì¼ */
+/*********************************************************************************************
+ÆÄ ÀÏ ¸í : Disk.h
+¸ñ    Àû : Disk Å¬·¡½ºÀÇ ¼±¾ğ
+»ç¿ë¹æ½Ä : Header Files ³»ºÎ¿¡ À§Ä¡
+Á¦ÇÑ»çÇ× : Disk Å¬·¡½º°¡ Actor Å¬·¡½º¸¦ »ó¼Ó¹Ş±â ¶§¹®¿¡ Å¬·¡½º ³»¿¡¼­ draw ÇÔ¼ö ÀçÁ¤ÀÇ ÇÊ¿ä
+**********************************************************************************************/
 
 #ifndef DiskH
 #define DiskH
 
-#include "Actor.h"	//Actor í—¤ë”íŒŒì¼ í¬í•¨
+#include "Actor.h"	
 
+/* Actor Å¬·¡½º¸¦ »ó¼Ó¹Ş´Â Disk Å¬·¡½º ¼±¾ğ */
+class Disk : public Actor	
+{
+	/* Disk Å¬·¡½ºÀÇ private ¸â¹ö */
+	private:				
+		GLUquadric * quadric;		    //ÀÌÂ÷ °î¸é °´Ã¼(¿øÆÇ)ÀÇ ÁÖ¼Ú°ªÀ» ÀúÀåÇÏ´Â Æ÷ÀÎÅÍ º¯¼ö
+		GLdouble innerRadius;           //¾ÈÂÊ ¹İÁö¸§
+		GLdouble outerRadius;		    //¹Ù±ùÂÊ ¹İÁö¸§
+		GLint slices;					//½½¶óÀÌ½º: zÃà ¹æÇâÀ¸·Î ³ª´©´Â °¹¼ö
+		GLint loops;					//·çÇÁ: µ¿½É¿ø ¹æÇâÀ¸·Î ³ª´©´Â °¹¼ö
+		void init();				    //¿øÆÇÀ» ±×¸± ¶§ ÇÊ¿äÇÑ ÇÔ¼öµéÀÌ Á¤ÀÇµÈ ÃÊ±âÈ­ ÇÔ¼ö
 
-class Disk :
+	/* Disk Å¬·¡½ºÀÇ public ¸â¹ö */
+	public:		
+		Disk();					        //Disk °´Ã¼ »ı¼ºÀÚ
+		~Disk();				        //Disk °´Ã¼ ¼Ò¸êÀÚ
 
-	 public Actor	//Actor í´ë˜ìŠ¤ì˜ Public ë©¤ë²„ í˜¸ì¶œ
-	 {
-
-
-		private:					//Disk í´ë˜ìŠ¤ì˜ Private ë©¤ë²„
-		    GLUquadric * quadric;			
-		    GLdouble innerRadius, outerRadius;		//ì•ˆìª½ ë°˜ì§€ë¦„ ê°’ê³¼ ë°”ê¹¥ìª½ ë°˜ì§€ë¦„ ê°’ì„ ë‚˜íƒ€ëƒ„
-		    GLint slices, loops;			//ìŠ¬ë¼ì´ìŠ¤ ê°’ê³¼ ë£¨í”„ ê°’ì„ ë‚˜íƒ€ëƒ„
-		    void init();				
-
-
-		public:						//Disk í´ë˜ìŠ¤ì˜ Public ë©¤ë²„
-			Disk();					//Disk ê°ì²´ ìƒì„±ì
-			Disk(GLdouble innerRadius, GLdouble outerRadius, GLint slices, GLint loops);	//ì•ˆìª½ê³¼ ë°”ê¹¥ìª½ ë°˜ì§€ë¦„, ìŠ¬ë¼ì´ìŠ¤, ë£¨í”„ ê°’ì„ ëŒ€ì…í•˜ëŠ” í•¨ìˆ˜
-			~Disk();				//Disk ê°ì²´ ì†Œë©¸ì
-			void draw();				//í™”ë©´ì— ê·¸ë ¤ì£¼ëŠ” í•¨ìˆ˜
-	  };
+		//¸Å°³ º¯¼ö innerRadius, outerRadius, slices, loopsÀÇ °ªÀ» ÀÎÀÚ·Î ÇÏ´Â Disk °´Ã¼ »ı¼ºÀÚ
+		Disk(GLdouble innerRadius, GLdouble outerRadius, GLint slices, GLint loops);	
+		void draw();				    //¿øÆÇÀ» È­¸é¿¡ ±×·ÁÁÖ´Â ÇÔ¼ö
+};
 
 
 
 #endif
+

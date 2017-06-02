@@ -1,56 +1,74 @@
+/*********************************************************************************************
+파 일 명 : Saturn.cpp
+목    적 : Saturn 클래스의 정의
+사용방식 : Source Files 내부에 위치
+제한사항 : Saturn 클래스가 Sphere 클래스를 상속받기 때문에 클래스 내에서 draw 함수 재정의 필요
+**********************************************************************************************/
+
 #include "Saturn.h"
 #include "TextureLoader.h"
 
-
-Saturn::Saturn()		//Earth의 생성자
-	: Sphere(21, 45, 45)	//Sphere(구)의 중심 좌표 설정
-
+/* Sphere 클래스를 상속 받는 Saturn 클래스 생성자 정의 */
+Saturn::Saturn() : Sphere(21, 45, 45)	//구의 중심 좌표 설정
 {
-
 	init();
-
 }
 
-Saturn::~Saturn()			//Earth의 소멸자
+/* Sphere 클래스를 상속 받는 Saturn 클래스 소멸자 정의 */
+Saturn::~Saturn()
 {
-
 	Sphere::~Sphere();
-
 }
 
 
+/*
+init 함수 정의
 
+기능 : 토성 이미지를 구에 매핑해주기 위한 초기화 함수
+인자 : void
+반환 : void
+*/
 void Saturn::init()
 {
+	unsigned int width, height;						                        //너비와 높이 생성
+	unsigned char * data = loadBMPRaw("saturn.bmp", width, height, false);	//"saturn.bmp"파일을 불러온다
 
-	unsigned int width, height;						//너비와 높이 생성
-	unsigned char * data = loadBMPRaw("saturn.bmp", width, height, false);	//"earth.bmp"파일을 불러온다
+																			//OpenGL 텍스처 이름 생성
+	glGenTextures(1, &textureID);
 
-	glGenTextures(1, &textureID);						//OpenGL 텍스쳐를 만든다
-	glBindTexture(GL_TEXTURE_2D, textureID);				//사용할 텍스쳐 오브젝트. 이후의 텍스쳐는 이 텍스쳐로 수정한다.
+	//생성한 텍스처 ID 연결
+	glBindTexture(GL_TEXTURE_2D, textureID);
 
-
-															//OpenGL에 이미지 정보를 전달한다.	
+	//이미지를 텍스처로 선언
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR_EXT, GL_UNSIGNED_BYTE, data);
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
+	//텍스처 적용 방식 설정 
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);        //texture와 shading 혼합 방식 설정
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);		//Wrapping Mode 설정
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);		//Wrapping Mode 설정
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	//확대 필터링 설정 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 	//축소 필터링 설정 
 
-	//좌표 필터링
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);		//어드레싱
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);		//어드레싱
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	//확대 필터링
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 	//축소 필터링
-	delete[] data;
+	delete[] data; //동적 할당 해제
 
 }
 
+/*
+draw 함수 정의
 
-void Saturn::draw()	//화면에 Earth를 그린다
+기능 : 토성 이미지가 매핑된 구를 그려주는 프러시저
+인자 : void
+반환 : void
+*/
+void Saturn::draw()
 {
-
-	glBindTexture(GL_TEXTURE_2D, textureID);	//사용할 텍스쳐 오브젝트
-	gluQuadricTexture(quadric, GL_TRUE);		//이후의 모든 텍스쳐들은 이 텍스쳐를 사용한다.
-	Sphere::draw();					//화면에 Sphere를 그린다
+	//생성한 텍스처 ID 연결
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	//현재 텍스처를 이후의 모든 텍스처에 적용
+	gluQuadricTexture(quadric, GL_TRUE);
+	//화면에 토성을 그린다
+	Sphere::draw();
 
 }
+
 

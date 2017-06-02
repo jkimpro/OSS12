@@ -1,38 +1,31 @@
-/*
----------------------------------------------------------------------------
- Copied from Dan Cristia, Rotaru
- https://github.com/RotaruDan/SolarSystem
----------------------------------------------------------------------------
- OpenSource Software Project (https://github.com/okjcd123/OSS12)
- Digital Contents ê¹€ì¤€í˜ ë¬¸í¬í˜¸ ì´ìƒí˜‘ ì •ì§€í˜œ
- Date of preparation (ì‘ì„±ì¼):					2017ë…„ 5ì›” 12ì¼
- Date of final modification (ìµœì¢… ìˆ˜ì •ì¼):			2017ë…„ 5ì›” 16ì¼
-*/
-
-
-/* Earth í—¤ë”íŒŒì¼ */
+/*********************************************************************************************
+ÆÄ ÀÏ ¸í : Earth.h
+¸ñ    Àû : Earth Å¬·¡½ºÀÇ ¼±¾ğ
+»ç¿ë¹æ½Ä : Header Files ³»ºÎ¿¡ À§Ä¡
+Á¦ÇÑ»çÇ× : Earth Å¬·¡½º°¡ Sphere Å¬·¡½º¸¦ »ó¼Ó¹Ş±â ¶§¹®¿¡ Å¬·¡½º ³»¿¡¼­ draw ÇÔ¼ö ÀçÁ¤ÀÇ ÇÊ¿ä
+**********************************************************************************************/
 
 #ifndef EarthH
 #define EarthH
 
-#include "Sphere.h"	//Sphere í—¤ë”íŒŒì¼ í¬í•¨
+#include "Sphere.h"	
 
+/* Sphere Å¬·¡½º¸¦ »ó¼Ó¹Ş´Â Earth Å¬·¡½º ¼±¾ğ */
+class Earth :public Sphere				
+{
+	/* Earth Å¬·¡½ºÀÇ private ¸â¹ö */
+	private: 			
+		GLuint textureID;	//ÅØ½ºÃ³ ¹øÈ£°¡ ÀúÀåµÇ´Â ÅØ½ºÃÄID
+		void init();	    //Áö±¸¸¦ ±×¸± ¶§ ÇÊ¿äÇÑ ÇÔ¼öµéÀÌ Á¤ÀÇµÈ ÃÊ±âÈ­ ÇÔ¼ö
 
-class Earth :
-	
-	 public Sphere				//Sphere í´ë˜ìŠ¤ì˜ Public ë©¤ë²„ í˜¸ì¶œ
-	 {
+	/* Earth Å¬·¡½ºÀÇ public ¸â¹ö */
+	public:			
+		Earth();			//Earth °´Ã¼ »ı¼ºÀÚ
+		~Earth();			//Earth °´Ã¼ ¼Ò¸êÀÚ
+		void draw();		//Áö±¸¸¦ È­¸é¿¡ ±×·ÁÁÖ´Â ÇÔ¼ö
 
-		private: 			// Earth í´ë˜ìŠ¤ì˜ Private ë©¤ë²„
-			GLuint textureID;	//í…ìŠ¤ì³IDë¥¼  ë‚˜íƒ€ëƒ„
-			void init();	
-
-		public:				//Earth í´ë˜ìŠ¤ì˜ Public ë©¤ë²„
-			Earth();		//Earth ê°ì²´ ìƒì„±ì
-			~Earth();		//Earth ê°ì²´ ì†Œë©¸ì
-			void draw();		//í™”ë©´ì— ê·¸ë ¤ì£¼ëŠ” í•¨ìˆ˜
-
-	 };
+};
 
 
 #endif
+

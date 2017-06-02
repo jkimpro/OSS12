@@ -1,51 +1,40 @@
 /************************************************************************************
-íŒŒ ì¼ ëª… : Actor.cpp
-ìž‘ ì„± ìž : Dan Cristian, Rotaru (https://github.com/RotaruDan/SolarSystem)
-ëª©    ì  : Actor í´ëž˜ìŠ¤ì˜ ì •ì˜
-ì‚¬ìš©ë°©ì‹ : Source Files ë‚´ë¶€ì— ìœ„ì¹˜
-ì œí•œì‚¬í•­ : virtual í‚¤ì›Œë“œë¥¼ ì‚¬ìš©í•œ draw í•¨ìˆ˜ê°€ ì¡´ìž¬
-ì˜¤ë¥˜ì²˜ë¦¬ : ì—†ìŒ
-
-ì´ë ¥ ì‚¬í•­
-ìˆ˜  ì •  ìž : Moon, Heeho (heeho9307@naver.com)
-ìˆ˜ì • ë‚ ì§œ : 28/04/2017
-ìˆ˜ì • ë‚´ìš© : ì €ìž‘ê¶Œ ë‚´ìš© ì¶”ê°€, ì˜¤í”ˆ ì†ŒìŠ¤ ë¼ì´ì„ ìŠ¤ ì¶”ê°€
-
-ìˆ˜  ì •  ìž : Moon, Heeho (heeho9307@naver.com)
-ìˆ˜ì • ë‚ ì§œ : 03/05/2017
-ìˆ˜ì • ë‚´ìš© : ëª¨ë“  í•¨ìˆ˜ ì •ë³´ ì¶”ê°€, ëª¨ë“  ë³€ìˆ˜ ì„¤ëª… ì¶”ê°€
-************************************************************************************/
+ÆÄ ÀÏ ¸í : Actor.cpp
+¸ñ    Àû : Actor Å¬·¡½ºÀÇ Á¤ÀÇ
+»ç¿ë¹æ½Ä : Source Files ³»ºÎ¿¡ À§Ä¡
+Á¦ÇÑ»çÇ× : virtual Å°¿öµå¸¦ »ç¿ëÇÑ draw ÇÔ¼ö°¡ Á¸Àç
+***********************************************************************************/
 
 #include "Actor.h"
 
-/* Actor ê°ì²´ ìƒì„±ìž ì •ì˜ */
+/* Actor °´Ã¼ »ý¼ºÀÚ Á¤ÀÇ */
 Actor::Actor()
 {
-	r = 0.0;                                   //r : ë¹¨ê°„ìƒ‰ì„ ë‚˜íƒ€ë‚´ëŠ” ê°’, 0.0ìœ¼ë¡œ ì´ˆê¸°í™” 
-	g = 0.0;                                   //g : ì´ˆë¡ìƒ‰ì„ ë‚˜íƒ€ë‚´ëŠ” ê°’, 0.0ìœ¼ë¡œ ì´ˆê¸°í™”
-	b = 0.0;                                   //b : íŒŒëž€ìƒ‰ì„ ë‚˜íƒ€ë‚´ëŠ” ê°’, 0.0ìœ¼ë¡œ ì´ˆê¸°í™” 
-	a = 1.0;                                   //a : ì•ŒíŒŒê°’(íˆ¬ëª…ë„)ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ê°’, 1.0ìœ¼ë¡œ ì´ˆê¸°í™” 
-	x = 0.0;                                   //x : xì¶• ë°©í–¥ìœ¼ë¡œ ì´ë™í•  ê°’, 0.0ìœ¼ë¡œ ì´ˆê¸°í™” 
-	y = 0.0;                                   //y : yì¶• ë°©í–¥ìœ¼ë¡œ ì´ë™í•  ê°’, 0.0ìœ¼ë¡œ ì´ˆê¸°í™” 
-	z = 0.0;                                   //z : zì¶• ë°©í–¥ìœ¼ë¡œ ì´ë™í•  ê°’, 0.0ìœ¼ë¡œ ì´ˆê¸°í™”                
-	angle = 0;                                 //angle : íšŒì „í•  ê°ë„ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ê°’, 0ìœ¼ë¡œ ì´ˆê¸°í™” 
-	angleX = 0.0;                              //angleX : ê¸°ì¤€ì¶•ì´ xì¶•ìž„ì„ ë‚˜íƒ€ë‚´ëŠ” ê°’, 0.0ìœ¼ë¡œ ì´ˆê¸°í™” 
-	angleY = 0.0;                              //angleY : ê¸°ì¤€ì¶•ì´ yì¶•ìž„ì„ ë‚˜íƒ€ë‚´ëŠ” ê°’, 0.0ìœ¼ë¡œ ì´ˆê¸°í™” 
-	angleZ = 0.0;                              //angleZ : ê¸°ì¤€ì¶•ì´ zì¶•ìž„ì„ ë‚˜íƒ€ë‚´ëŠ” ê°’, 0.0ìœ¼ë¡œ ì´ˆê¸°í™” 
+	r = 0.0;                                   //r : »¡°£»öÀ» ³ªÅ¸³»´Â °ª, 0.0À¸·Î ÃÊ±âÈ­ 
+	g = 0.0;                                   //g : ÃÊ·Ï»öÀ» ³ªÅ¸³»´Â °ª, 0.0À¸·Î ÃÊ±âÈ­
+	b = 0.0;                                   //b : ÆÄ¶õ»öÀ» ³ªÅ¸³»´Â °ª, 0.0À¸·Î ÃÊ±âÈ­ 
+	a = 1.0;                                   //a : ¾ËÆÄ°ª(Åõ¸íµµ)¸¦ ³ªÅ¸³»´Â °ª, 1.0À¸·Î ÃÊ±âÈ­ 
+	x = 0.0;                                   //x : xÃà ¹æÇâÀ¸·Î ÀÌµ¿ÇÒ °ª, 0.0À¸·Î ÃÊ±âÈ­ 
+	y = 0.0;                                   //y : yÃà ¹æÇâÀ¸·Î ÀÌµ¿ÇÒ °ª, 0.0À¸·Î ÃÊ±âÈ­ 
+	z = 0.0;                                   //z : zÃà ¹æÇâÀ¸·Î ÀÌµ¿ÇÒ °ª, 0.0À¸·Î ÃÊ±âÈ­                
+	angle = 0;                                 //angle : È¸ÀüÇÒ °¢µµ¸¦ ³ªÅ¸³»´Â °ª, 0À¸·Î ÃÊ±âÈ­ 
+	angleX = 0.0;                              //angleX : ±âÁØÃàÀÌ xÃàÀÓÀ» ³ªÅ¸³»´Â °ª, 0.0À¸·Î ÃÊ±âÈ­ 
+	angleY = 0.0;                              //angleY : ±âÁØÃàÀÌ yÃàÀÓÀ» ³ªÅ¸³»´Â °ª, 0.0À¸·Î ÃÊ±âÈ­ 
+	angleZ = 0.0;                              //angleZ : ±âÁØÃàÀÌ zÃàÀÓÀ» ³ªÅ¸³»´Â °ª, 0.0À¸·Î ÃÊ±âÈ­ 
 }
 
-/* Actor ê°ì²´ ì†Œë©¸ìž ì •ì˜ */
+/* Actor °´Ã¼ ¼Ò¸êÀÚ Á¤ÀÇ */
 Actor::~Actor()
 {
 	//void
 }
 
 /*
-getAngle í•¨ìˆ˜ ì •ì˜
+getAngle ÇÔ¼ö Á¤ÀÇ
 
-ê¸°ëŠ¥ : ê°ì²´ ë©¤ë²„ ë³€ìˆ˜ angleì˜ ê°’ì„ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
-ì¸ìž : void
-ë°˜í™˜ : GLdouble angle
+±â´É : °´Ã¼ ¸â¹ö º¯¼ö angleÀÇ °ªÀ» ¹ÝÈ¯ÇÏ´Â ÇÔ¼ö
+ÀÎÀÚ : void
+¹ÝÈ¯ : GLdouble angle
 */
 GLdouble Actor::getAngle()
 {
@@ -53,11 +42,11 @@ GLdouble Actor::getAngle()
 }
 
 /*
-getAngleX í•¨ìˆ˜ ì •ì˜   //getAngleY, getAngleZ í•¨ìˆ˜ ë™ì¼
+getAngleX ÇÔ¼ö Á¤ÀÇ   //getAngleY, getAngleZ ÇÔ¼ö µ¿ÀÏ
 
-ê¸°ëŠ¥ : ê°ì²´ ë©¤ë²„ ë³€ìˆ˜ angleXì˜ ê°’ì„ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
-ì¸ìž : void
-ë°˜í™˜ : GLdouble angleX
+±â´É : °´Ã¼ ¸â¹ö º¯¼ö angleXÀÇ °ªÀ» ¹ÝÈ¯ÇÏ´Â ÇÔ¼ö
+ÀÎÀÚ : void
+¹ÝÈ¯ : GLdouble angleX
 */
 GLdouble Actor::getAngleX()
 {
@@ -75,11 +64,11 @@ GLdouble Actor::getAngleZ()
 }
 
 /*
-getX í•¨ìˆ˜ ì •ì˜ //getY, getZ í•¨ìˆ˜ ë™ì¼
+getX ÇÔ¼ö Á¤ÀÇ //getY, getZ ÇÔ¼ö µ¿ÀÏ
 
-ê¸°ëŠ¥ : ê°ì²´ ë©¤ë²„ ë³€ìˆ˜ xê°’ì„ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
-ì¸ìž : void
-ë°˜í™˜ : GLdouble x
+±â´É : °´Ã¼ ¸â¹ö º¯¼ö x°ªÀ» ¹ÝÈ¯ÇÏ´Â ÇÔ¼ö
+ÀÎÀÚ : void
+¹ÝÈ¯ : GLdouble x
 */
 GLdouble Actor::getX()
 {
@@ -98,11 +87,11 @@ GLdouble Actor::getZ()
 
 
 /*
-setAngleVector í•¨ìˆ˜ ì •ì˜
+setAngleVector ÇÔ¼ö Á¤ÀÇ
 
-ê¸°ëŠ¥ : ê°ì²´ ë©¤ë²„ ë³€ìˆ˜ angleX, angleY, angleZì— ë§¤ê°œ ë³€ìˆ˜ angX, angY, angZì˜ ê°’ì„ ê° ê° ëŒ€ìž…í•˜ëŠ” í”„ëŸ¬ì‹œì €
-ì¸ìž : GLdouble angX, GLdouble angY, GLdouble angZ
-ë°˜í™˜ : void
+±â´É : °´Ã¼ ¸â¹ö º¯¼ö angleX, angleY, angleZ¿¡ ¸Å°³ º¯¼ö angX, angY, angZÀÇ °ªÀ» °¢ °¢ ´ëÀÔÇÏ´Â ÇÁ·¯½ÃÀú
+ÀÎÀÚ : GLdouble angX, GLdouble angY, GLdouble angZ
+¹ÝÈ¯ : void
 */
 void Actor::setAngleVector(GLdouble angX, GLdouble angY, GLdouble angZ)
 {
@@ -112,11 +101,11 @@ void Actor::setAngleVector(GLdouble angX, GLdouble angY, GLdouble angZ)
 }
 
 /*
-setAngle í•¨ìˆ˜ ì •ì˜
+setAngle ÇÔ¼ö Á¤ÀÇ
 
-ê¸°ëŠ¥ : ê°ì²´ ë©¤ë²„ ë³€ìˆ˜ angleì— ë§¤ê°œ ë³€ìˆ˜ angì˜ ê°’ì„ ëŒ€ìž…í•˜ëŠ” í”„ëŸ¬ì‹œì €
-ì¸ìž : GLint ang
-ë°˜í™˜ : void
+±â´É : °´Ã¼ ¸â¹ö º¯¼ö angle¿¡ ¸Å°³ º¯¼ö angÀÇ °ªÀ» ´ëÀÔÇÏ´Â ÇÁ·¯½ÃÀú
+ÀÎÀÚ : GLint ang
+¹ÝÈ¯ : void
 */
 void Actor::setAngle(GLdouble ang)
 {
@@ -124,11 +113,11 @@ void Actor::setAngle(GLdouble ang)
 }
 
 /*
-setColor í•¨ìˆ˜ ì •ì˜
+setColor ÇÔ¼ö Á¤ÀÇ
 
-ê¸°ëŠ¥ : ê°ì²´ ë©¤ë²„ ë³€ìˆ˜ r, g, d, aì—  ë§¤ê°œ ë³€ìˆ˜ r, g, b, a ì˜ ê°’ì„ ëŒ€ìž…í•˜ëŠ” í•¨ìˆ˜
-ì¸ìž : GLfloat r, GLfloat g, GLfloat b, GLfloat a
-ë°˜í™˜ : void
+±â´É : °´Ã¼ ¸â¹ö º¯¼ö r, g, d, a¿¡  ¸Å°³ º¯¼ö r, g, b, a ÀÇ °ªÀ» ´ëÀÔÇÏ´Â ÇÔ¼ö
+ÀÎÀÚ : GLfloat r, GLfloat g, GLfloat b, GLfloat a
+¹ÝÈ¯ : void
 */
 void Actor::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 {
@@ -139,11 +128,11 @@ void Actor::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 }
 
 /*
-setX í•¨ìˆ˜ ì •ì˜ (setY, setZ í•¨ìˆ˜ ë™ì¼)
+setX ÇÔ¼ö Á¤ÀÇ (setY, setZ ÇÔ¼ö µ¿ÀÏ)
 
-ê¸°ëŠ¥ : ê°ì²´ ë©¤ë²„ ë³€ìˆ˜ xì—  ë§¤ê°œ ë³€ìˆ˜ xì˜ ê°’ì„ ëŒ€ìž…í•˜ëŠ” í•¨ìˆ˜
-ì¸ìž : GLdouble x
-ë°˜í™˜ : void
+±â´É : °´Ã¼ ¸â¹ö º¯¼ö x¿¡  ¸Å°³ º¯¼ö xÀÇ °ªÀ» ´ëÀÔÇÏ´Â ÇÔ¼ö
+ÀÎÀÚ : GLdouble x
+¹ÝÈ¯ : void
 */
 void Actor::setX(GLdouble x)
 {
@@ -160,42 +149,43 @@ void Actor::setZ(GLdouble z)
 }
 
 /*
-render í•¨ìˆ˜ ì •ì˜
+render ÇÔ¼ö Á¤ÀÇ
 
-ê¸°ëŠ¥ : ê°ì²´ë¥¼ ê·¸ë¦¬ëŠ”ë° í•„ìš”í•œ ì •ë³´(ê°ë„, ìœ„ì¹˜, ìƒ‰)ë¥¼ ê°€ì§€ê³  ê°ì²´ë¥¼ ìƒì„±í•˜ëŠ” í”„ëŸ¬ì‹œì €
-ì¸ìž : GLdouble z
-ë°˜í™˜ : void
+±â´É : °´Ã¼¸¦ ±×¸®´Âµ¥ ÇÊ¿äÇÑ Á¤º¸(°¢µµ, À§Ä¡, »ö)¸¦ °¡Áö°í °´Ã¼¸¦ »ý¼ºÇÏ´Â ÇÁ·¯½ÃÀú
+ÀÎÀÚ : GLdouble z
+¹ÝÈ¯ : void
 */
 void Actor::render()
 {
-	glPushMatrix();                                          //í˜„ìž¬ ëª¨ë¸ë·° í–‰ë ¬ì„ í–‰ë ¬ ìŠ¤íƒì— ì €ìž¥
-	if (a == 0)												//Orbit ì— ê´€ë ¨ëœ ì»¬ëŸ¬ëŠ” ë°˜ë“œì‹œ a ê°’ì„ 0ìœ¼ë¡œ ì´ˆê¸°í™” ì‹œí‚¬ ê²ƒ!!
+	glPushMatrix();                                          //ÇöÀç ¸ðµ¨ºä Çà·ÄÀ» Çà·Ä ½ºÅÃ¿¡ ÀúÀå
+	if (a == 0)												//Orbit ¿¡ °ü·ÃµÈ ÄÃ·¯´Â ¹Ýµå½Ã a °ªÀ» 0À¸·Î ÃÊ±âÈ­ ½ÃÅ³ °Í!!
 	{
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_LIGHTING);
 	}
-	glColor4f(r, g, b, a);                                   //r : ë¹¨ê°„ìƒ‰, g : ì´ˆë¡ìƒ‰, b : íŒŒëž€ìƒ‰, a : ì•ŒíŒŒê°’(íˆ¬ëª…ë„) ê°’ì„ ì‚¬ìš©í•˜ì—¬ ìƒ‰ì„ ì§€ì •
-	glRotated(angle, angleX, angleY, angleZ);    //angleX or angleY or angleZì˜ ê°’ì´ 1.0ì¸ ì¶•ì„ ê¸°ì¤€ìœ¼ë¡œ angleì˜ ê°’ ë§Œí¼ íšŒì „
-	glTranslated(x, y, z);                                  //ì›ì ìœ¼ë¡œ ë¶€í„° xì¶•ì€ xë§Œí¼, yì¶•ì€ yë§Œí¼, zì¶•ì€ zë§Œí¼ ì´ë™  
-	draw();                                                     //ë„í˜• ê°ì²´ë¥¼ í™”ë©´ì— ê·¸ë ¤ì£¼ëŠ” í•¨ìˆ˜ 
+	glColor4f(r, g, b, a);                                   //r : »¡°£»ö, g : ÃÊ·Ï»ö, b : ÆÄ¶õ»ö, a : ¾ËÆÄ°ª(Åõ¸íµµ) °ªÀ» »ç¿ëÇÏ¿© »öÀ» ÁöÁ¤
+	glRotated(angle, angleX, angleY, angleZ);    //angleX or angleY or angleZÀÇ °ªÀÌ 1.0ÀÎ ÃàÀ» ±âÁØÀ¸·Î angleÀÇ °ª ¸¸Å­ È¸Àü
+	glTranslated(x, y, z);                                  //¿øÁ¡À¸·Î ºÎÅÍ xÃàÀº x¸¸Å­, yÃàÀº y¸¸Å­, zÃàÀº z¸¸Å­ ÀÌµ¿  
+	draw();                                                     //µµÇü °´Ã¼¸¦ È­¸é¿¡ ±×·ÁÁÖ´Â ÇÔ¼ö 
 	if( a==0)
 	{
 		glPopAttrib();
 	}
-	glPopMatrix();                                           //í–‰ë ¬ ìŠ¤íƒì— ì €ìž¥ëœ ë§ˆì§€ë§‰ ëª¨ë¸ ë·° í–‰ë ¬ ë°˜í™˜ 
+	glPopMatrix();                                           //Çà·Ä ½ºÅÃ¿¡ ÀúÀåµÈ ¸¶Áö¸· ¸ðµ¨ ºä Çà·Ä ¹ÝÈ¯ 
 }
 
 /*
-draw í•¨ìˆ˜ ì •ì˜
+draw ÇÔ¼ö Á¤ÀÇ
 
-ê¸°ëŠ¥ : ë„í˜• ê°ì²´ë¥¼ í™”ë©´ì— ê·¸ë ¤ì£¼ëŠ” í”„ëŸ¬ì‹œì €
-ì¸ìž : void
-ë°˜í™˜ : void
+±â´É : µµÇü °´Ã¼¸¦ È­¸é¿¡ ±×·ÁÁÖ´Â ÇÁ·¯½ÃÀú
+ÀÎÀÚ : void
+¹ÝÈ¯ : void
 
-draw í•¨ìˆ˜ëŠ” ì„ ì–¸ë  ë•Œ virtual í‚¤ì›Œë“œê°€ ì‚¬ìš©ë˜ë¯€ë¡œ Actor í´ëž˜ìŠ¤ë¥¼ ìƒì† ë°›ëŠ” í´ëž˜ìŠ¤ëŠ” draw ìž¬ ì •ì˜ í•„ìš”
+draw ÇÔ¼ö´Â ¼±¾ðµÉ ¶§ virtual Å°¿öµå°¡ »ç¿ëµÇ¹Ç·Î Actor Å¬·¡½º¸¦ »ó¼Ó ¹Þ´Â Å¬·¡½º´Â draw Àç Á¤ÀÇ ÇÊ¿ä
 */
 void Actor::draw()
 {
 	//void 
 }
+

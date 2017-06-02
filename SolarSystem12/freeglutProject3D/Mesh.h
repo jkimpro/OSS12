@@ -1,41 +1,30 @@
-/*
----------------------------------------------------------------------------
- Copied from Dan Cristia, Rotaru
- https://github.com/RotaruDan/SolarSystem
----------------------------------------------------------------------------
- OpenSource Software Project (https://github.com/okjcd123/OSS12)
- Digital Contents ê¹€ì¤€í˜ ë¬¸í¬í˜¸ ì´ìƒí˜‘ ì •ì§€í˜œ
- Date of preparation (ì‘ì„±ì¼):					2017ë…„ 5ì›” 12ì¼
- Date of final modification (ìµœì¢… ìˆ˜ì •ì¼):			2017ë…„ 5ì›” 16ì¼
-*/
-
-
-
-/* Mesh í—¤ë”íŒŒì¼ */
+/*********************************************************************************************
+ÆÄ ÀÏ ¸í : Mesh.h
+¸ñ    Àû : Mesh Å¬·¡½ºÀÇ ¼±¾ğ
+»ç¿ë¹æ½Ä : Header Files ³»ºÎ¿¡ À§Ä¡
+Á¦ÇÑ»çÇ× : Mesh Å¬·¡½º°¡ Actor Å¬·¡½º¸¦ »ó¼Ó¹Ş±â ¶§¹®¿¡ Å¬·¡½º ³»¿¡¼­ draw ÇÔ¼ö ÀçÁ¤ÀÇ ÇÊ¿ä
+**********************************************************************************************/
 
 #ifndef MeshH
 #define MeshH
 
-#include "Actor.h"	//Actor í—¤ë”íŒŒì¼ í¬í•¨
+#include "Actor.h"	
 #include "glm.h"
 
-class Mesh :
+/* Actor Å¬·¡½º¸¦ »ó¼Ó¹Ş´Â Mesh Å¬·¡½º ¼±¾ğ */
+class Mesh : public Actor			
+{
+	/* Mesh Å¬·¡½ºÀÇ private ¸â¹ö */
+	private:			
+		GLMmodel* model;	        //Obj ÆÄÀÏ¿¡¼­ ¸ğµ¨À» ºÒ·¯¿Í ÀúÀåÇÏ´Â º¯¼ö
 
-	 public Actor				//Actor í´ë˜ìŠ¤ì˜ Public ë©¤ë²„ í˜¸ì¶œ
-	 {
-
-		private:			//Mesh í´ë˜ìŠ¤ì˜ Private ë©¤ë²„
-			GLMmodel* model;	
-
-
-
-		public:						//Mesh í´ë˜ìŠ¤ì˜ Public ë©¤ë²„
-			Mesh(char* filename);			//Mesh ê°ì²´ ìƒì„±ì
-			Mesh(char* filename, GLfloat scale);	//MeshíŒŒì¼ëª…ê³¼ ë„ìš¸ Scaleì„ ë‚˜íƒ€ëƒ„
-			~Mesh();				//Mesh ê°ì²´ ì†Œë©¸ì
-			void draw();				//ë„í˜•ì„ ê·¸ë ¤ì£¼ëŠ” í•¨ìˆ˜
-
-	  };
-
+	/* Mesh Å¬·¡½ºÀÇ public ¸â¹ö */
+	public:						
+		Mesh(char* filename);					//¸Å°³ º¯¼ö filenameÀ» ÀÎÀÚ·Î ÇÏ´Â Mesh °´Ã¼ »ı¼ºÀÚ
+		Mesh(char* filename, GLfloat scale);	//¸Å°³ º¯¼ö filename, scale À» ÀÎÀÚ·Î ÇÏ´Â Mesh °´Ã¼ »ı¼ºÀÚ
+		~Mesh();		           				//Mesh °´Ã¼ ¼Ò¸êÀÚ 
+		void draw();							//¸ğµ¨ °´Ã¼¸¦ ±×·ÁÁÖ´Â ÇÔ¼ö
+};
 
 #endif
+

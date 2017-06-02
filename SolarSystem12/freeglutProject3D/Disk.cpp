@@ -1,58 +1,76 @@
-/*
----------------------------------------------------------------------------
- Copied from Dan Cristia, Rotaru
- https://github.com/RotaruDan/SolarSystem
----------------------------------------------------------------------------
- OpenSource Software Project (https://github.com/okjcd123/OSS12)
- Digital Contents ê¹€ì¤€í˜ ë¬¸í¬í˜¸ ì´ìƒí˜‘ ì •ì§€í˜œ
- Date of preparation (ì‘ì„±ì¼):					2017ë…„ 5ì›” 12ì¼
- Date of final modification (ìµœì¢… ìˆ˜ì •ì¼):			2017ë…„ 5ì›” 16ì¼
-*/
-
+/*********************************************************************************************
+ÆÄ ÀÏ ¸í : Disk.cpp
+¸ñ    Àû : Disk Å¬·¡½ºÀÇ Á¤ÀÇ
+»ç¿ë¹æ½Ä : Source Files ³»ºÎ¿¡ À§Ä¡
+Á¦ÇÑ»çÇ× : Disk Å¬·¡½º°¡ Actor Å¬·¡½º¸¦ »ó¼Ó¹Ş±â ¶§¹®¿¡ Å¬·¡½º ³»¿¡¼­ draw ÇÔ¼ö ÀçÁ¤ÀÇ ÇÊ¿ä
+**********************************************************************************************/
 
 #include "Disk.h"
 
-using namespace std;	//std í•¨ìˆ˜ë“¤ì„ ë²”ìœ„ ì§€ì • ì—†ì´ ì‚¬ìš©ê°€ëŠ¥
+
+/* Disk Å¬·¡½º »ı¼ºÀÚ Á¤ÀÇ */
+Disk::Disk()	
+{
+	innerRadius = 128;			//¸â¹ö º¯¼ö innerRadiusÀÇ °ª, 128 ·Î ÃÊ±âÈ­
+	outerRadius = 132;			//¸â¹ö º¯¼ö outerRadiusÀÇ °ª, 60·Î ÃÊ±âÈ­
+	slices = 180;				//¸â¹ö º¯¼ö slicesÀÇ °ª, 180·Î ÃÊ±âÈ­
+	loops = 1;					//¸â¹ö º¯¼ö loopsÀÇ °ª, 1·Î ÃÊ±âÈ­
+	init();						//ÃÊ±âÈ­ ÇÔ¼ö È£Ãâ
+}
+
+/* ¸Å°³ º¯¼ö innerRadius, outerRadius, slices, loops¸¦ ÀÎÀÚ·ÎÇÏ´Â Disk Å¬·¡½º »ı¼ºÀÚ Á¤ÀÇ */
+Disk::Disk(GLdouble innerRadius, GLdouble outerRadius, GLint slices, GLint loops)	
+{
+	//¾ÈÂÊ ¹İÁö¸§ °ª ´ëÀÔ
+	Disk::innerRadius = innerRadius;	 //¸Å°³ ¹ê¼ö innerRadiusÀÇ °ªÀ» ¸â¹ö º¯¼ö innerRadius¿¡ ´ëÀÔ
+	//¹Ù±ùÂÊ ¹İÁö¸§ °ª ´ëÀÔ
+	Disk::outerRadius = outerRadius;	 //¸Å°³ ¹ê¼ö outerRadiusÀÇ °ªÀ» ¸â¹ö º¯¼ö outerRadius¿¡ ´ëÀÔ
+	//½½¶óÀÌ½º °ª ´ëÀÔ
+	Disk::slices = slices;			     //¸Å°³ ¹ê¼ö slicesÀÇ °ªÀ» ¸â¹ö º¯¼ö slices¿¡ ´ëÀÔ
+	//½ºÅÃ °ª ´ëÀÔ
+	Disk::loops = loops;			     //¸Å°³ ¹ê¼ö loopsÀÇ °ªÀ» ¸â¹ö º¯¼ö loops¿¡ ´ëÀÔ
+	init();                              //ÃÊ±âÈ­ ÇÔ¼ö È£Ãâ
+}
+
+/*
+init ÇÔ¼ö Á¤ÀÇ
+
+±â´É : ÀÌÂ÷ °î¸é °´Ã¼¸¦ »ı¼ºÇÏ°í °´Ã¼ÀÇ ¼Ó¼ºÀ» ¼³Á¤ÇÏ´Â ÇÔ¼ö
+ÀÎÀÚ : void
+¹İÈ¯ : void
+*/
+void Disk::init()	
+{		
+	//»õ·Î¿î ÀÌÂ÷°î¸é °´Ã¼ »ı¼º
+	quadric = gluNewQuadric();
+	//GLU_FILL : °´Ã¼ÀÇ ³»ºÎ¸¦ Ã¤¿ò
+	gluQuadricDrawStyle(quadric, GLU_FILL);	
+	//GLU_OUTSIDE : ¹ı¼± º¤ÅÍ°¡ ¾ÈÂÊÀ» ÇâÇÏ°Ô ÇÔ
+	gluQuadricOrientation (quadric, GLU_INSIDE);
+	//GLU_FLAT : ¸éÀÌ ±ğÀÎ °Í Ã³·³ º¸ÀÌ°Ô ÇÏ´Â ¹ı¼± º¤ÅÍ ÁöÁ¤
+	gluQuadricNormals(quadric, GLU_FLAT);
+}
+
+/* Disk Å¬·¡½º ¼Ò¸êÀÚ Á¤ÀÇ */
+Disk::~Disk()	
+{
+	//ÀÌÂ÷°î¸é °´Ã¼ »èÁ¦
+	gluDeleteQuadric(quadric);
+}
+
+/*
+draw ÇÔ¼ö Á¤ÀÇ
+
+±â´É : ÀÌÂ÷ °î¸é °´Ã¼, ¾ÈÂÊ ¹İÁö¸§, ¹Ù±ù ¹İÁö¸§, ½½¶óÀÌ½º, ½ºÅÃÀÇ °ªÀ» °¡Áö°í ¿ø¹İÀ» È­¸é¿¡ ±×¸®´Â ÇÁ·Î½ÃÀú
+ÀÎÀÚ : void
+¹İÈ¯ : void
+*/
+void Disk::draw()	
+{		 
+	//ÆÇÀ» ±×¸®´Â OpenGL ¶óÀÌºê·¯¸® ÇÔ¼ö
+	gluDisk(quadric, innerRadius, outerRadius, slices, loops); 
+}
 
 
-	Disk::Disk()	//Disk ê°ì²´ ìƒì„±ì ì •ì˜
-	{
-		innerRadius = 128;	//ì•ˆìª½ ë°˜ì§€ë¦„ ê°’ì„ 128ë¡œ ì´ˆê¸°í™”
-		outerRadius = 132;	//ë°”ê¹¥ìª½ ë°˜ì§€ë¦„ ê°’ì„ 132ë¡œ ì´ˆê¸°í™”
-		slices = 180;		//ìŠ¬ë¼ì´ìŠ¤ ê°’ì„ 180ë¡œ ì´ˆê¸°í™”
-		loops = 1;		//ë£¨í”„(ìŠ¤íƒ) ê°’ì„ 1ë¡œ ì´ˆê¸°í™”
-		init();
-	}
-
-
-	Disk::Disk(GLdouble innerRadius, GLdouble outerRadius, GLint slices, GLint loops)	//Diskê°ì²´ì—  ê°’ì„ ëŒ€ì…í•˜ëŠ” í•¨ìˆ˜
-	{
-		Disk::innerRadius = innerRadius;	//ì•ˆìª½ ë°˜ì§€ë¦„ ê°’ ëŒ€ì…
-		Disk::outerRadius = outerRadius;	//ë°”ê¹¥ìª½ ë°˜ì§€ë¦„ ê°’ ëŒ€ì…
-		Disk::slices = slices;			//ìŠ¬ë¼ì´ìŠ¤ ê°’ ëŒ€ì…
-		Disk::loops = loops;			//ìŠ¤íƒ ê°’ ëŒ€ì…
-		init();
-	}
-
-
-	void Disk::init()	//Quadric ê°ì²´ë¡œ ë„í˜• ê·¸ë¦¬ê¸°
-	{		
-	    quadric = gluNewQuadric();
-	    gluQuadricDrawStyle(quadric, GLU_FILL);			//ì™€ì´ì–´ í”„ë ˆì„ìœ¼ë¡œ ê·¸ë¦¬ê³ , ê°€ë“ ì±„ìš´ë‹¤
-	    gluQuadricOrientation (quadric, GLU_INSIDE);	//ë²•ì„ ë²¡í„°ë¥¼ ì•ˆìª½ë°©í–¥ìœ¼ë¡œ ì§€ì •í•œë‹¤
-		gluQuadricNormals(quadric, GLU_FLAT);			// ë©´ì´ ê¹ì¸ê²ƒ ì²˜ëŸ¼ ë³´ì´ë„ë¡ ë²•ì„ ë²¡í„° ìƒì„±
-	}
-
-
-	Disk::~Disk()	//Disk ê°ì²´ ì†Œë©¸ì ì •ì˜
-	{
-		gluDeleteQuadric(quadric);
-	}
-
-
-	void Disk::draw()	//í™”ë©´ì— Diskë¥¼ ê·¸ë¦°ë‹¤
-	{		 
-		gluDisk(quadric, innerRadius, outerRadius, slices, loops);
-	}
 
 

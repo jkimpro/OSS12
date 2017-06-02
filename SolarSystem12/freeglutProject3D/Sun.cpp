@@ -1,68 +1,74 @@
+/************************************************************************************
+ÆÄ ÀÏ ¸í : Sun.cpp
+¸ñ    Àû : Sun Å¬·¡½ºÀÇ Á¤ÀÇ
+»ç¿ë¹æ½Ä : Source Files ³»ºÎ¿¡ À§Ä¡
+Á¦ÇÑ»çÇ× : Sun Å¬·¡½º°¡ Sphere Å¬·¡½º¸¦ »ó¼Ó¹Ş±â ¶§¹®¿¡ Å¬·¡½º ³»¿¡¼­ draw ÇÔ¼ö ÀçÁ¤ÀÇ ÇÊ¿ä
+***********************************************************************************/
 
 #include "Sun.h"
 #include "TextureLoader.h"
 
-/* Sphere í´ë˜ìŠ¤ë¥¼ ìƒì† ë°›ëŠ” Sun í´ë˜ìŠ¤ ìƒì„±ì ì •ì˜ */
-Sun::Sun() : Sphere(30, 45, 45)
+/* Sphere Å¬·¡½º¸¦ »ó¼Ó ¹Ş´Â Sun Å¬·¡½º »ı¼ºÀÚ Á¤ÀÇ */
+Sun::Sun() : Sphere(30, 45, 45) //±¸ÀÇ Áß½É ÁÂÇ¥ ¼³Á¤
 {
 	init();
 }
 
-/* Sphere í´ë˜ìŠ¤ë¥¼ ìƒì† ë°›ëŠ” í´ë˜ìŠ¤ ì†Œë©¸ì ì •ì˜ */
+/* Sphere Å¬·¡½º¸¦ »ó¼Ó ¹Ş´Â Sun Å¬·¡½º ¼Ò¸êÀÚ Á¤ÀÇ */
 Sun::~Sun() {
 	Sphere::~Sphere();
 }
 
 /*
-draw í•¨ìˆ˜ ì •ì˜
+init ÇÔ¼ö Á¤ÀÇ
 
-ê¸°ëŠ¥ : íƒœì–‘ì˜ ì¬ì§ˆ ì†ì„±ì„ ì •ì˜í•˜ê³  íƒœì–‘ì˜ ê°ì²´ë¥¼ ê·¸ë¦¬ëŠ” í”„ëŸ¬ì‹œì €
-ì¸ì : void
-ë°˜í™˜ : void
+±â´É : ÅÂ¾ç ÀÌ¹ÌÁö¸¦ ±¸¿¡ ¸ÅÇÎÇØÁÖ±â À§ÇÑ ÃÊ±âÈ­ ÇÔ¼ö
+ÀÎÀÚ : void
+¹İÈ¯ : void
 */
-/*void Sun::draw(){
-glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, sunOn);
-Sphere::draw();
-glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, sunOff);*/
-
-/*
-glMaterialfv
-
-GL_FRONT_AND_BACK: íƒœì–‘ì˜ ì•ë©´, ë’·ë©´ ëª¨ë‘ê°€ ì†ì„±ì˜ ì˜í–¥ì„ ë°›ìŒ
-GL_EMISSION: íƒœì–‘ì€ ìŠ¤ìŠ¤ë¡œ ë°œê´‘í•˜ëŠ” í–‰ì„±ì´ë¯€ë¡œ ì¬ì§ˆì˜ ì†ì„±ì€ EMISSION
-sunOn: EMISSIONì˜ ì†ì„± ê°’ì„ ë¯¸ë¦¬ ì§€ì •í•œ ìƒìˆ˜ ë°°ì—´(ë…¸ë€ìƒ‰)ì˜ í¬ì¸í„°
-sunOff: íƒœì–‘ì„ ê·¸ë¦° í›„, EMISSIONì˜ ì†ì„± ê°’ì„ ë¯¸ë¦¬ ì„¤ì •í•œ ìƒìˆ˜ ë°°ì—´(ê²€ì€ìƒ‰)ì˜ í¬ì¸í„°ë¡œ ì´ˆê¸°í™”
-*/
-
 void Sun::init()
 {
+	unsigned int width, height;						                        //³Êºñ¿Í ³ôÀÌ »ı¼º
+	unsigned char * data = loadBMPRaw("Sun.bmp", width, height, false);		//"Sun.bmp" ÆÄÀÏÀ» ºÒ·¯¿È
 
-	unsigned int width, height;						//ë„ˆë¹„ì™€ ë†’ì´ ìƒì„±
-	unsigned char * data = loadBMPRaw("sun.bmp", width, height, false);	//"earth.bmp"íŒŒì¼ì„ ë¶ˆëŸ¬ì˜¨ë‹¤
+	//OpenGL ÅØ½ºÃ³ ÀÌ¸§ »ı¼º
+	glGenTextures(1, &textureID);
 
-	glGenTextures(1, &textureID);						//OpenGL í…ìŠ¤ì³ë¥¼ ë§Œë“ ë‹¤
-	glBindTexture(GL_TEXTURE_2D, textureID);				//ì‚¬ìš©í•  í…ìŠ¤ì³ ì˜¤ë¸Œì íŠ¸. ì´í›„ì˜ í…ìŠ¤ì³ëŠ” ì´ í…ìŠ¤ì³ë¡œ ìˆ˜ì •í•œë‹¤.
+	//»ı¼ºÇÑ ÅØ½ºÃ³ ID ¿¬°á
+	glBindTexture(GL_TEXTURE_2D, textureID);
 
-
-															//OpenGLì— ì´ë¯¸ì§€ ì •ë³´ë¥¼ ì „ë‹¬í•œë‹¤.	
+	//ÀÌ¹ÌÁö¸¦ ÅØ½ºÃ³·Î ¼±¾ğ
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR_EXT, GL_UNSIGNED_BYTE, data);
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
+	//ÅØ½ºÃ³ Àû¿ë ¹æ½Ä ¼³Á¤ 
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);        //texture¿Í shading È¥ÇÕ ¹æ½Ä ¼³Á¤
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);		//Wrapping Mode ¼³Á¤
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);		//Wrapping Mode ¼³Á¤
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	//È®´ë ÇÊÅÍ¸µ ¼³Á¤ 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 	//Ãà¼Ò ÇÊÅÍ¸µ ¼³Á¤ 
 
-	//ì¢Œí‘œ í•„í„°ë§
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);		//ì–´ë“œë ˆì‹±
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);		//ì–´ë“œë ˆì‹±
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	//í™•ëŒ€ í•„í„°ë§
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 	//ì¶•ì†Œ í•„í„°ë§
-	delete[] data;
+	delete[] data; //µ¿Àû ÇÒ´ç ÇØÁ¦
 
 }
 
-void Sun::draw()	//í™”ë©´ì— Earthë¥¼ ê·¸ë¦°ë‹¤
+/*
+draw ÇÔ¼ö Á¤ÀÇ
+
+±â´É : ÅÂ¾ç ÀÌ¹ÌÁö°¡ ¸ÅÇÎµÈ ±¸¸¦ ±×·ÁÁÖ´Â ÇÁ·¯½ÃÀú
+ÀÎÀÚ : void
+¹İÈ¯ : void
+*/
+void Sun::draw()
 {
-
-	glBindTexture(GL_TEXTURE_2D, textureID);	//ì‚¬ìš©í•  í…ìŠ¤ì³ ì˜¤ë¸Œì íŠ¸
-	gluQuadricTexture(quadric, GL_TRUE);		//ì´í›„ì˜ ëª¨ë“  í…ìŠ¤ì³ë“¤ì€ ì´ í…ìŠ¤ì³ë¥¼ ì‚¬ìš©í•œë‹¤.
-	Sphere::draw();					//í™”ë©´ì— Sphereë¥¼ ê·¸ë¦°ë‹¤
-
+	//»ı¼ºÇÑ ÅØ½ºÃ³ ID ¿¬°á
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	//ÇöÀç ÅØ½ºÃ³¸¦ ÀÌÈÄÀÇ ¸ğµç ÅØ½ºÃ³¿¡ Àû¿ë
+	gluQuadricTexture(quadric, GL_TRUE);
+	//È­¸é¿¡ ÅÂ¾çÀ» ±×¸°´Ù
+	Sphere::draw();
 }
+
+
+
+
+
