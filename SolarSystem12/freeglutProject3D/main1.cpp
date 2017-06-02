@@ -694,11 +694,16 @@ void updateProjection() {
 	glLoadIdentity();
 	Pj.xRight = Vp.w / 2.0 / scale; Pj.xLeft = -Pj.xRight;
 	Pj.yTop = Vp.h / 2.0 / scale;  Pj.yBot = -Pj.yTop;
-	if (ortho) {
-		glOrtho(Pj.xLeft, Pj.xRight, Pj.yBot, Pj.yTop, Pj.zNear, Pj.zFar);
+	if (ortho) 
+	{
+		if (Vp.w <= Vp.h)
+			glOrtho(Pj.xLeft, Pj.xRight, Pj.yBot * (GLfloat)Vp.h / (GLfloat)Vp.w, Pj.yTop* (GLfloat)Vp.h / (GLfloat)Vp.w, Pj.zNear, Pj.zFar);
+		else
+			glOrtho(Pj.xLeft* (GLfloat)Vp.w / (GLfloat)Vp.h, Pj.xRight* (GLfloat)Vp.w / (GLfloat)Vp.h, Pj.yBot , Pj.yTop, Pj.zNear, Pj.zFar);
 	}
-	else {
-		gluPerspective(70, Vp.w / Vp.h, Pj.zNear, Pj.zFar);
+	else
+	{
+		gluPerspective(70.0, (GLfloat)Vp.w / (GLfloat)Vp.h, Pj.zNear, Pj.zFar);
 	}
 }
 //-------------------------------------------------------------------------
