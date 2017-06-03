@@ -1,26 +1,17 @@
-/*
----------------------------------------------------------------------------
-Copied from Dan Cristia, Rotaru
-https://github.com/RotaruDan/SolarSystem
----------------------------------------------------------------------------
-OpenSource Software Project (https://github.com/okjcd123/OSS12)
-Department of Digital Contents
-김준혁 문희호 이상협 정지혜
-Date of preparation (작성일):						2017년 5월 12일
-Date of final modification (최종 수정일):			2017년 6월  1일
-*/
+/*******************************************************************************************
+파 일 명: main1.cpp
+목    적: 모든 .cpp .h 종합하여 시작, Looping, 종료 하는 장소
+사용방식: Source Files 내부에 위치
+제한사항: 없음
+********************************************************************************************/
 
-#include "main1.h"
-//-------------------------------------------------------------------------
-// main
-// 설명 : 메인. opengl 화면출력의 전체 루프를 정의함.
-// 인수 : argc, argv[]
-// 반환 : void
-//-------------------------------------------------------------------------
+#include "main1.h" 
+
+
 int main(int argc, char* argv[])
 {
+	//창을 출력하기 위한 초기작업 및 준비 과정
 	srand((unsigned)time(NULL));
-	// Initialization 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(Vp.w, Vp.h);
 	glutInitWindowPosition(100, 100);
@@ -43,13 +34,13 @@ int main(int argc, char* argv[])
 
 	// X Y Z 축 생성하기
 	Axis axis;
-	//root.addChildren(&axis);
-
-	//Solar System Group 생성
+	
+	//SolarSystem Group 생성
 	Group solarSystem;
 	root.addChildren(&solarSystem);
 	solarSystem.setAngleVector(0, 1, 0);			//y축을 기준으로 회전
 
+	//태양내부 시스템 SolarSystem에 종속
 	solarSystem.addChildren(&sunSystem);
 	sunSystem.setAngleVector(0, 1, 0);
 
@@ -63,7 +54,7 @@ int main(int argc, char* argv[])
 	mercuryOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&mercuryOrbit);
 
-	// Mercury system//
+	//수성 궤도 SolarSystem 에 종속
 	solarSystem.addChildren(&mercurySystem);
 	mercurySystem.setX(40.25);
 	mercurySystem.setAngleVector(0, 1, 0);
@@ -74,7 +65,7 @@ int main(int argc, char* argv[])
 	venusOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&venusOrbit);
 
-	// Venus system//
+	//금성 궤도 SolarSystem 에 종속
 	solarSystem.addChildren(&venusSystem);
 	venusSystem.setX(70.25);
 	venusSystem.setAngleVector(0, 1, 0);
@@ -85,7 +76,7 @@ int main(int argc, char* argv[])
 	earthOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&earthOrbit);
 
-	// Earth system//
+	//지구 궤도 SolarSystem 에 종속
 	solarSystem.addChildren(&earthSystem);
 	earthSystem.setX(100.25);
 	earthSystem.setAngleVector(0, 1, 0);
@@ -96,7 +87,7 @@ int main(int argc, char* argv[])
 	marsOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&marsOrbit);
 
-	// Mars system //
+	//화성 궤도 SolarSystem 에 종속
 	solarSystem.addChildren(&marsSystem);
 	marsSystem.setX(150.25);
 	marsSystem.setAngleVector(0, 1, 0);
@@ -108,7 +99,7 @@ int main(int argc, char* argv[])
 	jupiterOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&jupiterOrbit);
 
-	// Jupiter system //
+	//목성 궤도 SolarSystem 에 종속
 	solarSystem.addChildren(&jupiterSystem);
 	jupiterSystem.setX(522);
 	jupiterSystem.setAngleVector(0, 1, 0);
@@ -119,7 +110,7 @@ int main(int argc, char* argv[])
 	saturnOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&saturnOrbit);
 
-	// Saturn system //
+	//토성 궤도 SolarSystem 에 종속
 	solarSystem.addChildren(&saturnSystem);
 	saturnSystem.setX(952);
 	saturnSystem.setAngleVector(0, 1, 0);
@@ -130,7 +121,7 @@ int main(int argc, char* argv[])
 	uranusOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&uranusOrbit);
 
-	// Uranus system //
+	//천왕성 궤도 SolarSystem 에 종속
 	solarSystem.addChildren(&uranusSystem);
 	uranusSystem.setX(1922);
 	uranusSystem.setAngleVector(0, 1, 0);
@@ -141,7 +132,7 @@ int main(int argc, char* argv[])
 	naptuneOrbit.setAngleVector(1, 0, 0);
 	solarSystem.addChildren(&naptuneOrbit);
 
-	// Uranus system //
+	//해왕성 궤도 SolarSystem 에 종속
 	solarSystem.addChildren(&naptuneSystem);
 	naptuneSystem.setX(3012);
 	naptuneSystem.setAngleVector(0, 1, 0);
@@ -184,7 +175,7 @@ int main(int argc, char* argv[])
 	mars.setAngleVector(0, 0, 1);
 
 
-	//화성 생성//
+	//목성 생성//
 	Jupiter jupiter;
 	jupiterRef = &jupiter;
 	jupiter.setColor(1, 1, 1, 1);
@@ -208,24 +199,28 @@ int main(int argc, char* argv[])
 	naptune.setColor(1, 1, 1, 1);
 	naptune.setAngleVector(0, 0, 1);
 
+	//태양 자전을 위한 Group 생성
 	Group sunContainer;
 	sunContainer.addChildren(&sun);
 	sunContainer.setAngle(-90);
 	sunContainer.setAngleVector(1, 0, 0);
 	sunSystem.addChildren(&sunContainer);
 
+	//배경을 담기 위한 Group 생성
 	Group backgroundContainer;
 	backgroundContainer.addChildren(&background);
 	backgroundContainer.setAngle(-90);
 	backgroundContainer.setAngleVector(1, 0, 0);
 	backgroundSystem.addChildren(&backgroundContainer);
 
+	//수성 자전을 위한 Group 생성
 	Group mercuryContainer;
 	mercuryContainer.addChildren(&mercury);
 	mercuryContainer.setAngle(-90);
 	mercuryContainer.setAngleVector(1, 0, 0);
 	mercurySystem.addChildren(&mercuryContainer);
 
+	//금성 자전을 위한 Group 생성
 	Group venusContainer;
 	venusContainer.addChildren(&venus);
 	venusContainer.setAngle(-90);
@@ -233,26 +228,28 @@ int main(int argc, char* argv[])
 	venusSystem.addChildren(&venusContainer);
 
 
-	// 지구 자전을 위한 earthContainer Group 생성
+	//지구 자전을 위한 earthContainer Group 생성
 	Group earthContainer;
 	earthContainer.addChildren(&earth);
 	earthContainer.setAngle(-90);
 	earthContainer.setAngleVector(1, 0, 0);
 	earthSystem.addChildren(&earthContainer);
 
-
+	//화성 자전을 위한 Group 생성
 	Group marsContainer;
 	marsContainer.addChildren(&mars);
 	marsContainer.setAngle(-90);
 	marsContainer.setAngleVector(1, 0, 0);
 	marsSystem.addChildren(&marsContainer);
 
+	//목성 자전을 위한 Group 생성
 	Group jupiterContainer;
 	jupiterContainer.addChildren(&jupiter);
 	jupiterContainer.setAngle(-90);
 	jupiterContainer.setAngleVector(1, 0, 0);
 	jupiterSystem.addChildren(&jupiterContainer);
 
+	//토성 자전을 위한 Group 생성
 	Group saturnContainer;
 	saturnContainer.addChildren(&saturn);
 	saturnContainer.setAngle(-90);
@@ -265,19 +262,21 @@ int main(int argc, char* argv[])
 	ringOfSaturn.setAngleVector(1, 0, 0);
 	saturnSystem.addChildren(&ringOfSaturn);
 
+	//천왕성 자전을 위한 Group 생성
 	Group uranusContainer;
 	uranusContainer.addChildren(&uranus);
 	uranusContainer.setAngle(-90);
 	uranusContainer.setAngleVector(1, 0, 0);
 	uranusSystem.addChildren(&uranusContainer);
 
+	//해왕성 자전을 위한 Group 생성
 	Group naptuneContainer;
 	naptuneContainer.addChildren(&naptune);
 	naptuneContainer.setAngle(-90);
 	naptuneContainer.setAngleVector(1, 0, 0);
 	naptuneSystem.addChildren(&naptuneContainer);
 
-	//달궤도 생성	
+	//달 궤도 생성	
 	moonOrbit.setColor(1, 1, 1, 1);
 	moonOrbit.setAngle(90);
 	moonOrbit.setAngleVector(1, 0, 0);
@@ -289,53 +288,26 @@ int main(int argc, char* argv[])
 	moon.setX(4.1);
 	earthSystem.addChildren(&moon);
 
-	/*
-	//인공위성 궤도 생성
-	Disk satelliteOrbit(3, 3.2, 60, 1);
-	satelliteOrbit.setColor(0, 1, 0, 1);
-	earthSystem.addChildren(&satelliteOrbit);
-	
-	//인공위성 생성
-	satellite.setColor(0, 1, 0, 1);
-	satellite.setAngleVector(0, 0, 1);
-	satellite.setY(3.1);
-	earthSystem.addChildren(&satellite);
 
-	
-	//비행기 궤도 생성
-	Disk planeOrbit(3, 3.2, 60, 1);
-	planeOrbit.setColor(0, 1, 1, 1);
-	planeOrbit.setAngle(90);
-	planeOrbit.setAngleVector(0, 1, 0);
-	earthSystem.addChildren(&planeOrbit);
-
-	//비행기 생성
-	plane.setColor(0, 1, 1, 1);
-	plane.setAngleVector(1, 0, 0);
-	plane.setY(3.1);
-	earthSystem.addChildren(&plane);
-	*/
-
-
-	initScene();				//카메라 시점에 관한 부분 초기화
+	initScene();							//카메라 시점에 관한 부분 초기화
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 
-	glutCreateMenu(myMenu);
+	glutCreateMenu(myMenu);					//메뉴 기능 생성
 	glutAddMenuEntry("Automatically", 1);
 	glutAddMenuEntry("Maually", 2);
 	glutAddMenuEntry("Quit", 3);
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);		//마우스 오른쪽 버튼으로 인한 이벤트 발생
 
 	glutMainLoop();  //glutMainLoopEvent(); 내장함수에 따라서 진행
 	return 0;
 }
+/*
+myMenu 함수 정의
 
-//-------------------------------------------------------------------------
-// myMenu
-// 설명 : 오른쪽 마우스 버튼을 눌렀을 때 메뉴 설정
-// 인수 : id
-// 반환 : void
-//-------------------------------------------------------------------------
+기능 : 오른쪽 마우스 버튼을 눌렀을 때 메뉴 설정
+인자 : id
+반환 : void
+*/
 void myMenu(int id)
 {
 	switch (id)
@@ -358,13 +330,13 @@ void myMenu(int id)
 		default: break;
 	}
 }
+/*
+initGL 함수 정의
 
-//-------------------------------------------------------------------------
-// initGL
-// 설명 : 처음 시작할 때의 퐁 셰이딩 설정
-// 인수 : void
-// 반환 : void
-//-------------------------------------------------------------------------
+기능 :  처음 시작할 때의 퐁 셰이딩 설정
+인자 : void
+반환 : void
+*/
 void initGL() {
 	for (int i = 0; i < 1000; i++)			//태양계 장식 임의 좌표 저장
 	{
@@ -373,7 +345,7 @@ void initGL() {
 		star[i].z = random(1);
 	}
 	//glEnable(GL_LIGHTING);
-	glEnable(GL_DEPTH_TEST);		// z buffer enable
+	glEnable(GL_DEPTH_TEST);				// z buffer enable
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_TEXTURE_2D);
@@ -422,13 +394,13 @@ void initGL() {
 	updateCamera();
 	updateProjection();
 }
+/*
+initScene 함수 정의
 
-//-------------------------------------------------------------------------
-// initScene
-// 설명 : 처음 시작할 때 화면의 셋팅
-// 인수 : void
-// 반환 : void
-//-------------------------------------------------------------------------
+기능 : 처음 시작할 때 화면의 셋팅
+인자 : void
+반환 : void
+*/
 void initScene() {
 
 	sunSystem.setAngle(0);
@@ -481,7 +453,13 @@ void initScene() {
 	ortho = false;
 	updateProjection();
 }
+/*
+SetAngle 함수 정의
 
+기능 : 각 행성별 위치 및 각을 설정하고, 현재 날짜를 Console에 출력
+인자 : void
+반환 : void
+*/
 void SetAngle()
 {
 	GLdouble day = 1.0139;
@@ -645,20 +623,16 @@ void SetAngle()
 			year++;
 		}
 	}
-	/*if (date > 360)
-		{
-			date = date - 360;
-			year++;
-		}*/
 
 }
 
-//-------------------------------------------------------------------------
-// updateCamera
-// 설명 : 카메라의 새로운 위치를 설정해줌
-// 인수 : void
-// 반환 : void
-//-------------------------------------------------------------------------
+/*
+updateCamera 함수 정의
+
+기능 : 카메라의 새로운 위치를 설정해줌
+인자 : void
+반환 : void
+*/
 void updateCamera() {
 	glMatrixMode(GL_MODELVIEW);   // VIEW
 	glLoadIdentity();
@@ -668,12 +642,13 @@ void updateCamera() {
 
 }
 
-//-------------------------------------------------------------------------
-// resize
-// 설명 : 화면의 크기를 사용자가 임의로 늘리거나 줄일 때의 행동을 정의
-// 인수 : wW, wH
-// 반환 : void
-//-------------------------------------------------------------------------
+/*
+resize 함수 정의
+
+기능 : 화면의 크기를 사용자가 임의로 늘리거나 줄일 때의 행동을 정의
+인자 : wW, wH
+반환 : void
+*/
 void resize(int wW, int wH) {
 	// Viewport set up     
 	Vp.w = wW; Vp.h = wH;
@@ -684,12 +659,13 @@ void resize(int wW, int wH) {
 	glutPostRedisplay();
 }
 
-//-------------------------------------------------------------------------
-// updateProjection
-// 설명 : 현재 화면 모드를 정사영으로 할지 원근투영으로 할 지를 결정
-// 인수 : void
-// 반환 : void
-//-------------------------------------------------------------------------
+/*
+updateProjection 함수 정의
+
+기능 : 현재 화면 모드를 정사영으로 할지 원근투영으로 할 지를 결정
+인자 : void
+반환 : void
+*/
 void updateProjection() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -707,12 +683,14 @@ void updateProjection() {
 		gluPerspective(70.0, (GLfloat)Vp.w / (GLfloat)Vp.h, Pj.zNear, Pj.zFar);
 	}
 }
-//-------------------------------------------------------------------------
-// idle
-// 설명 : 아무것도 하지 않을 때의 행동을 정의. 
-// 인수 : void
-// 반환 : void
-//-------------------------------------------------------------------------
+
+/*
+idle 함수 정의
+
+기능 : 아무것도 하지 않을 때의 행동을 정의.
+인자 : void
+반환 : void
+*/
 void idle(void)
 {
 	if (automatic==true || Presskey[CCLOCKWISE]==true)
@@ -777,12 +755,13 @@ void idle(void)
 	glutPostRedisplay();
 }
 
-//-------------------------------------------------------------------------
-// display
-// 설명 : 화면을 출력할 때의 모드를 정의함.
-// 인수 : void
-// 반환 : void
-//-------------------------------------------------------------------------
+/*
+display 함수 정의
+
+기능 : 아화면을 출력할 때의 모드를 정의
+인자 : void
+반환 : void
+*/
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -813,12 +792,13 @@ void display(void)
 	glutSwapBuffers();
 }
 
-//-------------------------------------------------------------------------
-// setCamera
-// 설명 : 주어진 벡터를 받아 카메라와 카메라 시점을 이동시킴
-// 인수 : 3차원 벡터값 x,y,z
-// 반환 : void
-//-------------------------------------------------------------------------
+/*
+setCamera 함수 정의
+
+기능 : 주어진 벡터를 받아 카메라와 카메라 시점을 이동시킴
+인자 : 3차원 벡터값 x,y,z
+반환 : void
+*/
 void setCamera(GLdouble x, GLdouble y, GLdouble z)
 {
 	GLdouble length = sqrt((x * x) + (y * y) + (z * z));
@@ -836,13 +816,13 @@ void setCamera(GLdouble x, GLdouble y, GLdouble z)
 	currentView->lookY += y;
 	currentView->lookZ += z;
 }
+/*
+moveCamera  함수 정의
 
-//-------------------------------------------------------------------------
-// moveCamera 
-// 설명 : 카메라와 카메라 시점을 옮기는 함수
-// 인수 : direction - 카메라가 이동할 방향
-// 반환 : void
-//-------------------------------------------------------------------------
+기능 : 카메라와 카메라 시점을 옮기는 함수
+인자 : direction - 카메라가 이동할 방향
+반환 : void
+*/
 void moveCamera(unsigned int direction) {
 	GLdouble eX, eY, eZ;
 	GLdouble lX, lY, lZ;
@@ -905,13 +885,13 @@ void moveCamera(unsigned int direction) {
 		break;
 	}
 }
+/*
+rotateCamera  함수 정의
 
-//-------------------------------------------------------------------------
-// rotateCamera
-// 설명 : 시계방향, 또는 시계반대방향을 받아 그에 맞게 카메라를 회전
-// 인수 : direction - 카메라를 회전시킬 방향
-// 반환 : void
-//-------------------------------------------------------------------------
+기능 : 시계방향, 또는 시계반대방향을 받아 그에 맞게 카메라를 회전
+인자 : direction - 카메라가 이동할 방향
+반환 : void
+*/
 void rotateCamera(unsigned int direction) {
 	GLdouble uX = currentView->upX;
 	GLdouble uY = currentView->upY;
@@ -931,12 +911,13 @@ void rotateCamera(unsigned int direction) {
 	rotate(currentView->eyeX, currentView->eyeY, currentView->eyeZ, uX, uY, uZ, 0.1);
 }
 
-//-------------------------------------------------------------------------
-// rotateView
-// 설명 : 카메라 시점을 방향에 따라 이동시켜줌
-// 인수 : direction - 카메라를 회전시킬 방향
-// 반환 : void
-//-------------------------------------------------------------------------
+/*
+rotateView 함수 정의
+
+기능 : 카메라 시점을 방향에 따라 이동시켜줌
+인자 : direction - 카메라가 이동할 방향
+반환 : void
+*/
 void rotateView(int x, int y) {
 	GLdouble eX, eY, eZ;
 	GLdouble lX, lY, lZ;
@@ -992,14 +973,15 @@ void rotateView(int x, int y) {
 	currentView->lookZ = uZ - eZ;
 	updateCamera();
 }
-//-------------------------------------------------------------------------
-// rotate
-// 설명 : v 벡터를 a벡터를 축으로 하여 회전
-// 인수 : vector v - 회전할 벡터
-// 인수 : point a  - 회전 축
-// 인수 : angle    - 회전시킬 각도
-// 반환 : void
-//-------------------------------------------------------------------------
+/*
+rotate 함수 정의
+
+기능 : 카메라 시점을 방향에 따라 이동시켜줌
+인자 : vector v - 회전할 벡터
+인자 : point a  - 회전 축
+인자 : angle    - 회전시킬 각도
+반환 : void
+*/
 void rotate(double &vx, double &vy, double &vz, double ax, double ay, double az, double angle) {
 	double ca = cos(angle);
 	double sa = sin(angle);
@@ -1015,14 +997,15 @@ void rotate(double &vx, double &vy, double &vz, double ax, double ay, double az,
 	vz = rz;
 }
 
-//-------------------------------------------------------------------------
-// keyUp
-// 설명 : 키보드에서 버튼이 떼였을 때 행동을 정의함.
-// 인수 : key - 입력받은 키값
-// 인수 : mX  - 사용안함
-// 인수 : mY  - 사용안함
-// 반환 : void
-//-------------------------------------------------------------------------
+/*
+keyUp 함수 정의
+
+기능 : 키보드에서 버튼이 떼였을 때 행동을 정의
+인자 : key - 입력받은 키값
+인자 : mX  - 사용안함
+인자 : mY  - 사용안함
+반환 : void
+*/
 void keyUp(unsigned char key, int mX, int mY)
 {
 	switch(key)
@@ -1052,14 +1035,16 @@ void keyUp(unsigned char key, int mX, int mY)
 	}
 
 }
-//-------------------------------------------------------------------------
-// keySpUp
-// 설명 : 키보드에서 화살표 버튼이 떼였을 때 행동을 정의함.
-// 인수 : key - 입력받은 키값
-// 인수 : mX  - 사용안함
-// 인수 : mY  - 사용안함
-// 반환 : void
-//-------------------------------------------------------------------------
+
+/*
+keySpUp 함수 정의
+
+기능 : 키보드에서 화살표 버튼이 떼였을 때 행동을 정의함.
+인자 : key - 입력받은 키값
+인자 : mX  - 사용안함
+인자 : mY  - 사용안함
+반환 : void
+*/
 void keySpUp(int key, int mX, int mY)
 {
 	switch (key)
@@ -1085,14 +1070,16 @@ void keySpUp(int key, int mX, int mY)
 	}
 
 }
-//-------------------------------------------------------------------------
-// keyPres
-// 설명 : 키를 이용하여 행동을 결정
-// 인수 : key - 입력받은 키값
-// 인수 : mX  - 사용안함
-// 인수 : mY  - 사용안함
-// 반환 : void
-//-------------------------------------------------------------------------
+
+/*
+keyPres 함수 정의
+
+기능 : 키를 이용하여 행동을 결정.
+인자 : key - 입력받은 키값
+인자 : mX  - 사용안함
+인자 : mY  - 사용안함
+반환 : void
+*/
 void keyPres(unsigned char key, int mX, int mY) {
 	bool need_redisplay = true;
 
@@ -1190,14 +1177,16 @@ void keyPres(unsigned char key, int mX, int mY) {
 		glutPostRedisplay();
 	}
 }
-//-------------------------------------------------------------------------
-// keySp
-// 설명 : 화살표 키를 이용하여 행동을 결정
-// 인수 : key - 입력받은 키값
-// 인수 : mX  - 사용안함
-// 인수 : mY  - 사용안함
-// 반환 : void
-//-------------------------------------------------------------------------
+
+/*
+keySp 함수 정의
+
+기능 : 화살표 키를 이용하여 행동을 결정
+인자 : key - 입력받은 키값
+인자 : mX  - 사용안함
+인자 : mY  - 사용안함
+반환 : void
+*/
 void keySp(int key, int mX, int mY) {
 	switch (key)
 	{
@@ -1222,15 +1211,16 @@ void keySp(int key, int mX, int mY) {
 	}
 }
 
-//-------------------------------------------------------------------------
-// mouseFunc
-// 설명 : 마우스를 클릭 했을 때 행동을 정의함
-// 인수 : button1 - 마우스 왼쪽버튼의 상태
-// 인수 : button2 - 마우스 오른쪽버튼의 상태
-// 인수 : x  - 클릭한 점의 x 좌표
-// 인수 : y  - 클릭한 점의 y 좌표
-// 반환 : void
-//-------------------------------------------------------------------------
+/*
+mouseFunc 함수 정의
+
+기능 : 마우스를 클릭 했을 때 행동을 정의함
+인자 : button1 - 마우스 왼쪽버튼의 상태
+인자 : button2 - 마우스 오른쪽버튼의 상태
+인자 : x  - 클릭한 점의 x 좌표
+인자 : y  - 클릭한 점의 y 좌표
+반환 : void
+*/
 void mouseFunc(int button1, int button2, int x, int y)
 {
 	if (button1 == GLUT_LEFT_BUTTON && button2 == GLUT_DOWN)
@@ -1245,14 +1235,14 @@ void mouseFunc(int button1, int button2, int x, int y)
 		leftButton = false;
 	}
 }
+/*
+motionFunc 함수 정의
 
-//-------------------------------------------------------------------------
-// motionFunc
-// 설명 : 마우스를 드래그할 때의 행동을 정의함
-// 인수 : x  - 현재 마우스의 x 좌표
-// 인수 : y  - 현재 마우스의 y 좌표
-// 반환 : void
-//-------------------------------------------------------------------------
+기능 : 마우스를 드래그할 때의 행동을 정의함
+인자 : x  - 현재 마우스의 x 좌표
+인자 : y  - 현재 마우스의 y 좌표
+반환 : void
+*/
 void motionFunc(int x, int y)
 {
 	if (leftButton)
@@ -1265,5 +1255,4 @@ void motionFunc(int x, int y)
 	}
 	glutPostRedisplay();
 }
-//-------------------------------------------------------------------------
 
