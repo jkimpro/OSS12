@@ -18,7 +18,6 @@ int main(int argc, char* argv[])
 	glutInit(&argc, argv);
 	// Window construction
 	int win = glutCreateWindow("Solar System Simulator");
-
 	//창에 관련된 함수  
 	glutDisplayFunc(display);
 	glutReshapeFunc(resize);
@@ -31,7 +30,6 @@ int main(int argc, char* argv[])
 	glutIdleFunc(idle);
 	// OpenGL basic setting
 	initGL();
-
 	// X Y Z 축 생성하기
 	Axis axis;
 	
