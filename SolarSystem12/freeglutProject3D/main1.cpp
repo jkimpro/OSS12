@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 	glutInitWindowPosition(100, 100);
 	glutInit(&argc, argv);
 	// Window construction
-	int win = glutCreateWindow("Solar System OSS12");
+	int win = glutCreateWindow("Solar System Simulator");
 
 	//창에 관련된 함수  
 	glutDisplayFunc(display);
@@ -293,8 +293,8 @@ int main(int argc, char* argv[])
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 
 	glutCreateMenu(myMenu);					//메뉴 기능 생성
-	glutAddMenuEntry("Automatically", 1);
-	glutAddMenuEntry("Maually", 2);
+	glutAddMenuEntry("Automatic Mode", 1);
+	glutAddMenuEntry("Manual Mode", 2);
 	glutAddMenuEntry("Quit", 3);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);		//마우스 오른쪽 버튼으로 인한 이벤트 발생
 
@@ -387,10 +387,9 @@ void initGL() {
 
 	glShadeModel(GL_SMOOTH);
 
-	//glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);			//검은색 배경으로 임시 변경
-
-													// 기본적인 카메라 세팅
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);			//검은색 배경으로 임시 초기화
+	
+    // 기본적인 카메라 세팅
 	updateCamera();
 	updateProjection();
 }
@@ -505,7 +504,7 @@ void SetAngle()
 		printf("%d년 %d월 %d일", year, month, (int)date - normalyearArr[month]);
 	}
 
-	if (year%4 == 0) //윤년인경우
+	if (year%4 == 0)//윤년인경우
 	{
 		if (date >= 0 && date <= 31)
 		{
